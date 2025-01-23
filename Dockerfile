@@ -1,7 +1,4 @@
-FROM yiisoftware/yii2-php:7.4-apache
+# now this file is not used anywhere
+FROM yiisoftware/yii2-php:8.3-fpm-nginx
 
-WORKDIR /app
-COPY . .
-
-RUN composer update
-RUN chown -R www-data .
+RUN cd /app && composer update && chown -R www-data .
