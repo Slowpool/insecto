@@ -1,7 +1,7 @@
 services:
-  app-php:
+  php:
     depends_on:
-      - db-mysql
+      - mysql
     build: .
     # image: yiisoftware/yii2-php:8.3-fpm-nginx
     volumes:
@@ -11,13 +11,12 @@ services:
     ports:
       - '8000:80'
 
-  db-mysql:
+  mysql:
     # image: container-registry.oracle.com/mysql/community-server
     image: mysql:8.0
     volumes:
-      - ../db-mysql:/var/lib/mysql:delegated
-    # it doesn't work
-    # hostname: ${DB_HOST}
+      - ../mysql:/var/lib/mysql:delegated
+    # hostname: ${DB_HOST} # it doesn't work
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: ${DB_NAME}
