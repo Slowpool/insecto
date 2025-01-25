@@ -1,5 +1,11 @@
 services:
   php:
+    environment:
+      # db.php uses $_ENV for dsn (data source name).
+      DB_HOST: ${DB_HOST}
+      DB_NAME: ${DB_NAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      PHP_ENABLE_XDEBUG: 1
     depends_on:
       - mysql
     build: .
@@ -10,15 +16,15 @@ services:
       - ./:/app:delegated
     ports:
       - '8000:80'
+      - '9005:9005' # xdebug
 
   mysql:
     # image: container-registry.oracle.com/mysql/community-server
     image: mysql:8.0
     volumes:
       - ../mysql:/var/lib/mysql:delegated
-    # hostname: ${DB_HOST} # it doesn't work
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: ${DB_NAME}
     ports:
-      - '3307:3306'
+      - '${DB_PORT}:3306'

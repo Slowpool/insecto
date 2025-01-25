@@ -1,0 +1,23 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Listen for Xdebug 8000",
+            "type": "php",
+            "request": "launch",
+            "port": 8000
+        },
+        {
+            "name": "Listen for Xdebug 9005",
+            "type": "php",
+            "request": "launch",
+            "port": 9005
+        },
+        {
+            "name": "Listen for Xdebug 9003",
+            "type": "php",
+            "request": "launch",
+            "port": 9003
+        }
+    ]
+}

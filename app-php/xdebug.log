@@ -1,0 +1,138 @@
+[10] Log opened at 2025-01-25 15:32:25.174455
+[10] [Config] WARN: Not setting up control socket with default value due to unavailable 'tsc' clock
+[10] [Step Debug] INFO: Checking for client discovery headers: 'HTTP_X_FORWARDED_FOR,REMOTE_ADDR'.
+[10] [Step Debug] INFO: Checking header 'HTTP_X_FORWARDED_FOR'.
+[10] [Step Debug] INFO: Checking header 'REMOTE_ADDR'.
+[10] [Step Debug] WARN: Could not discover client host through HTTP headers, connecting to configured address/port: host.docker.internal:9005.
+[10] [Step Debug] INFO: Connected to debugging client: host.docker.internal:9005 (fallback through xdebug.client_host/xdebug.client_port).
+[10] [Step Debug] -> <init xmlns="urn:debugger_protocol_v1" xmlns:xdebug="https://xdebug.org/dbgp/xdebug" fileuri="dbgp://stdin" language="PHP" xdebug:language_version="8.3.16" protocol_version="1.0" appid="10"><engine version="3.4.1"><![CDATA[Xdebug]]></engine><author><![CDATA[Derick Rethans]]></author><url><![CDATA[https://xdebug.org]]></url><copyright><![CDATA[Copyright (c) 2002-2025 by Derick Rethans]]></copyright></init>
+
+[10] [Step Debug] <- feature_set -i 1 -n max_children -v 100
+[10] [Step Debug] -> <response xmlns="urn:debugger_protocol_v1" xmlns:xdebug="https://xdebug.org/dbgp/xdebug" command="feature_set" transaction_id="1" feature="max_children" success="1"></response>
+
+[10] [Step Debug] <- feature_set -i 2 -n max_data -v 8192
+[10] [Step Debug] -> <response xmlns="urn:debugger_protocol_v1" xmlns:xdebug="https://xdebug.org/dbgp/xdebug" command="feature_set" transaction_id="2" feature="max_data" success="1"></response>
+
+[10] [Step Debug] <- feature_set -i 3 -n notify_ok -v 1
+[10] [Step Debug] -> <response xmlns="urn:debugger_protocol_v1" xmlns:xdebug="https://xdebug.org/dbgp/xdebug" command="feature_set" transaction_id="3" feature="notify_ok" success="1"></response>
+
+[10] [Step Debug] <- feature_set -i 4 -n resolved_breakpoints -v 1
+[10] [Step Debug] -> <response xmlns="urn:debugger_protocol_v1" xmlns:xdebug="https://xdebug.org/dbgp/xdebug" command="feature_set" transaction_id="4" feature="resolved_breakpoints" success="1"></response>
+
+[10] [Step Debug] <- feature_set -i 5 -n extended_properties -v 1
+[10] [Step Debug] -> <response xmlns="urn:debugger_protocol_v1" xmlns:xdebug="https://xdebug.org/dbgp/xdebug" command="feature_set" transaction_id="5" feature="extended_properties" success="1"></response>
+
+[10] [Step Debug] <- breakpoint_set -i 6 -t line -f file:///c:/EasyPHP-Devserver-17/eds-www/PHP/yii%20projects/insecto/app-php/web/index.php -n 3
+[10] [Step Debug] WARN: Breakpoint file name does not exist: c:/EasyPHP-Devserver-17/eds-www/PHP/yii projects/insecto/app-php/web/index.php (No such file or directory).
+[10] [Step Debug] -> <response xmlns="urn:debugger_protocol_v1" xmlns:xdebug="https://xdebug.org/dbgp/xdebug" command="breakpoint_set" transaction_id="6" id="100001" resolved="unresolved"></response>
+
+[10] [Step Debug] <- breakpoint_set -i 7 -t line -f file:///c:/EasyPHP-Devserver-17/eds-www/PHP/yii%20projects/insecto/app-php/web/index.php -n 13
+[10] [Step Debug] WARN: Breakpoint file name does not exist: c:/EasyPHP-Devserver-17/eds-www/PHP/yii projects/insecto/app-php/web/index.php (No such file or directory).
+[10] [Step Debug] -> <response xmlns="urn:debugger_protocol_v1" xmlns:xdebug="https://xdebug.org/dbgp/xdebug" command="breakpoint_set" transaction_id="7" id="100002" resolved="unresolved"></response>
+
+[10] [Step Debug] <- breakpoint_set -i 8 -t line -f file:///c:/EasyPHP-Devserver-17/eds-www/PHP/yii%20projects/insecto/app-php/web/index.php -n 14
+[10] [Step Debug] WARN: Breakpoint file name does not exist: c:/EasyPHP-Devserver-17/eds-www/PHP/yii projects/insecto/app-php/web/index.php (No such file or directory).
+[10] [Step Debug] -> <response xmlns="urn:debugger_protocol_v1" xmlns:xdebug="https://xdebug.org/dbgp/xdebug" command="breakpoint_set" transaction_id="8" id="100003" resolved="unresolved"></response>
+
+[10] [Step Debug] <- breakpoint_set -i 9 -t line -f file:///c:/EasyPHP-Devserver-17/eds-www/PHP/yii%20projects/insecto/app-php/views/layouts/main.php -n 13
+[10] [Step Debug] WARN: Breakpoint file name does not exist: c:/EasyPHP-Devserver-17/eds-www/PHP/yii projects/insecto/app-php/views/layouts/main.php (No such file or directory).
+[10] [Step Debug] -> <response xmlns="urn:debugger_protocol_v1" xmlns:xdebug="https://xdebug.org/dbgp/xdebug" command="breakpoint_set" transaction_id="9" id="100004" resolved="unresolved"></response>
+
+[10] [Step Debug] <- breakpoint_set -i 10 -t line -f file:///c:/EasyPHP-Devserver-17/eds-www/PHP/yii%20projects/insecto/app-php/controllers/SiteController.php -n 63
+[10] [Step Debug] WARN: Breakpoint file name does not exist: c:/EasyPHP-Devserver-17/eds-www/PHP/yii projects/insecto/app-php/controllers/SiteController.php (No such file or directory).
+[10] [Step Debug] -> <response xmlns="urn:debugger_protocol_v1" xmlns:xdebug="https://xdebug.org/dbgp/xdebug" command="breakpoint_set" transaction_id="10" id="100005" resolved="unresolved"></response>
+
+[10] [Step Debug] <- breakpoint_set -i 11 -t line -f file:///c:/EasyPHP-Devserver-17/eds-www/PHP/yii%20projects/insecto/app-php/controllers/SiteController.php -n 64
+[10] [Step Debug] WARN: Breakpoint file name does not exist: c:/EasyPHP-Devserver-17/eds-www/PHP/yii projects/insecto/app-php/controllers/SiteController.php (No such file or directory).
+[10] [Step Debug] -> <response xmlns="urn:debugger_protocol_v1" xmlns:xdebug="https://xdebug.org/dbgp/xdebug" command="breakpoint_set" transaction_id="11" id="100006" resolved="unresolved"></response>
+
+[10] [Step Debug] <- breakpoint_set -i 12 -t line -f file:///c:/EasyPHP-Devserver-17/eds-www/PHP/yii%20projects/insecto/app-php/controllers/SiteController.php -n 74
+[10] [Step Debug] WARN: Breakpoint file name does not exist: c:/EasyPHP-Devserver-17/eds-www/PHP/yii projects/insecto/app-php/controllers/SiteController.php (No such file or directory).
+[10] [Step Debug] -> <response xmlns="urn:debugger_protocol_v1" xmlns:xdebug="https://xdebug.org/dbgp/xdebug" command="breakpoint_set" transaction_id="12" id="100007" resolved="unresolved"></response>
+
+[10] [Step Debug] <- breakpoint_set -i 13 -t exception -x "Error"
+[10] [Step Debug] -> <response xmlns="urn:debugger_protocol_v1" xmlns:xdebug="https://xdebug.org/dbgp/xdebug" command="breakpoint_set" transaction_id="13" id="100008" resolved="resolved"></response>
+
+[10] [Step Debug] <- breakpoint_set -i 14 -t exception -x "Fatal error"
+[10] [Step Debug] -> <response xmlns="urn:debugger_protocol_v1" xmlns:xdebug="https://xdebug.org/dbgp/xdebug" command="breakpoint_set" transaction_id="14" id="100009" resolved="resolved"></response>
+
+[10] [Step Debug] <- breakpoint_set -i 15 -t exception -x "Parse error"
+[10] [Step Debug] -> <response xmlns="urn:debugger_protocol_v1" xmlns:xdebug="https://xdebug.org/dbgp/xdebug" command="breakpoint_set" transaction_id="15" id="100010" resolved="resolved"></response>
+
+[10] [Step Debug] <- breakpoint_set -i 16 -t exception -x "Unknown error"
+[10] [Step Debug] -> <response xmlns="urn:debugger_protocol_v1" xmlns:xdebug="https://xdebug.org/dbgp/xdebug" command="breakpoint_set" transaction_id="16" id="100011" resolved="resolved"></response>
+
+[10] [Step Debug] <- run -i 17
+[10] [Step Debug] -> <response xmlns="urn:debugger_protocol_v1" xmlns:xdebug="https://xdebug.org/dbgp/xdebug" command="run" transaction_id="17" status="stopping" reason="ok"></response>
+
+[10] Log closed at 2025-01-25 15:32:25.211558
+
+[16] Log opened at 2025-01-25 15:32:25.261061
+[16] [Config] WARN: Not setting up control socket with default value due to unavailable 'tsc' clock
+[16] [Step Debug] INFO: Checking for client discovery headers: 'HTTP_X_FORWARDED_FOR,REMOTE_ADDR'.
+[16] [Step Debug] INFO: Checking header 'HTTP_X_FORWARDED_FOR'.
+[16] [Step Debug] INFO: Checking header 'REMOTE_ADDR'.
+[16] [Step Debug] WARN: Could not discover client host through HTTP headers, connecting to configured address/port: host.docker.internal:9005.
+[16] [Step Debug] INFO: Connected to debugging client: host.docker.internal:9005 (fallback through xdebug.client_host/xdebug.client_port).
+[16] [Step Debug] -> <init xmlns="urn:debugger_protocol_v1" xmlns:xdebug="https://xdebug.org/dbgp/xdebug" fileuri="dbgp://stdin" language="PHP" xdebug:language_version="8.3.16" protocol_version="1.0" appid="16"><engine version="3.4.1"><![CDATA[Xdebug]]></engine><author><![CDATA[Derick Rethans]]></author><url><![CDATA[https://xdebug.org]]></url><copyright><![CDATA[Copyright (c) 2002-2025 by Derick Rethans]]></copyright></init>
+
+[16] [Step Debug] <- feature_set -i 1 -n max_children -v 100
+[16] [Step Debug] -> <response xmlns="urn:debugger_protocol_v1" xmlns:xdebug="https://xdebug.org/dbgp/xdebug" command="feature_set" transaction_id="1" feature="max_children" success="1"></response>
+
+[16] [Step Debug] <- feature_set -i 2 -n max_data -v 8192
+[16] [Step Debug] -> <response xmlns="urn:debugger_protocol_v1" xmlns:xdebug="https://xdebug.org/dbgp/xdebug" command="feature_set" transaction_id="2" feature="max_data" success="1"></response>
+
+[16] [Step Debug] <- feature_set -i 3 -n notify_ok -v 1
+[16] [Step Debug] -> <response xmlns="urn:debugger_protocol_v1" xmlns:xdebug="https://xdebug.org/dbgp/xdebug" command="feature_set" transaction_id="3" feature="notify_ok" success="1"></response>
+
+[16] [Step Debug] <- feature_set -i 4 -n resolved_breakpoints -v 1
+[16] [Step Debug] -> <response xmlns="urn:debugger_protocol_v1" xmlns:xdebug="https://xdebug.org/dbgp/xdebug" command="feature_set" transaction_id="4" feature="resolved_breakpoints" success="1"></response>
+
+[16] [Step Debug] <- feature_set -i 5 -n extended_properties -v 1
+[16] [Step Debug] -> <response xmlns="urn:debugger_protocol_v1" xmlns:xdebug="https://xdebug.org/dbgp/xdebug" command="feature_set" transaction_id="5" feature="extended_properties" success="1"></response>
+
+[16] [Step Debug] <- breakpoint_set -i 6 -t line -f file:///c:/EasyPHP-Devserver-17/eds-www/PHP/yii%20projects/insecto/app-php/web/index.php -n 3
+[16] [Step Debug] WARN: Breakpoint file name does not exist: c:/EasyPHP-Devserver-17/eds-www/PHP/yii projects/insecto/app-php/web/index.php (No such file or directory).
+[16] [Step Debug] -> <response xmlns="urn:debugger_protocol_v1" xmlns:xdebug="https://xdebug.org/dbgp/xdebug" command="breakpoint_set" transaction_id="6" id="160001" resolved="unresolved"></response>
+
+[16] [Step Debug] <- breakpoint_set -i 7 -t line -f file:///c:/EasyPHP-Devserver-17/eds-www/PHP/yii%20projects/insecto/app-php/web/index.php -n 13
+[16] [Step Debug] WARN: Breakpoint file name does not exist: c:/EasyPHP-Devserver-17/eds-www/PHP/yii projects/insecto/app-php/web/index.php (No such file or directory).
+[16] [Step Debug] -> <response xmlns="urn:debugger_protocol_v1" xmlns:xdebug="https://xdebug.org/dbgp/xdebug" command="breakpoint_set" transaction_id="7" id="160002" resolved="unresolved"></response>
+
+[16] [Step Debug] <- breakpoint_set -i 8 -t line -f file:///c:/EasyPHP-Devserver-17/eds-www/PHP/yii%20projects/insecto/app-php/web/index.php -n 14
+[16] [Step Debug] WARN: Breakpoint file name does not exist: c:/EasyPHP-Devserver-17/eds-www/PHP/yii projects/insecto/app-php/web/index.php (No such file or directory).
+[16] [Step Debug] -> <response xmlns="urn:debugger_protocol_v1" xmlns:xdebug="https://xdebug.org/dbgp/xdebug" command="breakpoint_set" transaction_id="8" id="160003" resolved="unresolved"></response>
+
+[16] [Step Debug] <- breakpoint_set -i 9 -t line -f file:///c:/EasyPHP-Devserver-17/eds-www/PHP/yii%20projects/insecto/app-php/views/layouts/main.php -n 13
+[16] [Step Debug] WARN: Breakpoint file name does not exist: c:/EasyPHP-Devserver-17/eds-www/PHP/yii projects/insecto/app-php/views/layouts/main.php (No such file or directory).
+[16] [Step Debug] -> <response xmlns="urn:debugger_protocol_v1" xmlns:xdebug="https://xdebug.org/dbgp/xdebug" command="breakpoint_set" transaction_id="9" id="160004" resolved="unresolved"></response>
+
+[16] [Step Debug] <- breakpoint_set -i 10 -t line -f file:///c:/EasyPHP-Devserver-17/eds-www/PHP/yii%20projects/insecto/app-php/controllers/SiteController.php -n 63
+[16] [Step Debug] WARN: Breakpoint file name does not exist: c:/EasyPHP-Devserver-17/eds-www/PHP/yii projects/insecto/app-php/controllers/SiteController.php (No such file or directory).
+[16] [Step Debug] -> <response xmlns="urn:debugger_protocol_v1" xmlns:xdebug="https://xdebug.org/dbgp/xdebug" command="breakpoint_set" transaction_id="10" id="160005" resolved="unresolved"></response>
+
+[16] [Step Debug] <- breakpoint_set -i 11 -t line -f file:///c:/EasyPHP-Devserver-17/eds-www/PHP/yii%20projects/insecto/app-php/controllers/SiteController.php -n 64
+[16] [Step Debug] WARN: Breakpoint file name does not exist: c:/EasyPHP-Devserver-17/eds-www/PHP/yii projects/insecto/app-php/controllers/SiteController.php (No such file or directory).
+[16] [Step Debug] -> <response xmlns="urn:debugger_protocol_v1" xmlns:xdebug="https://xdebug.org/dbgp/xdebug" command="breakpoint_set" transaction_id="11" id="160006" resolved="unresolved"></response>
+
+[16] [Step Debug] <- breakpoint_set -i 12 -t line -f file:///c:/EasyPHP-Devserver-17/eds-www/PHP/yii%20projects/insecto/app-php/controllers/SiteController.php -n 74
+[16] [Step Debug] WARN: Breakpoint file name does not exist: c:/EasyPHP-Devserver-17/eds-www/PHP/yii projects/insecto/app-php/controllers/SiteController.php (No such file or directory).
+[16] [Step Debug] -> <response xmlns="urn:debugger_protocol_v1" xmlns:xdebug="https://xdebug.org/dbgp/xdebug" command="breakpoint_set" transaction_id="12" id="160007" resolved="unresolved"></response>
+
+[16] [Step Debug] <- breakpoint_set -i 13 -t exception -x "Error"
+[16] [Step Debug] -> <response xmlns="urn:debugger_protocol_v1" xmlns:xdebug="https://xdebug.org/dbgp/xdebug" command="breakpoint_set" transaction_id="13" id="160008" resolved="resolved"></response>
+
+[16] [Step Debug] <- breakpoint_set -i 14 -t exception -x "Fatal error"
+[16] [Step Debug] -> <response xmlns="urn:debugger_protocol_v1" xmlns:xdebug="https://xdebug.org/dbgp/xdebug" command="breakpoint_set" transaction_id="14" id="160009" resolved="resolved"></response>
+
+[16] [Step Debug] <- breakpoint_set -i 15 -t exception -x "Parse error"
+[16] [Step Debug] -> <response xmlns="urn:debugger_protocol_v1" xmlns:xdebug="https://xdebug.org/dbgp/xdebug" command="breakpoint_set" transaction_id="15" id="160010" resolved="resolved"></response>
+
+[16] [Step Debug] <- breakpoint_set -i 16 -t exception -x "Unknown error"
+[16] [Step Debug] -> <response xmlns="urn:debugger_protocol_v1" xmlns:xdebug="https://xdebug.org/dbgp/xdebug" command="breakpoint_set" transaction_id="16" id="160011" resolved="resolved"></response>
+
+[16] [Step Debug] <- run -i 17
+[16] [Step Debug] -> <response xmlns="urn:debugger_protocol_v1" xmlns:xdebug="https://xdebug.org/dbgp/xdebug" command="run" transaction_id="17" status="stopping" reason="ok"></response>
+
+[16] Log closed at 2025-01-25 15:32:25.340124
+
