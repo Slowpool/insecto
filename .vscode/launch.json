@@ -11,7 +11,10 @@
             "name": "Listen for Xdebug 9005",
             "type": "php",
             "request": "launch",
-            "port": 9005
+            "port": 9005,
+            "pathMappings": {
+                "/app": "${workspaceRoot}/app-php"
+            }
         },
         {
             "name": "Listen for Xdebug 9003",

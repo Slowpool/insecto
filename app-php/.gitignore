@@ -35,4 +35,4 @@ tests/_support/_generated
 # environment variables
 .env
 
-# xdebug.log
+xdebug.log
