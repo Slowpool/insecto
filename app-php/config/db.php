@@ -13,4 +13,4 @@ return [
     //'schemaCache' => 'cache',
 ];
 
-// php yii migrate/create create_
+// php yii migrate/create create_goods_unit_table
