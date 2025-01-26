@@ -5,4 +5,3 @@ to deploy this app you should follow the next steps:
 4. (linux only) execute `chmod a+w -R .` to allow www-data to work with files
 5. execute `docker compose up -d` to raise services
 6. go to http://localhost:*APP_PORT from .env*/
-

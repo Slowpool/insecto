@@ -13,4 +13,7 @@ return [
     //'schemaCache' => 'cache',
 ];
 
-// php yii migrate/create create_goods_unit_table
+/*
+php yii migrate/create create_unit_of_goods_table --fields="measure_units_id:notNull::foreignKey()"
+
+*/
