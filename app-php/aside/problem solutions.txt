@@ -1,0 +1,12 @@
+problem:
+mysql -u root -p password -h mysql -P 3307
+ACCESS DENIED or another ERROR
+solution:
+1 raise server with rebuild removing mysql folder
+2 use -h localhost or -h 127.0.0.1
+3 use big -P for port (not -p)
+
+problem:
+new PDO fails with correct credentials, port and host
+solution:
+
