@@ -1,11 +1,12 @@
 services:
   php:
+    container_name: php-app
     environment:
       # db.php uses $_ENV for dsn (data source name).
       DB_HOST: ${DB_HOST}
       DB_NAME: ${DB_NAME}
       DB_PASSWORD: ${DB_PASSWORD}
-      DB_PORT: ${DB_PORT}
+      # DB_OUTER_PORT: ${DB_OUTER_PORT} # doesn't need it
       # TODO set 0 in production
       PHP_ENABLE_XDEBUG: 1
     depends_on:
@@ -19,12 +20,14 @@ services:
       - '${APP_PORT}:80'
 
   mysql:
+    container_name: mysql-db
     image: mysql:8.0
+    # image: mariadb:10.4.22
     volumes:
       - ../mysql:/var/lib/mysql:delegated
       # - ../mysql_etc:/etc:delegated
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: ${DB_NAME}
-    ports:
-      - '${DB_PORT}:3306'
+    # ports:
+    #   - '${DB_OUTER_PORT}:3306' # https://stackoverflow.com/questions/78803793/docker-compose-service-cannot-connect-to-other-services-in-docker-compose
