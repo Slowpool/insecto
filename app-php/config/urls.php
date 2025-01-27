@@ -8,4 +8,5 @@ return [
 
     '/contacts' => 'contacts/index',
 
+    '/insects/<category>' => 'search/index'
 ];

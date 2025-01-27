@@ -4,12 +4,13 @@ namespace app\controllers;
 
 use yii\helpers\Url;
 use yii\web\Controller;
+use app\models\domain\GoodsCategory;
 
-class ControllerWithCategories extends Controller {
+abstract class ControllerWithCategories extends Controller {
     public function beforeAction($action): bool {
         if(parent::beforeAction($action)) {
             $this->layout = 'layout_with_categories';
-            $this->view->params['categoriesModel'] = self::getCategories();
+            $this->view->params['categoriesModel'] = self::getGoodsCategories();
             return true;
         }
         return false;
@@ -24,8 +25,7 @@ class ControllerWithCategories extends Controller {
         unset($this->view->params['categoriesModel']);
     }
 
-    private static function getCategories(): array {
-        // TODO now a latch is here,
-        return ['Dragonflies' => Url::to('goods/dragonflies'), 'Spiders' => Url::to('goods/spiders')];
+    private static function getGoodsCategories(): array {
+        return GoodsCategory::getNames();
     }
 }

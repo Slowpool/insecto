@@ -53,4 +53,15 @@ class GoodsCategory extends \yii\db\ActiveRecord
     {
         return $this->hasMany(UnitOfGoods::class, ['category_id' => 'id']);
     }
+
+    public static function getNames(): array
+    {
+        return array_column(
+            self::find()
+                ->select(['name'])
+                ->asArray()
+                ->all(),
+            'name'
+        );
+    }
 }

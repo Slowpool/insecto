@@ -8,7 +8,8 @@
 <?php $this->beginContent('@layouts/main.php') ?>
 
 <div class="two-column">
-    <?= $this->render('//partial/categories_nav', ['categoriesModel' => $this->params['categoriesModel']]) ?>
+<!-- TODO I forgot why i made partial view here -->
+    <?= $this->render('//partial/categories_nav') ?>
     <div id="nested-main">
         <?= $content ?>
     </div>

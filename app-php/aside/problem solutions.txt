@@ -1,5 +1,6 @@
 problem:
 mysql -u root -p password -h mysql -P 3307
+can't connect on the host machine
 ACCESS DENIED or another ERROR
 solution:
 1 raise server with rebuild removing mysql folder
@@ -9,4 +10,5 @@ solution:
 problem:
 new PDO fails with correct credentials, port and host
 solution:
+'dsn' => 'mysql:host=mysql;port=3306;...' # host=mysql according to db service's name
 
