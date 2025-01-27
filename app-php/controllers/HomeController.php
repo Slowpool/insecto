@@ -18,7 +18,7 @@ class HomeController extends ControllerWithCategories
             'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [
-                    // 'logout' => ['post'],
+
                 ],
             ],
         ];
@@ -32,7 +32,7 @@ class HomeController extends ControllerWithCategories
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
-            ]
+            ],
         ];
     }
 
@@ -45,4 +45,10 @@ class HomeController extends ControllerWithCategories
     {
         return $this->render('index');
     }
+
+    // public function actionError(): string
+    // {
+    //     $this->setMainLayout();
+    //     return $this->render('//error');
+    // }
 }

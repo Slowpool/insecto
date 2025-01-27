@@ -19,7 +19,7 @@ class ControllerWithCategories extends Controller {
      * You can call it inside controller's method to use default layout.
      * @return void
      */
-    protected function setDefaultLayout(): void {
+    protected function setMainLayout(): void {
         $this->layout = 'main';
         unset($this->view->params['categoriesModel']);
     }

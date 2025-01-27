@@ -31,9 +31,7 @@ class ContactsController extends ControllerWithCategories
     public function actions()
     {
         return [
-            'error' => [
-                'class' => 'yii\web\ErrorAction',
-            ]
+            
         ];
     }
 
