@@ -11,9 +11,9 @@ class m250127_140324_dummy_data_adding extends Migration
     {
         $bracketedGoodsCategory = $this->db->quoteColumnName('goods_category');
         $bracketedUnitOfGoods = $this->db->quoteColumnName('unit_of_goods');
-        // TODO lack of table prefix for $bracketedGoodsCategory and $bracketedUnitOfGoods. the same thing in safeDown()
-        // TODO use ->insert()
+        // TODO it was a bad idea to add dummy via migration. in production you would have to cut it away, also cutting further updates in further migrations like add_is_alive_column where this dummy is also being updated.
         $this->execute(
+            // TODO lack of table prefix for $bracketedGoodsCategory and $bracketedUnitOfGoods (because i don't use it). the same thing in safeDown()
             "INSERT INTO $bracketedGoodsCategory
             VALUES (1, 'orthoptera'),
                 (2, 'dragonflies'),

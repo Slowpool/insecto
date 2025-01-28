@@ -7,5 +7,5 @@ to deploy this app you should follow the next steps:
 5. enter the app container via `docker exec -it php-app bash`
 6. execute `chmod a+w -R /app` to allow www-data to work with files
 7.  a) wait ~15 seconds.
-    b) execute `cd /app && php yii migrate` to you know. migrate db.
+    b) execute `php yii migrate` to you know. migrate db.
 8. go to http://localhost:port/ , where `port` is `APP_PORT` you specified in .env
