@@ -4,6 +4,7 @@ namespace app\models\domain;
 
 use app\models\search\SearchModel;
 use Yii;
+use yii\db\ActiveQuery;
 
 /**
  * This is the model class for table "unit_of_goods".
@@ -34,7 +35,7 @@ class UnitOfGoodsRecord extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name','atomic_item_measure', 'atomic_item_quantity', 'number_of_remaining', 'category_id'], 'required'],
+            [['name', 'atomic_item_measure', 'atomic_item_quantity', 'number_of_remaining', 'category_id'], 'required'],
             [['atomic_item_quantity', 'number_of_remaining', 'category_id', 'price'], 'integer'],
             [['name'], 'string', 'max' => 50],
             [['description'], 'string', 'max' => 255],
@@ -70,41 +71,51 @@ class UnitOfGoodsRecord extends \yii\db\ActiveRecord
         return $this->hasOne(GoodsCategoryRecord::class, ['id' => 'category_id']);
     }
 
-    public static function search(SearchModel $searchModel, $asArray = false) {
+    /**
+     * 
+     * @param \app\models\search\SearchModel $searchModel
+     * @param mixed $asArray
+     * @var yii\db\ActiveQuery $query
+     */
+    public static function search(SearchModel $searchModel, $asArray = true)
+    {
         $categoryIds = GoodsCategoryRecord::getIds($searchModel->categories);
-        $query = self::find();
+        $query = self::find()
+            // the simplest way to attach category. the second one is via join, which would allow to avoid category's id selecting, having decreased the size of data transported from db to app, but you know. JOIN takes time. it's not worth it in this case
+            ->with('category');
+
 
         // regulates `where` statement so that it would be correct, not like 'AND WHERE AND WHERE', but like 'WHERE' or 'WHERE AND WHERE'.
         // it could have been done in another way, but this one is the most simpler
         $currentWhere = 'where';
         if ($searchModel->searchText) {
-        // TODO is name correctly bracketed here? check it using sqlserver
+            // TODO is name correctly bracketed here? check it using sqlserver
             $query = $query->$currentWhere('name LIKE %:searchText%', [':searchText' => $searchModel->searchText]);
             $currentWhere = 'andWhere';
         }
 
-        if($categoryIds) { 
-            $query->$currentWhere(['category_id' => $categoryIds]);
+        if ($categoryIds) {
+            $query = $query->$currentWhere(['category_id' => $categoryIds]);
             $currentWhere = 'andWhere';
         }
 
-        if($searchModel->isAlive !== null) { 
-            $query->$currentWhere(['is_alive' => $searchModel->isAlive]);
+        if ($searchModel->isAlive !== null) {
+            $query = $query->$currentWhere(['is_alive' => $searchModel->isAlive]);
             $currentWhere = 'andWhere';
         }
 
-        if($searchModel->isAvailable !== null) { 
-            $query->$currentWhere('number_of_remaining > 0');
+        if ($searchModel->isAvailable !== null) {
+            $query = $query->$currentWhere('number_of_remaining > 0');
             $currentWhere = 'andWhere';
         }
 
-        if($searchModel->minPrice !== null) { 
-            $query->$currentWhere('price >= :minPrice', [':minPrice' => $searchModel->minPrice]);
+        if ($searchModel->minPrice !== null) {
+            $query = $query->$currentWhere('price >= :minPrice', [':minPrice' => $searchModel->minPrice]);
             $currentWhere = 'andWhere';
         }
 
-        if($searchModel->maxPrice !== null) { 
-            $query->$currentWhere('price <= :maxPrice', [':maxPrice' => $searchModel->maxPrice]);
+        if ($searchModel->maxPrice !== null) {
+            $query = $query->$currentWhere('price <= :maxPrice', [':maxPrice' => $searchModel->maxPrice]);
             $currentWhere = 'andWhere';
         }
 
