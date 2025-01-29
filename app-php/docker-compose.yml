@@ -6,7 +6,7 @@ services:
       DB_HOST: ${DB_HOST}
       DB_NAME: ${DB_NAME}
       DB_PASSWORD: ${DB_PASSWORD}
-      # DB_OUTER_PORT: ${DB_OUTER_PORT} # doesn't need it
+      # DB_OUTER_PORT: ${DB_OUTER_PORT} # app doesn't need it
       # TODO set 0 in production
       PHP_ENABLE_XDEBUG: ${PHP_ENABLE_XDEBUG}
     depends_on:

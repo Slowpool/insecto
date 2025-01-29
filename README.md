@@ -1,4 +1,3 @@
-(not tested)
 to deploy this app you should follow the next steps:
 1. go to app-php via `cd app-php`
 2. rename `.env.example` to `.env` (and change some values as desired)
