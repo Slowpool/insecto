@@ -4,7 +4,7 @@ namespace app\controllers;
 
 use yii\helpers\Url;
 use yii\web\Controller;
-use app\models\domain\GoodsCategory;
+use app\models\domain\GoodsCategoryRecord;
 
 abstract class ControllerWithCategories extends Controller {
     public function beforeAction($action): bool {
@@ -26,6 +26,6 @@ abstract class ControllerWithCategories extends Controller {
     }
 
     private static function getGoodsCategories(): array {
-        return GoodsCategory::getNames();
+        return GoodsCategoryRecord::getNames();
     }
 }

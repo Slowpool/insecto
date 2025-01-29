@@ -18,6 +18,7 @@ class HomeController extends ControllerWithCategories
             'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [
+                    // TODO fill
 
                 ],
             ],

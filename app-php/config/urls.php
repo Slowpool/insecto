@@ -8,5 +8,9 @@ return [
 
     '/contacts' => 'contacts/index',
 
-    '/insects/<category>' => 'search/index'
+    [
+        'pattern' => '/insects/<categories:.*>',
+        'route' => 'search/index',
+        'encodeParams' => false,
+    ]
 ];

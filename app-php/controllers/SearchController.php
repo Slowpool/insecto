@@ -2,10 +2,13 @@
 
 namespace app\controllers;
 
+use app\models\domain\UnitOfGoodsRecord;
+use app\models\search\SearchModel;
 use Yii;
 use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\ContactForm;
+use app\models\search\SearchPageModel;
 
 class SearchController extends ControllerWithCategories
 {
@@ -18,7 +21,7 @@ class SearchController extends ControllerWithCategories
             'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [
-                    // 'logout' => ['post'],
+                    // TODO fill
                 ],
             ],
         ];
@@ -41,6 +44,10 @@ class SearchController extends ControllerWithCategories
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $searchModel = new SearchModel;
+        $searchModel->load(Yii::$app->request->get());
+        $cardsWithGoods = UnitOfGoodsRecord::search($searchModel);
+        $searchPageModel = new SearchPageModel($searchModel, $cardsWithGoods);
+        return $this->render('index', compact('searchPageModel'));
     }
 }

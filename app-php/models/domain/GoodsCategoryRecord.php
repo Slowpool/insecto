@@ -10,9 +10,9 @@ use Yii;
  * @property int $id
  * @property string $name
  *
- * @property UnitOfGoods[] $unitOfGoods
+ * @property UnitOfGoodsRecord[] $unitOfGoods
  */
-class GoodsCategory extends \yii\db\ActiveRecord
+class GoodsCategoryRecord extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -51,7 +51,7 @@ class GoodsCategory extends \yii\db\ActiveRecord
      */
     public function getUnitOfGoods()
     {
-        return $this->hasMany(UnitOfGoods::class, ['category_id' => 'id']);
+        return $this->hasMany(UnitOfGoodsRecord::class, ['category_id' => 'id']);
     }
 
     public static function getNames(): array
@@ -62,6 +62,25 @@ class GoodsCategory extends \yii\db\ActiveRecord
                 ->asArray()
                 ->all(),
             'name'
+        );
+    }
+
+    public static function exists(string $name)
+    {
+        return self::find()
+            ->where(['name' => ':name'], [':name' => $name])
+            ->exists();
+    }
+
+    public static function getIds(array $categories): array
+    {
+        return array_column(
+            self::find()
+                ->select(['id'])
+                ->where(['name' => $categories])
+                ->asArray()
+                ->all(),
+            'id'
         );
     }
 }
