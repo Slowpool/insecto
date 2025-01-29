@@ -10,7 +10,8 @@ services:
       # TODO set 0 in production
       PHP_ENABLE_XDEBUG: ${PHP_ENABLE_XDEBUG}
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
     build: .
     volumes:
       # TODO what the point if this folder is empty
@@ -29,5 +30,20 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: ${DB_NAME}
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u root --password=$$MYSQL_ROOT_PASSWORD
+      interval: 5s
+      retries: 10
     # ports:
     #   - '${DB_OUTER_PORT}:3306' # https://stackoverflow.com/questions/78803793/docker-compose-service-cannot-connect-to-other-services-in-docker-compose
+
+# open localhost:8080 and see it (db auth needed)
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:5
+    ports:
+      - '8080:80'
+    environment:
+      PMA_HOST: ${DB_HOST}
+    depends_on:
+      mysql:
+        condition: service_healthy
