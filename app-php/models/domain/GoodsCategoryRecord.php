@@ -65,10 +65,10 @@ class GoodsCategoryRecord extends \yii\db\ActiveRecord
         );
     }
 
-    public static function exists(string $name)
+    public static function exists(string $name): bool
     {
         return self::find()
-            ->where(['name' => ':name'], [':name' => $name])
+            ->where(['name' => $name])
             ->exists();
     }
 

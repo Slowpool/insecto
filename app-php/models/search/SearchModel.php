@@ -45,9 +45,9 @@ class SearchModel extends Model
         ];
     }
 
-    public function validateCategories($categories, $params)
+    public function validateCategories($attribute, $params)
     {
-        foreach ($categories as $category) {
+        foreach ($this->categories as $category) {
             // TODO error
             if (!GoodsCategoryRecord::exists($category)) {
                 return false;
