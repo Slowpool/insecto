@@ -8,6 +8,10 @@ use yii\base\Model;
 class SearchModel extends Model
 {
     public ?string $searchText = null;
+    /**
+     * `'category name' => checked` (boolean value)
+     * @var 
+     */
     public ?array $categories = null;
     public ?bool $isAlive = null;
     public ?bool $isAvailable = null;

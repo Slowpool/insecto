@@ -14,8 +14,14 @@ $this->registerLinkTag(['rel' => 'canonical', 'href' => Url::to('/insects', true
 
 $searchModel = $searchPageModel->searchModel;
 
+// sorting of ['cats' => true, 'dogs' => false, 'chickens' => false]
+// in the following way:
+// categoryItems = ['cats' => 'cats', 'dogs' => 'dogs', 'chickens' => 'chickens']
+// checkedCategories = ['cats']
 $categoryNames = array_keys($searchModel->categories);
 $categoryItems = array_combine($categoryNames, $categoryNames);
+$checkedCategories = array_keys($searchModel->categories, true);
+$searchModel->categories = $checkedCategories;
 
 // simplifying access to category name. just to simplify the code in further
 foreach ($searchPageModel->cardsWithGoods as &$card) {
