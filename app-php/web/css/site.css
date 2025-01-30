@@ -25,3 +25,7 @@ div.two-column {
 #nested-main {
     margin-left: 20px;
 }
+
+.search-categories {
+    border: 2px black solid;
+}

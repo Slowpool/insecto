@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\domain\GoodsCategoryRecord;
 use app\models\domain\UnitOfGoodsRecord;
 use app\models\search\SearchModel;
 use Yii;
@@ -33,7 +34,7 @@ class SearchController extends ControllerWithCategories
     public function actions()
     {
         return [
-            
+
         ];
     }
 
@@ -45,12 +46,18 @@ class SearchController extends ControllerWithCategories
     public function actionIndex()
     {
         $searchModel = new SearchModel;
-        $searchModel->load(Yii::$app->request->get());
-        $cardsWithGoods = UnitOfGoodsRecord::search($searchModel);
-        foreach($cardsWithGoods as $card) {
-            $temp = $card['category']['name'];
-            // TODO it looks like $card is treated as a value type here
-            $card['category'] = $temp;
+        if ($searchModel->load(Yii::$app->request->get()) && $searchModel->validate()) {
+            $allCategories = GoodsCategoryRecord::getNames();
+            // at this moment $searchModel has only the categories, provided in url as a route parameters (they have been read via SearchModel->load() and their values have been set to true)
+            foreach ($allCategories as $category) {
+                if (!isset($searchModel->categories[$category])) {
+                    $searchModel->categories[$category] = false;
+                }
+            }
+
+            $cardsWithGoods = UnitOfGoodsRecord::search($searchModel);
+        } else {
+            $cardsWithGoods = [];
         }
         $searchPageModel = new SearchPageModel($searchModel, $cardsWithGoods);
         return $this->render('index', compact('searchPageModel'));
