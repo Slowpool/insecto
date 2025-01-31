@@ -1,9 +1,10 @@
 <?php
 
+use AutoMapperPlus\AutoMapper;
 
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
-$autoMapperConfig = require __DIR__ . '/auto_mapper_config.php';
+$autoMapperConfig = require __DIR__ . '/automapper.php';
 
 $config = [
     'id' => 'basic',
@@ -47,6 +48,7 @@ $config = [
             'showScriptName' => false,
             'rules' => require 'urls.php',
         ],
+        // SPECIAL ATTENTION. is it correct?
         'automapper' => [
             'class' => AutoMapper::class,
             '__construct()' => [$autoMapperConfig],
