@@ -84,13 +84,21 @@ class UnitOfGoodsRecord extends \yii\db\ActiveRecord
             // the simplest way to attach category. the second one is via join, which would allow to avoid category's id selecting, having decreased the size of data transported from db to app, but you know. JOIN takes time. it's not worth it in this case
             ->with('category');
 
-
-        // regulates `where` statement so that it would be correct, not like 'AND WHERE AND WHERE', but like 'WHERE' or 'WHERE AND WHERE'.
+        // regulating `where` statement so that it would be correct, not like 'AND WHERE AND WHERE', but like 'WHERE' or 'WHERE AND WHERE'.
         // it could have been done in another way, but this one is the most simpler
+        // TODO upd: can be done this way:
+        // $query->where([
+        //     'status' => 10,
+        //     'type' => null,
+        //     'id' => [4, 8, 15],
+        // ]);
         $currentWhere = 'where';
         if ($searchModel->searchText) {
-            // TODO is name correctly bracketed here? check it using sqlserver
-            $query = $query->$currentWhere('name LIKE %:searchText%', [':searchText' => $searchModel->searchText]);
+            $query = $query->where(
+                ['like', 'name', $searchModel->searchText],
+                // docs quote `Using the Hash Format, Yii internally applies parameter binding for values, so in contrast to the string format, here you do not have to add parameters manually.`
+                // [':searchText' => $searchModel->searchText]
+            );
             $currentWhere = 'andWhere';
         }
 
@@ -105,17 +113,17 @@ class UnitOfGoodsRecord extends \yii\db\ActiveRecord
         }
 
         if ($searchModel->isAvailable !== null) {
-            $query = $query->$currentWhere('number_of_remaining > 0');
+            $query = $query->$currentWhere(['>', 'number_of_remaining', 0]);
             $currentWhere = 'andWhere';
         }
 
         if ($searchModel->minPrice !== null) {
-            $query = $query->$currentWhere('price >= :minPrice', [':minPrice' => $searchModel->minPrice]);
+            $query = $query->$currentWhere(['>=', 'price', $searchModel->minPrice]);
             $currentWhere = 'andWhere';
         }
 
         if ($searchModel->maxPrice !== null) {
-            $query = $query->$currentWhere('price <= :maxPrice', [':maxPrice' => $searchModel->maxPrice]);
+            $query = $query->$currentWhere(['<=', 'price', $searchModel->maxPrice]);
             $currentWhere = 'andWhere';
         }
 

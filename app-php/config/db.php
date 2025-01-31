@@ -1,23 +1,19 @@
 <?php
 
-// use yii\db\mssql\PDO;
+// `php yii migrate` entrypoint is not a index.php file, so require consts again.
+// TODO i'm not sure 
+// require_once __DIR__ . '/consts.php';
+// upd: YAGNI moment?
 
-// $dsn = "mysql:host=127.0.0.1;port=3307;dbname=insecto";
-// $user = "root";
-// $pass = "gg";
-
-// try {
-//     $pdo = new PDO($dsn, $user, $pass);
-//     echo "Connected successfully";
-// } catch (PDOException $e) {
-//     echo "Connection failed: " . $e->getMessage();
-// }
+$host = $_ENV['DB_HOST'];
+$dbName = $_ENV['DB_NAME'];
+$dbPassword = $_ENV['DB_PASSWORD'];
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => "mysql:host={$_ENV['DB_HOST']};port=3306;dbname={$_ENV['DB_NAME']}",
+    'dsn' => "mysql:host=$host;port=3306;dbname=$dbName",
     'username' => 'root',
-    'password' => $_ENV['DB_PASSWORD'],
+    'password' => $dbPassword,
     'charset' => 'utf8',
 
     // Schema cache options (for production environment)

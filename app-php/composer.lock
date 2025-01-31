@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bd062d1603dec268706baa565354bc90",
+    "content-hash": "b2005129daf6f82151895a53037155c4",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -429,6 +429,58 @@
                 }
             ],
             "time": "2024-07-20T21:45:45+00:00"
+        },
+        {
+            "name": "mark-gerarts/auto-mapper-plus",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mark-gerarts/automapper-plus.git",
+                "reference": "699cb7b277983a916bb5648b09b8dd7b6a22a8df"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mark-gerarts/automapper-plus/zipball/699cb7b277983a916bb5648b09b8dd7b6a22a8df",
+                "reference": "699cb7b277983a916bb5648b09b8dd7b6a22a8df",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.4.0"
+            },
+            "require-dev": {
+                "mark-gerarts/phpstan-automapper-plus": "^0.1.0",
+                "phpunit/phpunit": "^7.0|^8.0",
+                "symfony/debug": "^3.3",
+                "symfony/var-dumper": "^3.3"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "AutoMapperPlus\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mark Gerarts",
+                    "email": "mark.gerarts@gmail.com"
+                }
+            ],
+            "description": "An AutoMapper for PHP",
+            "keywords": [
+                "automapper",
+                "converter",
+                "object-to-object"
+            ],
+            "support": {
+                "issues": "https://github.com/mark-gerarts/automapper-plus/issues",
+                "source": "https://github.com/mark-gerarts/automapper-plus/tree/master"
+            },
+            "time": "2024-11-25T08:19:46+00:00"
         },
         {
             "name": "phpoption/phpoption",
@@ -5761,6 +5813,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
+        "mark-gerarts/auto-mapper-plus": 20,
         "vlucas/phpdotenv": 20
     },
     "prefer-stable": false,

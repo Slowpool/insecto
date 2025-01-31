@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\domain\GoodsCategoryRecord;
 use app\models\domain\UnitOfGoodsRecord;
+use app\models\search\ItemCardModel;
 use app\models\search\SearchModel;
 use Yii;
 use yii\web\Response;
@@ -22,7 +23,7 @@ class SearchController extends ControllerWithCategories
             'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [
-                    // TODO fill
+                    'index' => ['get'],
                 ],
             ],
         ];
@@ -45,8 +46,10 @@ class SearchController extends ControllerWithCategories
      */
     public function actionIndex()
     {
+        // this action is requested via GET method => needn't csrf
+        $this->enableCsrfValidation = false;
         $searchModel = new SearchModel;
-        if ($searchModel->load(Yii::$app->request->get()) && $searchModel->validate()) {
+        if ($searchModel->load(Yii::$app->request->get(), '') && $searchModel->validate()) {
             $allCategories = GoodsCategoryRecord::getNames();
             // at this moment $searchModel has only the categories, provided in url as a route parameters (they have been read via SearchModel->load() and their values have been set to true)
             foreach ($allCategories as $category) {
@@ -55,11 +58,12 @@ class SearchController extends ControllerWithCategories
                 }
             }
 
-            $cardsWithGoods = UnitOfGoodsRecord::search($searchModel);
+            // TODO test it with asArray
+            $itemCardModels = Yii::$app->automapper->mapMultiple(UnitOfGoodsRecord::search($searchModel, false), ItemCardModel::class);
         } else {
-            $cardsWithGoods = [];
+            $itemCardModels = [];
         }
-        $searchPageModel = new SearchPageModel($searchModel, $cardsWithGoods);
+        $searchPageModel = new SearchPageModel($searchModel, $itemCardModels);
         return $this->render('index', compact('searchPageModel'));
     }
 }

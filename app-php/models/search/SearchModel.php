@@ -9,7 +9,7 @@ class SearchModel extends Model
 {
     public ?string $searchText = null;
     /**
-     * `'category name' => checked` (boolean value)
+     * array of pairs like `'category name' => checked` (boolean value)
      * @var 
      */
     public ?array $categories = null;
@@ -20,15 +20,34 @@ class SearchModel extends Model
     public function rules()
     {
         return [
+            [['searchText', 'categories', 'isAlive', 'isAvailable', 'minPrice', 'maxPrice'], 'safe'],
             [
                 ['minPrice'],
                 'compare',
                 'compareAttribute' => 'maxPrice',
                 'operator' => '<=',
-                'when' => function ($minPrice) {
-                    return $minPrice !== null;
+                'when' => function ($model): bool {
+                    return $model->maxPrice !== null;
                 },
-                'message' => 'Minimal price must be lower than or equal to maximum price.'
+                'whenClient' => "function() {
+                    var maxPrice = document.getElementById('maxprice');
+                    return maxPrice.value != '';
+                }",
+                'message' => 'Minimum price must be lower than or equal to maximum price.'
+            ],
+            [
+                ['maxPrice'],
+                'compare',
+                'compareAttribute' => 'minPrice',
+                'operator' => '>=',
+                'when' => function ($model): bool {
+                    return $model->minPrice !== null;
+                },
+                'whenClient' => "function() {
+                    var minPrice = document.getElementById('minprice');
+                    return minPrice.value != '';
+                }",
+                'message' => 'Maximum price must be greater than or equal to minimum price.'
             ],
             [
                 ['minPrice', 'maxPrice'],
@@ -49,15 +68,25 @@ class SearchModel extends Model
         ];
     }
 
+    public function formName()
+    {
+        return '';
+    }
+
     public function validateCategories($attribute, $params)
     {
-        foreach ($this->categories as $category) {
+        foreach ($this->categories as $categoryName => $checked) {
             // TODO error
-            if (!GoodsCategoryRecord::exists($category)) {
+            if (!GoodsCategoryRecord::exists($categoryName)) {
                 return false;
             }
         }
         return true;
+    }
+
+    public function beforeLoad()
+    {
+
     }
 
     /**
@@ -68,7 +97,7 @@ class SearchModel extends Model
      * @return bool
      */
     public function load($data, $formName = null): bool
-    { 
+    {
         if (isset($data['categories'])) {
             $this->categories = array_fill_keys(explode('/', $data['categories']), true);
             unset($data['categories']);
@@ -77,15 +106,4 @@ class SearchModel extends Model
         // i'm not sure it's correct to always return true, but actually this model's properties are optional and even when all properties are null, the model is valid. 
         return true;
     }
-
-
-    // public function setDefaultValues()
-    // {
-    //     $this->searchText = '';
-    //     $this->categories = [];
-    //     $this->isAlive = false;
-    //     $this->isAvailable = false;
-    //     $this->minPrice = 0;
-    //     $this->maxPrice = PHP_INT_MAX;
-    // }
 }

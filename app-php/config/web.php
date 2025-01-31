@@ -1,7 +1,9 @@
 <?php
 
+
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
+$autoMapperConfig = require __DIR__ . '/auto_mapper_config.php';
 
 $config = [
     'id' => 'basic',
@@ -43,7 +45,11 @@ $config = [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'rules' => require 'urls.php'
+            'rules' => require 'urls.php',
+        ],
+        'automapper' => [
+            'class' => AutoMapper::class,
+            '__construct()' => [$autoMapperConfig],
         ],
     ],
     'params' => $params,
