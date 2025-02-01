@@ -40,13 +40,19 @@ if ($cardsWithGoods) {
 
 <div id="search-page">
     <search id="insects-search">
-        <?php $searchForm = ActiveForm::begin(['id' => 'search-form', 'method' => 'get']) ?>
+        <?php $searchForm = ActiveForm::begin([
+            'id' => 'search-form',
+            'method' => 'get',
+            'action' => '/insects' . ($searchModel->categories
+                ? '/' . implode('/', $searchModel->categories)
+                : '')
+        ]) ?>
         <?= $searchForm->field($searchModel, 'searchText')->textInput(['placeholder' => 'Search...']) ?>
         <section class="search-categories">
-            <?= $searchForm->field($searchModel, 'categories')->checkboxList($categoryItems, ['itemOptions' => ['class' => 'form-check-input search-category-checkbox']]) ?>
+            <?= $searchForm->field($searchModel, 'categories')->checkboxList($categoryItems, ['itemOptions' => ['class' => 'form-check-input search-category-checkbox']])->label('Categories (when no one is selected = everyone is selected)') ?>
         </section>
-        <?= $searchForm->field($searchModel, 'isAlive')->checkbox(['uncheck' => null])->label('Is alive') ?>
-        <?= $searchForm->field($searchModel, 'isAvailable')->checkbox(['uncheck' => null])->label('Is available') ?>
+        <?= $searchForm->field($searchModel, 'isAlive')->checkbox(/*['uncheck' => null]*/)->label('Is alive') ?>
+        <?= $searchForm->field($searchModel, 'isAvailable')->checkbox(/*['uncheck' => null]*/)->label('Is available') ?>
         <section class="search-price-limits">
             <?= $searchForm->field($searchModel, 'minPrice')->textInput(['type' => 'number', 'placeholder' => '0', 'min' => '0', 'max' => strval(PHP_INT_MAX)])->label('Minimum price') ?>
             <?= $searchForm->field($searchModel, 'maxPrice')->textInput(['type' => 'number', 'placeholder' => strval(PHP_INT_MAX), 'min' => '0', 'max' => strval(PHP_INT_MAX)])->label('Maximum price') ?>
@@ -55,7 +61,7 @@ if ($cardsWithGoods) {
         <?php ActiveForm::end() ?>
     </search>
     <section id="results-of-search">
-        <h3>Results of search</h3>
+        <h3>Results of search (<?= count($cardsWithGoods) ?>)</h3>
         <?php if ($cardsWithGoods): ?>
             <ul id="results-list">
                 <?php foreach ($cardsWithGoods as $itemCard): ?>

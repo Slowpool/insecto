@@ -24,3 +24,4 @@ adds hidden input to form as a direct child like here:
     <input type="hidden" name="gg" value="1937">
     </form>
 solution:
+https://www.yiiframework.com/wiki/668/form-with-get-method-causes-repeated-stacking-of-url-parameters
