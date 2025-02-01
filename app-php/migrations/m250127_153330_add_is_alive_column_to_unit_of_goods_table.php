@@ -15,14 +15,8 @@ class m250127_153330_add_is_alive_column_to_unit_of_goods_table extends Migratio
         $this->addColumn(
             '{{%unit_of_goods}}',
             'is_alive',
-            $this->boolean()->notNull()->defaultValue(false)
+            $this->boolean()->notNull(),
         );
-        // TODO cut in production
-        $this->update('unit_of_goods', ['is_alive' => true], ['name' => 'Danaida monarch']);
-        $this->update('unit_of_goods', ['is_alive' => true], ['name' => 'Firefly']);
-        $this->update('unit_of_goods', ['is_alive' => true], ['name' => 'Goliath Birdeater']);
-        $this->update('unit_of_goods', ['is_alive' => true], ['name' => 'Heteropteryx dilatata']);
-        $this->update('unit_of_goods', ['is_alive' => true], ['name' => 'Master Mantis']);
     }
 
     /**

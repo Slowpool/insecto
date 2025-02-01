@@ -12,5 +12,7 @@ return [
         'pattern' => '/insects/<categories:.*>',
         'route' => 'search/index',
         'encodeParams' => false,
-    ]
+    ],
+
+    '/insects' => 'search/index',
 ];

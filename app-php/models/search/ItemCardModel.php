@@ -6,6 +6,7 @@ class ItemCardModel {
     public string $name;
     public int $price;
     public string $briefDescription;
-    public int $atomic_item_quantity;
-    public string $atomic_item_measure;
+    public int $atomicItemQuantity;
+    public string $atomicItemMeasure;
+    public string $category;
 }

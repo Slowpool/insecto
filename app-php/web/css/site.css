@@ -2,6 +2,7 @@ main {
     padding-top: 70px;
     padding-inline: 0px;
     height: 100%;
+    overflow: auto;
 }
 
 main,
@@ -54,9 +55,16 @@ search,
 .item-card {
     width: 250px;
     height: 300px;
+    margin: 15px;
 }
 
 .item-card-picture {
     width: 80%;
     height: 80%;
+}
+
+#results-list {
+    list-style-type: none;
+    flex-wrap: wrap;
+    display: flex;
 }

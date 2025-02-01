@@ -12,3 +12,15 @@ new PDO fails with correct credentials, port and host
 solution:
 'dsn' => 'mysql:host=mysql;port=3306;...' # host=mysql according to db service's name
 
+problem:
+all <head> internal tags are being inserted into the body of html page
+solution:
+some tag was not closed. (in my case ActiveForm tag)
+
+problem:
+http://localhost:8000/insects/any_value=1937
+adds hidden input to form as a direct child like here:
+<form id="search-form" action="/insects" method="get">
+    <input type="hidden" name="gg" value="1937">
+    </form>
+solution:

@@ -35,7 +35,8 @@ class UnitOfGoodsRecord extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'atomic_item_measure', 'atomic_item_quantity', 'number_of_remaining', 'category_id'], 'required'],
+            [['id', 'name', 'description', 'atomic_item_measure', 'atomic_item_quantity', 'number_of_remaining', 'category_id', 'is_alive', 'price'], 'safe'],
+            [['name', 'atomic_item_measure', 'atomic_item_quantity', 'number_of_remaining', 'category_id', 'is_alive'], 'required'],
             [['atomic_item_quantity', 'number_of_remaining', 'category_id', 'price'], 'integer'],
             [['name'], 'string', 'max' => 50],
             [['description'], 'string', 'max' => 255],
@@ -79,7 +80,7 @@ class UnitOfGoodsRecord extends \yii\db\ActiveRecord
      */
     public static function search(SearchModel $searchModel, $asArray = true)
     {
-        $categoryIds = GoodsCategoryRecord::getIds($searchModel->categories);
+        $categoryIds = GoodsCategoryRecord::getIds(array_keys(array_filter($searchModel->categories)));
         $query = self::find()
             // the simplest way to attach category. the second one is via join, which would allow to avoid category's id selecting, having decreased the size of data transported from db to app, but you know. JOIN takes time. it's not worth it in this case
             ->with('category');
