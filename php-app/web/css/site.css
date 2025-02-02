@@ -5,6 +5,11 @@ main {
     overflow: auto;
 }
 
+#footer {
+    padding-inline: 20px;
+    border-top: 2px black solid;
+}
+
 main,
 div.container,
 div.two-column,
@@ -28,6 +33,10 @@ div.two-column {
 #categories-nav {
     border: black solid 3px;
     width: 250px;
+    height: 100%;
+}
+
+#categories-nav-list {
     height: 100%;
 }
 
@@ -75,5 +84,4 @@ search,
 
 .contact-item {
     display: inline;
-    
 }

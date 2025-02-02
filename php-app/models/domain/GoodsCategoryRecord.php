@@ -3,6 +3,7 @@
 namespace app\models\domain;
 
 use Yii;
+use yii\behaviors\SluggableBehavior;
 
 /**
  * This is the model class for table "goods_category".
@@ -29,7 +30,17 @@ class GoodsCategoryRecord extends \yii\db\ActiveRecord
     {
         return [
             [['name'], 'required'],
-            [['name'], 'string', 'max' => 50],
+            [['name', 'slug'], 'string', 'max' => 50],
+        ];
+    }
+
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => SluggableBehavior::class,
+                'attribute' => 'name',
+            ]
         ];
     }
 

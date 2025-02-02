@@ -7,7 +7,7 @@
             "request": "launch",
             "port": 9005,
             "pathMappings": {
-                "/app": "${workspaceRoot}/app-php"
+                "/app": "${workspaceRoot}/php-app"
             }
         },
         {

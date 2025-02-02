@@ -4,6 +4,7 @@ namespace app\models\domain;
 
 use app\models\search\SearchModel;
 use Yii;
+use yii\behaviors\SluggableBehavior;
 use yii\db\ActiveQuery;
 
 /**
@@ -11,6 +12,7 @@ use yii\db\ActiveQuery;
  *
  * @property int $id
  * @property string $name
+ * @property string $slug
  * @property string|null $description
  * @property string $atomic_item_measure g - gramm, u - unit
  * @property int $atomic_item_quantity e.g. 200. when atomic_item_measure is 'g' this would mean that one goods unit weighs 200gramm. 200-gramms-of-mosquitoes box = atomic goods item for sale
@@ -38,7 +40,7 @@ class UnitOfGoodsRecord extends \yii\db\ActiveRecord
             [['id', 'name', 'description', 'atomic_item_measure', 'atomic_item_quantity', 'number_of_remaining', 'category_id', 'is_alive', 'price'], 'safe'],
             [['name', 'atomic_item_measure', 'atomic_item_quantity', 'number_of_remaining', 'category_id', 'is_alive'], 'required'],
             [['atomic_item_quantity', 'number_of_remaining', 'category_id', 'price'], 'integer'],
-            [['name'], 'string', 'max' => 50],
+            [['name', 'slug'], 'string', 'max' => 50],
             [['description'], 'string', 'max' => 255],
             [['atomic_item_measure'], 'string', 'max' => 1],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => GoodsCategoryRecord::class, 'targetAttribute' => ['category_id' => 'id']],
@@ -55,10 +57,20 @@ class UnitOfGoodsRecord extends \yii\db\ActiveRecord
             'id' => 'ID',
             'name' => 'Name',
             'description' => 'Description',
-            'atomic_item_measure' => 'Atomic Item Measure',
-            'atomic_item_quantity' => 'Atomic Item Quantity',
-            'number_of_remaining' => 'Number Of Remaining',
+            'atomic_item_measure' => 'Atomic item measure',
+            'atomic_item_quantity' => 'Atomic item quantity',
+            'number_of_remaining' => 'Number of remaining',
             'category_id' => 'Category ID',
+        ];
+    }
+
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => SluggableBehavior::class,
+                'attribute' => 'name',
+            ]
         ];
     }
 

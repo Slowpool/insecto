@@ -1,6 +1,6 @@
 (not tested)
 to deploy this app you should follow the next steps:
-1. go to app-php via `cd app-php`
+1. go to php-app via `cd php-app`
 2. rename `.env.example` to `.env` (and change some values as desired)
 3. execute `composer update` to install dependencies (make sure dependencies are installed successfully. it's possible that you don't have required php installed on your host and you might get composer errors)
 4. execute `docker compose up -d` to raise services

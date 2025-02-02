@@ -38,9 +38,11 @@ if ($cardsWithGoods) {
 
 ?>
 
-<?= Html::encode($this->title) ?>
 
 <div id="search-page">
+    <h3>
+        <?= Html::encode($this->title) ?>
+    </h3>
     <search id="insects-search">
         <?php $searchForm = ActiveForm::begin([
             'id' => 'search-form',
@@ -72,7 +74,7 @@ if ($cardsWithGoods) {
                         <img class="item-card-picture" src="/ladybug.jpg" alt="the picture of <?= $itemCard->name ?>">
                         <div>
                             <strong>
-                                <?= $itemCard->name ?>
+                                <?= Html::a($itemCard->name, "/insects/$itemCard->category/$itemCard->name") ?>
                             </strong>
                             <br>
                             <?= $itemCard->briefDescription ?>
@@ -84,8 +86,10 @@ if ($cardsWithGoods) {
                     </li>
                 <?php endforeach; ?>
             </ul>
+
         <?php else: ?>
             Goods with such a parameters are not found.
+
         <?php endif ?>
     </section>
 </div>

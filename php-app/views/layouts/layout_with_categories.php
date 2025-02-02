@@ -13,7 +13,7 @@ use yii\helpers\Url;
 <div class="two-column">
     <nav id="categories-nav">
         <h4>Categories of insects</h4>
-        <ul>
+        <ul id="categories-nav-list">
             <?php foreach ($this->params['categoriesModel'] as $categoryName): ?>
                 <li>
                     <?= Html::a(Html::encode($categoryName), Url::to('/insects/' . Html::encode($categoryName))) ?>
