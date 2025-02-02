@@ -10,6 +10,7 @@ use yii\behaviors\SluggableBehavior;
  *
  * @property int $id
  * @property string $name
+ * @property string $slug
  *
  * @property UnitOfGoodsRecord[] $unitOfGoods
  */

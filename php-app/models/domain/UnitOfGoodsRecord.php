@@ -11,8 +11,8 @@ use yii\db\ActiveQuery;
  * This is the model class for table "unit_of_goods".
  *
  * @property int $id
- * @property string $name
- * @property string $slug
+ * @property string $name is not unique. Explanation: e.g. different providers can sell goods with the same name (several goods items with name Firefly seem not just pretty possible, but quite possible), or even one provider. In other words, the subject area doesn't imply unique goods names.
+ * @property string $slug is not unique, according to $name.   
  * @property string|null $description
  * @property string $atomic_item_measure g - gramm, u - unit
  * @property int $atomic_item_quantity e.g. 200. when atomic_item_measure is 'g' this would mean that one goods unit weighs 200gramm. 200-gramms-of-mosquitoes box = atomic goods item for sale
@@ -94,7 +94,7 @@ class UnitOfGoodsRecord extends \yii\db\ActiveRecord
     {
         $categoryIds = GoodsCategoryRecord::getIds(array_keys(array_filter($searchModel->categories)));
         $query = self::find()
-            // the simplest way to attach category. the second one is via join, which would allow to avoid category's id selecting, having decreased the size of data transported from db to app, but you know. JOIN takes time. it's not worth it in this case
+            // the simplest way to attach category. the second one is via join, which would allow to avoid overheaded category's id selecting, having decreased the size of data transported from db to app, but, you know. JOIN takes time. it's not worth it in this case
             ->with('category');
 
         // regulating `where` statement so that it would be correct, not like 'AND WHERE AND WHERE', but like 'WHERE' or 'WHERE AND WHERE'.
@@ -144,5 +144,9 @@ class UnitOfGoodsRecord extends \yii\db\ActiveRecord
             $query = $query->asArray();
         }
         return $query->all();
+    }
+
+    public static function searchOne(string $categorySlug, string $goodsSlug, int $goodsId) {
+        // TODO should i use $categorySlug $goodsSlug here at all? maybe use them just for human-readable url? or not?
     }
 }

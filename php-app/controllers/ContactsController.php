@@ -9,7 +9,7 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\ContactForm;
 
-class ContactsController extends ControllerWithCategories
+class ContactsController extends BaseControllerWithCategories
 {
     /**
      * {@inheritdoc}

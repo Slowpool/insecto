@@ -74,7 +74,7 @@ if ($cardsWithGoods) {
                         <img class="item-card-picture" src="/ladybug.jpg" alt="the picture of <?= $itemCard->name ?>">
                         <div>
                             <strong>
-                                <?= Html::a($itemCard->name, "/insects/$itemCard->category/$itemCard->name") ?>
+                                <?= Html::a($itemCard->name, "/insect/$itemCard->categorySlug/$itemCard->name/$itemCard->id") ?>
                             </strong>
                             <br>
                             <?= $itemCard->briefDescription ?>
@@ -88,7 +88,9 @@ if ($cardsWithGoods) {
             </ul>
 
         <?php else: ?>
-            Goods with such a parameters are not found.
+            <h3>
+                Goods with such a parameters are not found.
+            </h3>
 
         <?php endif ?>
     </section>

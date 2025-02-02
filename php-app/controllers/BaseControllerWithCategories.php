@@ -6,7 +6,7 @@ use yii\helpers\Url;
 use yii\web\Controller;
 use app\models\domain\GoodsCategoryRecord;
 
-abstract class ControllerWithCategories extends Controller {
+abstract class BaseControllerWithCategories extends Controller {
     public function beforeAction($action): bool {
         if(parent::beforeAction($action)) {
             $this->layout = 'layout_with_categories';

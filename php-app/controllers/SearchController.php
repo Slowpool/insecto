@@ -12,7 +12,7 @@ use yii\filters\VerbFilter;
 use app\models\ContactForm;
 use app\models\search\SearchPageModel;
 
-class SearchController extends ControllerWithCategories
+class SearchController extends BaseControllerWithCategories
 {
     /**
      * {@inheritdoc}
