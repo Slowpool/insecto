@@ -17,32 +17,35 @@ $mail = 'BukashkiIPawuchki@IhBoitsya.nice';
         </strong>
         <ul>
             <li>
-                <label class="contact-item">
+                <label for="phone-number">
                     <b>Common phone number:</b>
                 </label>
-                +1 937 (1937) 19-37
+                <div id="phone-number" class="contact-item">
+                    +1 937 (1937) 19-37
+                </div>
             </li>
             <li>
-                <label class="contact-item">
+                <label class="contact-item-title" for="contact-item-legal-address">
                     <b>Legal address:</b>
                 </label>
-                <pre>
-                    Saint-Green Field Street 10g
-                    2nd Floor, 3 office
-                    Nasekomowsk, 220120
-                    Nasekomia</pre>
+                <pre id="contact-item-legal-address" class="contact-item">Saint-Green Field Street 10g
+               2nd Floor, 3 office
+               Nasekomowsk, 220120
+               Nasekomia</pre>
             </li>
             <li>
-                <label class="contact-item">
+                <label class="contact-item-title" for="contact-item-email">
                     <b>E-mail:</b>
                 </label>
-                <?= Html::a($mail, "mailto:$mail") ?>
+                <?= Html::a($mail, "mailto:$mail", ['id' => 'contact-item-email', 'class' => 
+                'contact-item']) ?>
             </li>
             <li>
-                <label class="contact-item">
+                <label class="contact-item-title" for="contact-item-ok-ru">
                     <b>OK.RU group:</b>
                 </label>
-                <?= Html::a($okRuGroupUrl, $okRuGroupUrl) ?>
+                <?= Html::a($okRuGroupUrl, $okRuGroupUrl, ['id' => 'contact-item-ok-ru', 'class' => 
+                'contact-item']) ?>
             </li>
         </ul>
         <aside>
