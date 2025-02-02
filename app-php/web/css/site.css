@@ -68,3 +68,8 @@ search,
     flex-wrap: wrap;
     display: flex;
 }
+
+.contact-item {
+    display: inline;
+    
+}

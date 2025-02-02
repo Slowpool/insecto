@@ -51,8 +51,8 @@ if ($cardsWithGoods) {
         <section class="search-categories">
             <?= $searchForm->field($searchModel, 'categories')->checkboxList($categoryItems, ['itemOptions' => ['class' => 'form-check-input search-category-checkbox']])->label('Categories (when no one is selected = everyone is selected)') ?>
         </section>
-        <?= $searchForm->field($searchModel, 'isAlive')->checkbox(/*['uncheck' => null]*/)->label('Is alive') ?>
-        <?= $searchForm->field($searchModel, 'isAvailable')->checkbox(/*['uncheck' => null]*/)->label('Is available') ?>
+        <?= $searchForm->field($searchModel, 'isAlive')->checkbox()->label('Is alive') ?>
+        <?= $searchForm->field($searchModel, 'isAvailable')->checkbox()->label('Is available') ?>
         <section class="search-price-limits">
             <?= $searchForm->field($searchModel, 'minPrice')->textInput(['type' => 'number', 'placeholder' => '0', 'min' => '0', 'max' => strval(PHP_INT_MAX)])->label('Minimum price') ?>
             <?= $searchForm->field($searchModel, 'maxPrice')->textInput(['type' => 'number', 'placeholder' => strval(PHP_INT_MAX), 'min' => '0', 'max' => strval(PHP_INT_MAX)])->label('Maximum price') ?>
