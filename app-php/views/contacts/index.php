@@ -22,25 +22,12 @@ $mail = 'BukashkiIPawuchki@IhBoitsya.nice';
         <div class="alert alert-success">
             Your message was sent. Thank you for contacting us.
         </div>
-        <p>
-            Note that if you turn on the Yii debugger, you should be able
-            to view the mail message on the mail panel of the debugger.
-            <?php if (Yii::$app->mailer->useFileTransport): ?>
-                Because the application is in development mode, the email is not sent but saved as
-                a file under <code><?= Yii::getAlias(Yii::$app->mailer->fileTransportPath) ?></code>.
-                Please configure the <code>useFileTransport</code> property of the <code>mail</code>
-                application component to be false to enable email sending.
-            <?php endif; ?>
-        </p>
 
     <?php else: ?>
-
         <address id="contact-details">
-            <p>
             <h4>
                 We are <strong>Insecto Inc.</strong> and here is about us.
             </h4>
-            </p>
             <ul>
                 <li>
                     <label for="phone-number">
@@ -55,9 +42,9 @@ $mail = 'BukashkiIPawuchki@IhBoitsya.nice';
                         <b>Legal address:</b>
                     </label>
                     <pre id="contact-item-legal-address" class="contact-item">Saint-Green Field Street 10g
-                               2nd Floor, 3 office
-                               Nasekomowsk, 220120
-                               Nasekomia</pre>
+            2nd Floor, 3 office
+            Nasekomowsk, 220120
+            Nasekomia</pre>
                 </li>
                 <li>
                     <label class="contact-item-title" for="contact-item-email">
@@ -89,12 +76,11 @@ $mail = 'BukashkiIPawuchki@IhBoitsya.nice';
         </address>
 
         <div id="contact-us">
-            <p>
-                If you have business inquiries or other questions, please fill out the following form to contact us.
-                Thank you.
-            </p>
+            <h4>
+                You can send us anything. Just fill the form.
+            </h4>
 
-            <?php $form = ActiveForm::begin(['id' => 'contact-form']); ?>
+            <?php $form = ActiveForm::begin(['id' => 'contact-form', 'action' => '/send-contact-us-form']); ?>
             <?= $form->field($contactForm, 'userName')->textInput(['autofocus' => true])->label('Your name') ?>
             <?= $form->field($contactForm, 'userEmail')->label('Your e-mail') ?>
             <?= $form->field($contactForm, 'subject') ?>

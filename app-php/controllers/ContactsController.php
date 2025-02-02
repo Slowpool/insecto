@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Yii;
 
+use yii\web\BadRequestHttpException;
 use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\ContactForm;
@@ -16,18 +17,11 @@ class ContactsController extends ControllerWithCategories
     public function behaviors()
     {
         return [
-            // 'access' => [
-            //     'class' => \yii\filters\AccessControl::class,
-            //     'rules' => [
-            //         'actions' => ['captcha', 'index'],
-            //         'allow' => true,
-            //     ],
-            // ],
             'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [
-                    // TODO fill
-
+                    'index' => ['get'],
+                    'send-contact-us-form' => ['post'],
                 ],
             ],
         ];
@@ -47,17 +41,24 @@ class ContactsController extends ControllerWithCategories
     }
 
     /**
-     * Displays contact page.
+     * Displays contacts page.
      *
      * @return Response|string
      */
     public function actionIndex()
     {
         $contactForm = new ContactForm;
+        return $this->render('index', compact('contactForm'));
+    }
+
+    public function actionSendContactUsForm()
+    {
+        $contactForm = new ContactForm;
         if ($contactForm->load(Yii::$app->request->post(), '') && $contactForm->contact(Yii::$app->params['adminEmail'])) {
             Yii::$app->session->setFlash('contactFormSubmitted');
-            return $this->refresh();
+            return $this->redirect('/contacts');
         }
-        return $this->render('index', compact('contactForm'));
+
+        throw new BadRequestHttpException();
     }
 }

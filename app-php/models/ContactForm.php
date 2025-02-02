@@ -19,8 +19,8 @@ class ContactForm extends Model
     public function rules()
     {
         return [
-            [['senderName', 'senderEmail', 'subject', 'body'], 'required'],
-            [['email'], 'email'],
+            [['userName', 'userEmail', 'subject', 'body'], 'required'],
+            [['userEmail'], 'email'],
             [['captcha'], 'captcha', 'captchaAction' => 'contacts/captcha'],
         ];
     }
@@ -43,7 +43,6 @@ class ContactForm extends Model
                 ->setSubject($this->subject)
                 ->setTextBody($this->body)
                 ->send();
-
             return true;
         }
         return false;
@@ -57,7 +56,6 @@ class ContactForm extends Model
         $insectCount = substr_count($this->body, 'insect');
         $bugCount = substr_count($this->body, 'bug');
         $beetleCount = substr_count($this->body, 'beetle');
-        $this->body = "User mentioned the further words: 'insect': $insectCount times,
-        'bug': $bugCount times, 'beetle': $beetleCount times. $this->body";
+        $this->body = "User mentioned the further words: 'insect': $insectCount times, 'bug': $bugCount times, 'beetle': $beetleCount times. $this->body";
     }
 }
