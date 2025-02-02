@@ -29,8 +29,7 @@ $config = [
         ],
         'mailer' => [
             'class' => \yii\symfonymailer\Mailer::class,
-            'viewPath' => '@app/mail',
-            // send all mails to a file by default.
+            'viewPath' => '@app/views/contacts',
             'useFileTransport' => true,
         ],
         'log' => [
@@ -62,13 +61,13 @@ if (YII_ENV_DEV) {
     $config['bootstrap'][] = 'debug';
     $config['modules']['debug'] = [
         'class' => 'yii\debug\Module',
-        'allowedIPs' => ['172.18.0.1'],
+        'allowedIPs' => ['172.19.0.1'],
     ];
 
     $config['bootstrap'][] = 'gii';
     $config['modules']['gii'] = [
         'class' => 'yii\gii\Module',
-        'allowedIPs' => ['172.18.0.1'],
+        'allowedIPs' => ['172.19.0.1'],
     ];
 }
 

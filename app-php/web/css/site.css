@@ -36,6 +36,8 @@ div.two-column {
 }
 
 search,
+#contact-details,
+#contact-us,
 .search-categories,
 .search-price-limits,
 .form-check-input,
@@ -45,6 +47,8 @@ search,
 }
 
 search,
+#contact-details,
+#contact-us,
 .search-categories,
 .search-price-limits,
 .form-control {
@@ -59,8 +63,8 @@ search,
 }
 
 .item-card-picture {
-    width: 80%;
-    height: 80%;
+    width: 50%;
+    height: 50%;
 }
 
 #results-list {

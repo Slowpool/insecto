@@ -16,11 +16,18 @@ class ContactsController extends ControllerWithCategories
     public function behaviors()
     {
         return [
+            // 'access' => [
+            //     'class' => \yii\filters\AccessControl::class,
+            //     'rules' => [
+            //         'actions' => ['captcha', 'index'],
+            //         'allow' => true,
+            //     ],
+            // ],
             'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [
                     // TODO fill
-                    
+
                 ],
             ],
         ];
@@ -32,7 +39,10 @@ class ContactsController extends ControllerWithCategories
     public function actions()
     {
         return [
-            
+            'captcha' => [
+                'class' => 'yii\captcha\CaptchaAction',
+                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
+            ],
         ];
     }
 
@@ -43,14 +53,11 @@ class ContactsController extends ControllerWithCategories
      */
     public function actionIndex()
     {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
+        $contactForm = new ContactForm;
+        if ($contactForm->load(Yii::$app->request->post(), '') && $contactForm->contact(Yii::$app->params['adminEmail'])) {
             Yii::$app->session->setFlash('contactFormSubmitted');
-
             return $this->refresh();
         }
-        return $this->render('index', [
-            'model' => $model,
-        ]);
+        return $this->render('index', compact('contactForm'));
     }
 }

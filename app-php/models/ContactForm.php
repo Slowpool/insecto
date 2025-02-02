@@ -10,50 +10,36 @@ use yii\base\Model;
  */
 class ContactForm extends Model
 {
-    public $name;
-    public $email;
+    public $userName;
+    public $userEmail;
     public $subject;
     public $body;
-    public $verifyCode;
+    public $captcha;
 
-
-    /**
-     * @return array the validation rules.
-     */
     public function rules()
     {
         return [
-            // name, email, subject and body are required
-            [['name', 'email', 'subject', 'body'], 'required'],
-            // email has to be a valid email address
-            ['email', 'email'],
-            // verifyCode needs to be entered correctly
-            ['verifyCode', 'captcha'],
+            [['senderName', 'senderEmail', 'subject', 'body'], 'required'],
+            [['email'], 'email'],
+            [['captcha'], 'captcha', 'captchaAction' => 'contacts/captcha'],
         ];
     }
 
-    /**
-     * @return array customized attribute labels
-     */
-    public function attributeLabels()
-    {
-        return [
-            'verifyCode' => 'Verification Code',
-        ];
+    public function formName() {
+        return '';
     }
 
     /**
-     * Sends an email to the specified email address using the information collected by this model.
-     * @param string $email the target email address
      * @return bool whether the model passes validation
      */
-    public function contact($email)
+    public function contact($targetEmail)
     {
+        $this->bodyStatisticsReport();
         if ($this->validate()) {
             Yii::$app->mailer->compose()
-                ->setTo($email)
                 ->setFrom([Yii::$app->params['senderEmail'] => Yii::$app->params['senderName']])
-                ->setReplyTo([$this->email => $this->name])
+                ->setTo($targetEmail)
+                ->setReplyTo([$this->userEmail => $this->userName])
                 ->setSubject($this->subject)
                 ->setTextBody($this->body)
                 ->send();
@@ -61,5 +47,17 @@ class ContactForm extends Model
             return true;
         }
         return false;
+    }
+
+    /**
+     * Calculates statistics about how many times some words were mentioned by user.
+     * @return void
+     */
+    private function bodyStatisticsReport() {
+        $insectCount = substr_count($this->body, 'insect');
+        $bugCount = substr_count($this->body, 'bug');
+        $beetleCount = substr_count($this->body, 'beetle');
+        $this->body = "User mentioned the further words: 'insect': $insectCount times,
+        'bug': $bugCount times, 'beetle': $beetleCount times. $this->body";
     }
 }

@@ -49,15 +49,6 @@ class SearchController extends ControllerWithCategories
         // this action is requested via GET method => needn't csrf
         $this->enableCsrfValidation = false;
 
-        // $get = Yii::$app->request->get();
-        // if (isset($get['isAlive'])) {
-        //     $get['isAlive'] = 0;
-        // }
-        
-        // if (isset($get['isAvailable'])) {
-        //     $get['isAvailable'] = 0;
-        // }
-
         $searchModel = new SearchModel;
         if ($searchModel->load(Yii::$app->request->get(), '') && $searchModel->validate()) {
             $allCategories = GoodsCategoryRecord::getNames();
@@ -68,7 +59,6 @@ class SearchController extends ControllerWithCategories
                 }
             }
 
-            // TODO test it with asArray
             $itemCardModels = Yii::$app->automapper->mapMultiple(UnitOfGoodsRecord::search($searchModel, false), ItemCardModel::class);
         } else {
             $itemCardModels = [];

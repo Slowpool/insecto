@@ -38,6 +38,8 @@ if ($cardsWithGoods) {
 
 ?>
 
+<?= Html::encode($this->title) ?>
+
 <div id="search-page">
     <search id="insects-search">
         <?php $searchForm = ActiveForm::begin([
@@ -67,7 +69,7 @@ if ($cardsWithGoods) {
                 <?php foreach ($cardsWithGoods as $itemCard): ?>
                     <li class="item-card">
                         <!-- TODO bind pictures -->
-                        <img class="item-card-picture" href="/ladybug.jpg" alt="the picture of <?= $itemCard->name ?>">
+                        <img class="item-card-picture" src="/ladybug.jpg" alt="the picture of <?= $itemCard->name ?>">
                         <div>
                             <strong>
                                 <?= $itemCard->name ?>
