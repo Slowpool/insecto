@@ -59,7 +59,11 @@ class SearchController extends BaseControllerWithCategories
                 }
             }
 
-            $itemCardModels = Yii::$app->automapper->mapMultiple(UnitOfGoodsRecord::search($searchModel, false), ItemCardModel::class);
+            $goodsRecords = UnitOfGoodsRecord::search($searchModel, false);
+            $itemCardModels = Yii::$app->automapper->mapMultiple($goodsRecords, ItemCardModel::class);
+            foreach($goodsRecords as $key => $goodsRecord) {
+                Yii::$app->automapper->mapToObject($goodsRecord->category, $itemCardModels[$key]);
+            }
         } else {
             $itemCardModels = [];
         }

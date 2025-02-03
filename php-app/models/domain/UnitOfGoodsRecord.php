@@ -18,6 +18,7 @@ use yii\db\ActiveQuery;
  * @property int $atomic_item_quantity e.g. 200. when atomic_item_measure is 'g' this would mean that one goods unit weighs 200gramm. 200-gramms-of-mosquitoes box = atomic goods item for sale
  * @property int $number_of_remaining e.g. 3. it would mean that 3 boxes of 200g mosquito are remaining
  * @property int $category_id
+ * @property int $is_alive
  *
  * @property GoodsCategoryRecord $category
  */
@@ -40,8 +41,8 @@ class UnitOfGoodsRecord extends \yii\db\ActiveRecord
             [['id', 'name', 'description', 'atomic_item_measure', 'atomic_item_quantity', 'number_of_remaining', 'category_id', 'is_alive', 'price'], 'safe'],
             [['name', 'atomic_item_measure', 'atomic_item_quantity', 'number_of_remaining', 'category_id', 'is_alive'], 'required'],
             [['atomic_item_quantity', 'number_of_remaining', 'category_id', 'price'], 'integer'],
-            [['name', 'slug'], 'string', 'max' => 50],
-            [['description'], 'string', 'max' => 255],
+            [['name', 'slug'], 'string', 'max' => DB_GOODS_NAME_MAX_LEN],
+            [['description'], 'string', 'max' => DB_GOODS_DESCRIPTION_MAX_LEN],
             [['atomic_item_measure'], 'string', 'max' => 1],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => GoodsCategoryRecord::class, 'targetAttribute' => ['category_id' => 'id']],
             [['is_alive'], 'boolean'],
@@ -146,7 +147,14 @@ class UnitOfGoodsRecord extends \yii\db\ActiveRecord
         return $query->all();
     }
 
-    public static function searchOne(string $categorySlug, string $goodsSlug, int $goodsId) {
-        // TODO should i use $categorySlug $goodsSlug here at all? maybe use them just for human-readable url? or not?
+    public static function searchOne(string $categorySlug, string $goodsSlug, int $goodsItemId)
+    {
+        $goodsItem = self::find()
+            ->where(['id' => $goodsItemId])
+            ->with('category')
+            ->one();
+        return $goodsItem->category->slug == $categorySlug && $goodsItem->slug == $goodsSlug
+            ? $goodsItem
+            : null;
     }
 }

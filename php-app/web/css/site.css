@@ -85,3 +85,7 @@ search,
 .contact-item {
     display: inline;
 }
+
+.goods-item-picture {
+    width: 500px;
+}

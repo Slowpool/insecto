@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ . '/../config/consts.php';
+
 use yii\db\Migration;
 
 class m250127_151913_goods_category_uq_index_add extends Migration

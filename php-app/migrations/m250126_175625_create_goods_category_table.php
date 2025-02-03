@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ . '/../config/consts.php';
+
 use yii\db\Migration;
 
 /**
@@ -14,7 +16,7 @@ class m250126_175625_create_goods_category_table extends Migration
     {
         $this->createTable('{{%goods_category}}', [
             'id' => $this->primaryKey(),
-            'name' => $this->string(50)->notNull()->check('LENGTH(TRIM(name)) > 0'),
+            'name' => $this->string(DB_CATEGORY_NAME_MAX_LEN)->notNull()->check('LENGTH(TRIM(name)) > 0'),
         ]);
     }
 

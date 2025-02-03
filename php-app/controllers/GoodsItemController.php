@@ -1,10 +1,17 @@
 <?php
 
+namespace app\controllers;
+
+use Yii;
+
 use app\models\domain\UnitOfGoodsRecord;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
+use app\models\goods_item\DetailedGoodsItemModel;
+use yii\web\NotFoundHttpException;
 
-class GoodsItemController extends Controller {
+class GoodsItemController extends BaseControllerWithCategories
+{
     /**
      * {@inheritdoc}
      */
@@ -27,12 +34,18 @@ class GoodsItemController extends Controller {
     public function actions()
     {
         return [
-            
+
         ];
     }
 
-    public function actionIndex(string $categorySlug, string $goodsSlug, int $goodsId) {
-        // TODO should i use special GoodsItemSearchModel-like class here?
-        $goodsItem = UnitOfGoodsRecord::searchOne($categorySlug, $goodsSlug, $goodsId);
+    public function actionIndex(string $categorySlug, string $goodsSlug, int $goodsItemId)
+    {
+        $goodsItemRecord = UnitOfGoodsRecord::searchOne($categorySlug, $goodsSlug, $goodsItemId);
+        if ($goodsItemRecord === null) {
+            throw new NotFoundHttpException();
+        }
+        $goodsItemModel = Yii::$app->automapper->map($goodsItemRecord, DetailedGoodsItemModel::class);
+        Yii::$app->automapper->mapToObject($goodsItemRecord->category, $goodsItemModel);
+        return $this->render('index', compact('goodsItemModel'));
     }
 }

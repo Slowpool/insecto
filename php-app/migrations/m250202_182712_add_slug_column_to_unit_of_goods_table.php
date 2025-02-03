@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ . '/../config/consts.php';
+
 use yii\db\Migration;
 
 /**
@@ -12,7 +14,7 @@ class m250202_182712_add_slug_column_to_unit_of_goods_table extends Migration
      */
     public function safeUp()
     {
-        $this->addColumn('{{%unit_of_goods}}', 'slug', $this->string(50)->notNull());
+        $this->addColumn('{{%unit_of_goods}}', 'slug', $this->string(DB_CATEGORY_NAME_MAX_LEN)->notNull());
     }
 
     /**
