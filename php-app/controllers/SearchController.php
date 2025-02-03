@@ -4,7 +4,7 @@ namespace app\controllers;
 
 use app\models\domain\GoodsCategoryRecord;
 use app\models\domain\UnitOfGoodsRecord;
-use app\models\search\ItemCardModel;
+use app\models\search\SearchItemCardModel;
 use app\models\search\SearchModel;
 use Yii;
 use yii\web\Response;
@@ -60,7 +60,7 @@ class SearchController extends BaseControllerWithCategories
             }
 
             $goodsRecords = UnitOfGoodsRecord::search($searchModel, false);
-            $itemCardModels = Yii::$app->automapper->mapMultiple($goodsRecords, ItemCardModel::class);
+            $itemCardModels = Yii::$app->automapper->mapMultiple($goodsRecords, SearchItemCardModel::class);
             foreach($goodsRecords as $key => $goodsRecord) {
                 Yii::$app->automapper->mapToObject($goodsRecord->category, $itemCardModels[$key]);
             }

@@ -5,7 +5,6 @@ namespace app\controllers;
 use Yii;
 use yii\web\Response;
 use yii\filters\VerbFilter;
-use app\models\ContactForm;
 
 class HomeController extends BaseControllerWithCategories
 {

@@ -1,7 +1,7 @@
 <?php
 
 /** @var yii\web\View $this */
-/** @var yii\bootstrap5\ActiveForm $searchForm */
+/** @var yii\bootstrap5\ActiveForm|null $searchForm */
 /** @var app\models\search\SearchPageModel $searchPageModel */
 
 use yii\helpers\Url;
@@ -12,7 +12,6 @@ use app\models\search\SearchModel;
 
 $this->title = 'Search';
 $this->registerLinkTag(['rel' => 'canonical', 'href' => Url::to('/search', true)]);
-$this->registerJsFile('@web/js/search.js');
 
 $searchModel = $searchPageModel->searchModel;
 $cardsWithGoods = $searchPageModel->cardsWithGoods;

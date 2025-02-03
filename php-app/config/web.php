@@ -47,7 +47,6 @@ $config = [
             'showScriptName' => false,
             'rules' => require 'urls.php',
         ],
-        // SPECIAL ATTENTION. is it correct?
         'automapper' => [
             'class' => AutoMapper::class,
             '__construct()' => [$autoMapperConfig],

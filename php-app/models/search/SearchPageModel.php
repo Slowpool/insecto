@@ -8,7 +8,7 @@ use app\models\search\SearchModel;
 class SearchPageModel {
     public SearchModel $searchModel;
     /**
-     * @var ItemCardModel[]
+     * @var SearchItemCardModel[]
      */
     public array $cardsWithGoods;
     public function __construct(SearchModel $searchModel, array $cardsWithGoods) {

@@ -2,10 +2,12 @@
 
 namespace app\models\domain;
 
+use app\models\category\CommonCategorizedFilter;
 use app\models\search\SearchModel;
 use Yii;
 use yii\behaviors\SluggableBehavior;
 use yii\db\ActiveQuery;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "unit_of_goods".
@@ -86,14 +88,44 @@ class UnitOfGoodsRecord extends \yii\db\ActiveRecord
     }
 
     /**
-     * 
-     * @param \app\models\search\SearchModel $searchModel
-     * @param mixed $asArray
+     * @param \app\models\category\CommonCategorizedFilter $filter
+     * @param bool $asArray
      * @var yii\db\ActiveQuery $query
      */
-    public static function search(SearchModel $searchModel, $asArray = true)
+    public static function searchWithFilter(string $categoryName, CommonCategorizedFilter $filter, bool $asArray = true)
     {
-        $categoryIds = GoodsCategoryRecord::getIds(array_keys(array_filter($searchModel->categories)));
+        $query = self::find()
+            // the simplest way to attach category. the second one is via join, which would allow to avoid overheaded category's id selecting, having decreased the size of data transported from db to app, but, you know. JOIN takes time. it's not worth it in this case
+            // ->with('category')
+            ;
+
+        $query = $query->where(['category_id' => new Expression('(SELECT id FROM goods_category WHERE name = :name)', [':name' => $categoryName])]);
+
+        if ($filter->isAlive !== null) {
+            $query = $query->andWhere(['is_alive' => $filter->isAlive]);
+        }
+
+        if ($filter->isAvailable !== null) {
+            $query = $query->andWhere(['>', 'number_of_remaining', 0]);
+        }
+
+        if ($filter->minPrice !== null) {
+            $query = $query->andWhere(['>=', 'price', $filter->minPrice]);
+        }
+
+        if ($filter->maxPrice !== null) {
+            $query = $query->andWhere(['<=', 'price', $filter->maxPrice]);
+        }
+
+        if ($asArray) {
+            $query = $query->asArray();
+        }
+        return $query->all();
+    }
+
+    public static function searchEverywhere($categoryName, CommonCategorizedFilter $filter, $asArray = true)
+    {
+        $categoryIds = GoodsCategoryRecord::getIds(array_keys(array_filter($filter->categories)));
         $query = self::find()
             // the simplest way to attach category. the second one is via join, which would allow to avoid overheaded category's id selecting, having decreased the size of data transported from db to app, but, you know. JOIN takes time. it's not worth it in this case
             ->with('category');
@@ -107,9 +139,9 @@ class UnitOfGoodsRecord extends \yii\db\ActiveRecord
         //     'id' => [4, 8, 15],
         // ]);
         $currentWhere = 'where';
-        if ($searchModel->searchText) {
+        if ($filter->searchText) {
             $query = $query->where(
-                ['like', 'name', $searchModel->searchText],
+                ['like', 'name', $filter->searchText],
                 // docs quote `Using the Hash Format, Yii internally applies parameter binding for values, so in contrast to the string format, here you do not have to add parameters manually.`
                 // [':searchText' => $searchModel->searchText]
             );
@@ -121,23 +153,23 @@ class UnitOfGoodsRecord extends \yii\db\ActiveRecord
             $currentWhere = 'andWhere';
         }
 
-        if ($searchModel->isAlive !== null) {
-            $query = $query->$currentWhere(['is_alive' => $searchModel->isAlive]);
+        if ($filter->isAlive !== null) {
+            $query = $query->$currentWhere(['is_alive' => $filter->isAlive]);
             $currentWhere = 'andWhere';
         }
 
-        if ($searchModel->isAvailable !== null) {
+        if ($filter->isAvailable !== null) {
             $query = $query->$currentWhere(['>', 'number_of_remaining', 0]);
             $currentWhere = 'andWhere';
         }
 
-        if ($searchModel->minPrice !== null) {
-            $query = $query->$currentWhere(['>=', 'price', $searchModel->minPrice]);
+        if ($filter->minPrice !== null) {
+            $query = $query->$currentWhere(['>=', 'price', $filter->minPrice]);
             $currentWhere = 'andWhere';
         }
 
-        if ($searchModel->maxPrice !== null) {
-            $query = $query->$currentWhere(['<=', 'price', $searchModel->maxPrice]);
+        if ($filter->maxPrice !== null) {
+            $query = $query->$currentWhere(['<=', 'price', $filter->maxPrice]);
             $currentWhere = 'andWhere';
         }
 

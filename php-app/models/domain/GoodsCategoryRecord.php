@@ -95,4 +95,8 @@ class GoodsCategoryRecord extends \yii\db\ActiveRecord
             'id'
         );
     }
+
+    public static function findBySlug(string $categorySlug) {
+        return self::findOne(['slug' => $categorySlug]);
+    }
 }

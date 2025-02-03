@@ -1,5 +1,11 @@
 LOCK TABLES `goods_category` WRITE;
-INSERT INTO `goods_category` VALUES (4,'diptera', 'diptera'),(2,'dragonflies', 'dragonflies'),(5,'lepidoptera', 'lepidoptera'),(1,'orthoptera', 'orthoptera'),(6,'spiders', 'spiders'),(3,'stick insects', 'stick-insects');
+INSERT INTO `goods_category` VALUES 
+(1,'Orthoptera', 'orthoptera'),
+(2,'Dragonflies', 'dragonflies'),
+(3,'Phasmatodea', 'phasmatodea'),
+(4,'Diptera', 'diptera'),
+(5,'Lepidoptera', 'lepidoptera'),
+(6,'Arachnida', 'arachnida'),
 UNLOCK TABLES;
 
 LOCK TABLES `unit_of_goods` WRITE;

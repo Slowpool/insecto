@@ -1,11 +1,17 @@
 <?php
 
-use app\models\domain\GoodsCategoryRecord;
-use app\models\goods_item\DetailedGoodsItemModel;
 use AutoMapperPlus\Configuration\AutoMapperConfig;
-use app\models\domain\UnitOfGoodsRecord;
-use app\models\search\ItemCardModel;
 use AutoMapperPlus\MappingOperation\Operation;
+
+use app\models\category\CategorizedItemCardModel;
+use app\models\category\CategoryModel;
+
+use app\models\domain\GoodsCategoryRecord;
+use app\models\domain\UnitOfGoodsRecord;
+
+use app\models\goods_item\DetailedGoodsItemModel;
+
+use app\models\search\SearchItemCardModel;
 
 $autoMapperConfig = new AutoMapperConfig;
 
@@ -16,10 +22,9 @@ function ReadProperty($propertyName)
     });
 }
 
-$autoMapperConfig->registerMapping(UnitOfGoodsRecord::class, ItemCardModel::class)
-    ->forMember('id', ReadProperty('id'))
-    ->forMember('description', ReadProperty('description'))
+$autoMapperConfig->registerMapping(UnitOfGoodsRecord::class, CategorizedItemCardModel::class)
     // the following source properties technically aren't public properties - they are read via __get()
+    ->forMember('id', ReadProperty('id'))
     ->forMember('name', ReadProperty('name'))
     ->forMember('slug', ReadProperty('slug'))
     ->forMember('price', ReadProperty('price'))
@@ -27,15 +32,25 @@ $autoMapperConfig->registerMapping(UnitOfGoodsRecord::class, ItemCardModel::clas
     ->forMember('atomicItemMeasure', ReadProperty('atomic_item_measure'))
 ;
 
+$autoMapperConfig->registerMapping(UnitOfGoodsRecord::class, SearchItemCardModel::class)
+    ->copyFrom(UnitOfGoodsRecord::class, CategorizedItemCardModel::class)
+;
+
 $autoMapperConfig->registerMapping(UnitOfGoodsRecord::class, DetailedGoodsItemModel::class)
-    ->copyFrom(UnitOfGoodsRecord::class, ItemCardModel::class)
+    ->copyFrom(UnitOfGoodsRecord::class, SearchItemCardModel::class)
+    ->forMember('description', ReadProperty('description'))
     ->forMember('isAlive', ReadProperty('is_alive'))
     ->forMember('numberOfRemaining', ReadProperty('number_of_remaining'))
 ;
 
-$autoMapperConfig->registerMapping(GoodsCategoryRecord::class, ItemCardModel::class)
+$autoMapperConfig->registerMapping(GoodsCategoryRecord::class, SearchItemCardModel::class)
     ->forMember('category', ReadProperty('name'))
     ->forMember('categorySlug', ReadProperty('slug'))
+;
+
+$autoMapperConfig->registerMapping(GoodsCategoryRecord::class, CategoryModel::class)
+    ->forMember('name', ReadProperty('name'))
+    ->forMember('slug', ReadProperty('slug'))
 ;
 
 return $autoMapperConfig;

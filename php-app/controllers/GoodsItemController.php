@@ -5,7 +5,6 @@ namespace app\controllers;
 use Yii;
 
 use app\models\domain\UnitOfGoodsRecord;
-use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\goods_item\DetailedGoodsItemModel;
 use yii\web\NotFoundHttpException;
