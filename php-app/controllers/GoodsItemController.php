@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\domain\GoodsClickStatisticsRecord;
 use Yii;
 
 use app\models\domain\UnitOfGoodsRecord;
@@ -39,10 +40,12 @@ class GoodsItemController extends BaseControllerWithCategories
 
     public function actionIndex(string $categorySlug, string $goodsSlug, int $goodsItemId)
     {
+        
         $goodsItemRecord = UnitOfGoodsRecord::searchOne($categorySlug, $goodsSlug, $goodsItemId);
         if ($goodsItemRecord === null) {
             throw new NotFoundHttpException();
         }
+        GoodsClickStatisticsRecord::registerClick($goodsItemRecord->id, false);
         $goodsItemModel = Yii::$app->automapper->map($goodsItemRecord, DetailedGoodsItemModel::class);
         Yii::$app->automapper->mapToObject($goodsItemRecord->category, $goodsItemModel);
         return $this->render('index', compact('goodsItemModel'));

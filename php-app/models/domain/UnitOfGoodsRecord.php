@@ -96,7 +96,8 @@ class UnitOfGoodsRecord extends \yii\db\ActiveRecord
     {
         $query = self::find();
 
-        $query = $query->where(['category_id' => new Expression('(SELECT id FROM goods_category WHERE name = :name)', [':name' => $categoryName])]);
+        $categoryId = GoodsCategoryRecord::find()->where(['name' => $categoryName])->select(['id']);
+        $query = $query->where(['category_id' => $categoryId]);
 
         if ($filter->isAlive !== null) {
             $query = $query->andWhere(['is_alive' => $filter->isAlive]);
@@ -126,8 +127,8 @@ class UnitOfGoodsRecord extends \yii\db\ActiveRecord
             // the simplest way to attach category. the second one is via join, which would allow to avoid overheaded category's id selecting, having decreased the size of data transported from db to app, but, you know. JOIN takes time. it's not worth it in this case
             ->with('category')
             ->where(['like', 'name', $searchModel->q]);
-                // docs quote: `Using the Hash Format, Yii internally applies parameter binding for values, so in contrast to the string format, here you do not have to add parameters manually.`
-                // [':searchText' => $searchModel->searchText]
+        // docs quote: `Using the Hash Format, Yii internally applies parameter binding for values, so in contrast to the string format, here you do not have to add parameters manually.`
+        // [':searchText' => $searchModel->searchText]
 
 
         if ($asArray) {
@@ -136,7 +137,15 @@ class UnitOfGoodsRecord extends \yii\db\ActiveRecord
         return $query->all();
     }
 
-    public static function searchOne(string $categorySlug, string $goodsSlug, int $goodsItemId)
+    /**
+     * 
+     * @param string $categorySlug
+     * @param string $goodsSlug
+     * @param int $goodsItemId
+     * @var UnitOfGoodsRecord $goodsItem
+     * @return array|Yii\db\ActiveRecord|null
+     */
+    public static function searchOne(string $categorySlug, string $goodsSlug, int $goodsItemId): self|null
     {
         $goodsItem = self::find()
             ->where(['id' => $goodsItemId])
