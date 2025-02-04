@@ -25,6 +25,7 @@ if ($cardsWithGoods) {
 }
 
 $this->title = $categorizedPageModel->categoryName;
+$this->params['breadcrumbs'][] = $this->title;
 $this->registerJsFile('@web/js/category-page.js');
 
 ?>

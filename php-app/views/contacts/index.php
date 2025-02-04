@@ -9,6 +9,7 @@ use yii\bootstrap5\ActiveForm;
 use yii\captcha\Captcha;
 
 $this->title = 'Contacts';
+$this->params['breadcrumbs'][] = $this->title;
 
 ?>
 

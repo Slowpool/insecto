@@ -11,7 +11,8 @@ use app\models\search\SearchModel;
 
 
 $this->title = 'Search';
-// $this->registerLinkTag(['rel' => 'canonical', 'href' => Url::to('/search', true)]);
+$this->params['breadcrumbs'][] = $this->title;
+$this->registerLinkTag(['rel' => 'canonical', 'href' => Url::to('/search', true)]);
 
 $searchModel = $searchPageModel->searchModel;
 $cardsWithGoods = $searchPageModel->cardsWithGoods;
