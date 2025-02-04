@@ -7,6 +7,7 @@ use app\models\domain\UnitOfGoodsRecord;
 use app\models\search\SearchItemCardModel;
 use app\models\search\SearchModel;
 use Yii;
+use yii\web\BadRequestHttpException;
 use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\ContactForm;
@@ -51,21 +52,14 @@ class SearchController extends BaseControllerWithCategories
 
         $searchModel = new SearchModel;
         if ($searchModel->load(Yii::$app->request->get(), '') && $searchModel->validate()) {
-            $allCategories = GoodsCategoryRecord::getNames();
-            // at this moment $searchModel has only the categories, provided in url as a route parameters (they have been read via SearchModel->load() and their values have been set to true)
-            foreach ($allCategories as $category) {
-                if (!isset($searchModel->categories[$category])) {
-                    $searchModel->categories[$category] = false;
-                }
-            }
-
-            $goodsRecords = UnitOfGoodsRecord::search($searchModel, false);
+            $goodsRecords = UnitOfGoodsRecord::searchEverywhere($searchModel, false);
             $itemCardModels = Yii::$app->automapper->mapMultiple($goodsRecords, SearchItemCardModel::class);
+            // TODO it can be done via previous mapMultiple() (in other words, reconfigure automapper)
             foreach($goodsRecords as $key => $goodsRecord) {
                 Yii::$app->automapper->mapToObject($goodsRecord->category, $itemCardModels[$key]);
             }
         } else {
-            $itemCardModels = [];
+            $itemCardModels = null;
         }
         $searchPageModel = new SearchPageModel($searchModel, $itemCardModels);
         return $this->render('index', compact('searchPageModel'));

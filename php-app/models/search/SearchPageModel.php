@@ -10,8 +10,8 @@ class SearchPageModel {
     /**
      * @var SearchItemCardModel[]
      */
-    public array $cardsWithGoods;
-    public function __construct(SearchModel $searchModel, array $cardsWithGoods) {
+    public array|null $cardsWithGoods;
+    public function __construct(SearchModel $searchModel, array|null $cardsWithGoods) {
         $this->searchModel = $searchModel;
         $this->cardsWithGoods = $cardsWithGoods;
     }

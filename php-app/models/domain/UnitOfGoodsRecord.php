@@ -94,10 +94,7 @@ class UnitOfGoodsRecord extends \yii\db\ActiveRecord
      */
     public static function searchWithFilter(string $categoryName, CommonCategorizedFilter $filter, bool $asArray = true)
     {
-        $query = self::find()
-            // the simplest way to attach category. the second one is via join, which would allow to avoid overheaded category's id selecting, having decreased the size of data transported from db to app, but, you know. JOIN takes time. it's not worth it in this case
-            // ->with('category')
-            ;
+        $query = self::find();
 
         $query = $query->where(['category_id' => new Expression('(SELECT id FROM goods_category WHERE name = :name)', [':name' => $categoryName])]);
 
@@ -123,55 +120,15 @@ class UnitOfGoodsRecord extends \yii\db\ActiveRecord
         return $query->all();
     }
 
-    public static function searchEverywhere($categoryName, CommonCategorizedFilter $filter, $asArray = true)
+    public static function searchEverywhere(SearchModel $searchModel, $asArray = true): self|array|null
     {
-        $categoryIds = GoodsCategoryRecord::getIds(array_keys(array_filter($filter->categories)));
         $query = self::find()
             // the simplest way to attach category. the second one is via join, which would allow to avoid overheaded category's id selecting, having decreased the size of data transported from db to app, but, you know. JOIN takes time. it's not worth it in this case
-            ->with('category');
-
-        // regulating `where` statement so that it would be correct, not like 'AND WHERE AND WHERE', but like 'WHERE' or 'WHERE AND WHERE'.
-        // it could have been done in another way, but this one is the most simpler
-        // TODO upd: can be done this way:
-        // $query->where([
-        //     'status' => 10,
-        //     'type' => null,
-        //     'id' => [4, 8, 15],
-        // ]);
-        $currentWhere = 'where';
-        if ($filter->searchText) {
-            $query = $query->where(
-                ['like', 'name', $filter->searchText],
-                // docs quote `Using the Hash Format, Yii internally applies parameter binding for values, so in contrast to the string format, here you do not have to add parameters manually.`
+            ->with('category')
+            ->where(['like', 'name', $searchModel->q]);
+                // docs quote: `Using the Hash Format, Yii internally applies parameter binding for values, so in contrast to the string format, here you do not have to add parameters manually.`
                 // [':searchText' => $searchModel->searchText]
-            );
-            $currentWhere = 'andWhere';
-        }
 
-        if ($categoryIds) {
-            $query = $query->$currentWhere(['category_id' => $categoryIds]);
-            $currentWhere = 'andWhere';
-        }
-
-        if ($filter->isAlive !== null) {
-            $query = $query->$currentWhere(['is_alive' => $filter->isAlive]);
-            $currentWhere = 'andWhere';
-        }
-
-        if ($filter->isAvailable !== null) {
-            $query = $query->$currentWhere(['>', 'number_of_remaining', 0]);
-            $currentWhere = 'andWhere';
-        }
-
-        if ($filter->minPrice !== null) {
-            $query = $query->$currentWhere(['>=', 'price', $filter->minPrice]);
-            $currentWhere = 'andWhere';
-        }
-
-        if ($filter->maxPrice !== null) {
-            $query = $query->$currentWhere(['<=', 'price', $filter->maxPrice]);
-            $currentWhere = 'andWhere';
-        }
 
         if ($asArray) {
             $query = $query->asArray();
