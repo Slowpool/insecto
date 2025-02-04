@@ -54,10 +54,6 @@ class SearchController extends BaseControllerWithCategories
         if ($searchModel->load(Yii::$app->request->get(), '') && $searchModel->validate()) {
             $goodsRecords = UnitOfGoodsRecord::searchEverywhere($searchModel, false);
             $itemCardModels = Yii::$app->automapper->mapMultiple($goodsRecords, SearchItemCardModel::class);
-            // TODO it can be done via previous mapMultiple() (in other words, reconfigure automapper)
-            foreach($goodsRecords as $key => $goodsRecord) {
-                Yii::$app->automapper->mapToObject($goodsRecord->category, $itemCardModels[$key]);
-            }
         } else {
             $itemCardModels = null;
         }

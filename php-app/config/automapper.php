@@ -10,7 +10,7 @@ use app\models\domain\GoodsCategoryRecord;
 use app\models\domain\UnitOfGoodsRecord;
 
 use app\models\goods_item\DetailedGoodsItemModel;
-
+use app\models\home\PopularItemCardModel;
 use app\models\search\SearchItemCardModel;
 
 $autoMapperConfig = new AutoMapperConfig;
@@ -34,6 +34,12 @@ $autoMapperConfig->registerMapping(UnitOfGoodsRecord::class, CategorizedItemCard
 
 $autoMapperConfig->registerMapping(UnitOfGoodsRecord::class, SearchItemCardModel::class)
     ->copyFrom(UnitOfGoodsRecord::class, CategorizedItemCardModel::class)
+    ->forMember('category', Operation::mapFrom(function ($record) {
+        return $record->category->name;
+    }))
+    ->forMember('categorySlug', Operation::mapFrom(function ($record) {
+        return $record->category->slug;
+    }))
 ;
 
 $autoMapperConfig->registerMapping(UnitOfGoodsRecord::class, DetailedGoodsItemModel::class)
@@ -43,9 +49,8 @@ $autoMapperConfig->registerMapping(UnitOfGoodsRecord::class, DetailedGoodsItemMo
     ->forMember('numberOfRemaining', ReadProperty('number_of_remaining'))
 ;
 
-$autoMapperConfig->registerMapping(GoodsCategoryRecord::class, SearchItemCardModel::class)
-    ->forMember('category', ReadProperty('name'))
-    ->forMember('categorySlug', ReadProperty('slug'))
+$autoMapperConfig->registerMapping(UnitOfGoodsRecord::class, PopularItemCardModel::class)
+    ->copyFrom(UnitOfGoodsRecord::class, SearchItemCardModel::class)
 ;
 
 $autoMapperConfig->registerMapping(GoodsCategoryRecord::class, CategoryModel::class)

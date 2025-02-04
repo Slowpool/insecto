@@ -47,6 +47,7 @@ div.two-column {
 search,
 #contact-details,
 #contact-us,
+#popular-goods-list,
 .search-categories,
 .search-price-limits,
 .form-check-input,
@@ -76,7 +77,8 @@ search,
     height: 50%;
 }
 
-#results-list {
+#results-list,
+#popular-goods-list {
     list-style-type: none;
     flex-wrap: wrap;
     display: flex;
@@ -88,4 +90,8 @@ search,
 
 .goods-item-picture {
     width: 500px;
+}
+
+.item-card.popular {
+    border-color: red;
 }

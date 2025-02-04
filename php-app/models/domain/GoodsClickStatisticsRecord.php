@@ -72,5 +72,11 @@ class GoodsClickStatisticsRecord extends \yii\db\ActiveRecord
             Yii::error("Failed to register click for goods item with id $unitOfGoodsId", 'db');
         }
     }
+
+    /** This method removes outdated clicks. */
+    public static function clear()
+    {
+        Yii::$app->db->createCommand('CALL CLEAR_OUTDATED_CLICKS()')
+            ->queryScalar();
+    }
 }
-                                       

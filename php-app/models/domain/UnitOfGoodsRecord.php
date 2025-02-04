@@ -19,9 +19,10 @@ use yii\db\Expression;
  * @property string $atomic_item_measure g - gramm, u - unit
  * @property int $atomic_item_quantity e.g. 200. when atomic_item_measure is 'g' this would mean that one goods unit weighs 200gramm. 200-gramms-of-mosquitoes box = atomic goods item for sale
  * @property int $number_of_remaining e.g. 3. it would mean that 3 boxes of 200g mosquito are remaining
- * @property int $category_id
+ * @property int $price
  * @property int $is_alive
  *
+ * @property int $category_id
  * @property GoodsCategoryRecord $category
  */
 class UnitOfGoodsRecord extends \yii\db\ActiveRecord
@@ -154,5 +155,42 @@ class UnitOfGoodsRecord extends \yii\db\ActiveRecord
         return $goodsItem->category->slug == $categorySlug && $goodsItem->slug == $goodsSlug
             ? $goodsItem
             : null;
+    }
+
+    /**
+     * 
+     * @param int $maxRecords The maximum number of records to return.
+     * @return UnitOfGoodsRecord[]
+     */
+    public static function findTheMostPopular(int $maxRecords)
+    {
+        // table aliases (abbreviations)
+        $uogr = 'uogr';
+        $gcs = 'gcs';
+        $unitOfGoodsColumns = [
+            "$uogr.id",
+            "$uogr.name",
+            "$uogr.slug",
+            "$uogr.description",
+            "$uogr.atomic_item_measure",
+            "$uogr.atomic_item_quantity",
+            "$uogr.number_of_remaining",
+            "$uogr.price",
+            "$uogr.is_alive",
+            "$uogr.category_id",
+        ];
+        return self::find()
+            ->with('category')
+            ->alias($uogr)
+            ->select($unitOfGoodsColumns)
+            ->leftJoin("goods_click_statistics $gcs", "$gcs.unit_of_goods_id = $uogr.id")
+            // if you group only by id, then other goods item columns would be ungrouped
+            ->groupBy($unitOfGoodsColumns)
+            // to prevent the case when all goods items have 0 clicks and consequently they would be selected in random order
+            ->having("COUNT($gcs.unit_of_goods_id) > 0")
+            ->orderBy("COUNT($gcs.unit_of_goods_id) DESC")
+            ->limit($maxRecords)
+            ->all()
+        ;
     }
 }
