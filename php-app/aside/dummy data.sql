@@ -5,7 +5,7 @@ INSERT INTO `goods_category` VALUES
 (3,'Phasmatodea', 'phasmatodea'),
 (4,'Diptera', 'diptera'),
 (5,'Lepidoptera', 'lepidoptera'),
-(6,'Arachnida', 'arachnida'),
+(6,'Arachnida', 'arachnida');
 UNLOCK TABLES;
 
 LOCK TABLES `unit_of_goods` WRITE;
@@ -16,6 +16,7 @@ INSERT INTO `unit_of_goods` VALUES
 (4,'Heteropteryx dilatata','Heteropteryx is a monotypic genus of stick insects containing Heteropteryx dilatata as the only described species and gives its name to the family of the Heteropterygidae. Their only species may be known as jungle nymph, Malaysian stick insect, Malaysian wood nymph, Malayan jungle nymph, or Malayan wood nymph and because of their size it is commonly kept in zoological institutions and private terrariums of insect lovers. It originates from the Malay Archipelago and is nocturnal.','u',1,50,3,1,590, 'heteropteryx-dilatata'),
 (5,'Master Mantis','Widely known actor from \"Kong Fu Panda\"','u',1,1,3,1,3299, 'master-mantis'),
 (6,'Mosquitoes box','This set of mosquitoes may save your life in case you owe the box of mosquitoes to somebody who threaten you with death. Also you can use it to feed some birds like sinitsa or vorobay or even popolzen\'.','g',200,3,4,0,159, 'mosquitoes-box'),
+(7,'Termit','This insect chews your furniture','g',20,2,3,1,1937, 'termit'),
 (8,'Grasshopper','Found in fields and meadows, these insects can jump great distances.','g',25,78,2,0,48, 'grasshopper'),
 (9,'Cicada','Known for their loud buzzing sound, cicadas emerge periodically.','u',32,189,1,1,97, 'cicada'),
 (10,'Dragonfly','Graceful fliers, dragonflies are often seen near bodies of water.','g',41,203,6,0,126, 'dragonfly'),
@@ -56,4 +57,32 @@ INSERT INTO `unit_of_goods` VALUES
 (45,'Hornworm','Large caterpillars that feed on tomato plants, hornworms can decimate crops.','u',461,1987,1,1,1151, 'hornworm'),
 (46,'Stink Bug','Insects that emit a foul odor when threatened, stink bugs can damage fruits.','g',473,2038,6,0,1180, 'stink-bug'),
 (47,'Sawfly Larva','Caterpillar-like insects that feed on leaves, sawfly larvae can defoliate trees.','u',485,2089,3,1,1209, 'sawfly-larva');
+UNLOCK TABLES;
+
+LOCK TABLES `price_offer` WRITE;
+INSERT INTO `price_offer` (unit_of_goods_id, new_price, priority_rank) VALUES
+(1, 37, NULL),
+(3, 7900, 1),
+(5, 3134, 3),
+(7, 1545, 5),
+(9, 92, 2),
+(11, 156, NULL),
+(13, 211, NULL),
+(15, 266, NULL),
+(17, 321, NULL),
+(19, 378, 4),
+(21, 433, NULL),
+(23, 488, NULL),
+(25, 543, NULL),
+(27, 598, NULL),
+(29, 653, NULL),
+(31, 708, NULL),
+(33, 763, NULL),
+(35, 818, NULL),
+(37, 874, NULL),
+(39, 929, NULL),
+(41, 984, NULL),
+(43, 1040, NULL),
+(45, 1095, NULL),
+(47, 1151, NULL);
 UNLOCK TABLES;

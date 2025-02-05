@@ -6,18 +6,24 @@
 use yii\helpers\Url;
 use yii\helpers\Html;
 
-// TODO create helper which encodes all properties of object
-foreach ($goodsItemModel as $propertyName => $_) {
-    $goodsItemModel->$propertyName = Html::encode($goodsItemModel->$propertyName);
+// TODO create helper which encodes all properties of object.
+foreach ($goodsItemModel as $property => $value) {
+    if (is_string($value)) {
+        // properties encoding to make code below clearer
+        $goodsItemModel->$property = Html::encode($value);
+    }
 }
 
 $this->title = $goodsItemModel->name;
+// TODO breadcrumbs
 
 ?>
-<!-- TODO breadcrumbs -->
 
 <div id="goods-item-page">
-    <h3><?= $this->title ?></h3>
+    <h2><?= $this->title ?></h2>
+    <h5>
+        <?= Html::a($goodsItemModel->category, "/$goodsItemModel->categorySlug") ?>
+    </h5>
     <img class="goods-item-picture" src="/ladybug.jpg" alt="Picture of <?= $goodsItemModel->name ?>">
     <br>
     <?= $goodsItemModel->description ?>
@@ -28,5 +34,6 @@ $this->title = $goodsItemModel->name;
     <br>
     <b>Remaining:</b> <?= $goodsItemModel->numberOfRemaining ?> item
     <br>
-    <b>One goods item consists of:</b> <?= "$goodsItemModel->atomicItemQuantity  $goodsItemModel->atomicItemMeasure." ?> of <?= $goodsItemModel->name ?>
+    <b>One goods item consists of:</b> <?= "$goodsItemModel->atomicItemQuantity  $goodsItemModel->atomicItemMeasure." ?>
+    of <?= $goodsItemModel->name ?>
 </div>

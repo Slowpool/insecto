@@ -4,12 +4,15 @@ namespace app\models\home;
 
 /**
  * Summary of HomePageModel
- * @property PopularItemCardModel[] $itemCardModels
+ * @property PopularItemCardModel[] $popularGoodsCards
+ * @property DiscountedItemCardModel[] $discountedGoodsCards
  */
 class HomePageModel {
-    public array $itemCardModels;
-    public function __construct(array $itemCardModels) {
-        $this->itemCardModels = $itemCardModels;
+    public array $popularGoodsCards;
+    public array $discountedGoodsCards;
+    public function __construct(array $popularGoodsCards, array $discountedGoodsCards) {
+        $this->popularGoodsCards = $popularGoodsCards;
+        $this->discountedGoodsCards = $discountedGoodsCards;
 
     }
 }

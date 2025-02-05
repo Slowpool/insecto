@@ -2,7 +2,8 @@
 
 /** @var yii\web\View $this */
 /** @var app\models\home\HomePageModel $homePageModel */
-/** @var app\models\home\PopularItemCardModel[] $cardsWithGoods */
+/** @var app\models\home\PopularItemCardModel[] $popularGoodsCards */
+/** @var app\models\home\DiscountedItemCardModel[] $discountedGoodsCards */
 
 
 use yii\helpers\Url;
@@ -11,35 +12,37 @@ use yii\bootstrap5\Html;
 $this->title = 'Home';
 $this->registerLinkTag(['rel' => 'canonical', 'href' => Url::to('/home', true)]);
 
-$cardsWithGoods = $homePageModel->itemCardModels;
+$popularGoodsCards = $homePageModel->popularGoodsCards;
+$discountedGoodsCards = $homePageModel->discountedGoodsCards;
 
 ?>
 
 <div id="home-page">
     <section id="popular-goods">
         <h1>POPULAR NOW</h1>
-        <?php if (count($cardsWithGoods) > 0): ?>
+        <?php if (count($popularGoodsCards) > 0): ?>
             <ul id="popular-goods-list">
-                <?php foreach ($cardsWithGoods as $itemCard): ?>
-                    <li class="item-card popular">
-                        <!-- TODO bind pictures -->
-                        <img class="item-card-picture" src="/ladybug.jpg" alt="the picture of <?= $itemCard->name ?>">
-                        <div>
-                            <strong>
-                                <?= Html::a($itemCard->name, "/$itemCard->categorySlug/$itemCard->slug/$itemCard->id") ?>
-                            </strong>
-                            <br>
-                            <!-- TODO create helper for this casting -->
-                            <?= "$itemCard->atomicItemQuantity  $itemCard->atomicItemMeasure." ?>
-                            <br>
-                            <?= Html::a($itemCard->category, "/$itemCard->categorySlug") ?>
-                        </div>
-                    </li>
+                <?php foreach ($popularGoodsCards as $itemCard): ?>
+                    <?= $this->render('@goods_item_card', ['liClass' => 'item-card popular', 'card' => $itemCard]) ?>
                 <?php endforeach; ?>
             </ul>
 
         <?php else: ?>
-            <h3>Something went wrong.</h3>
+            <h3>Something went wrong. (no clicks on goods for last 1 hour)</h3>
+
+        <?php endif; ?>
+    </section>
+    <section id="offers">
+        <h1>HELLY OFFERS</h1>
+        <?php if (count($discountedGoodsCards) > 0): ?>
+            <ul id="popular-goods-list">
+                <?php foreach ($discountedGoodsCards as $itemCard): ?>
+                    <?= $this->render('@goods_item_card', ['liClass' => 'item-card discounted', 'card' => $itemCard]) ?>
+                <?php endforeach; ?>
+            </ul>
+
+        <?php else: ?>
+            <h3>Sorry, we don't have any price offers</h3>
 
         <?php endif; ?>
     </section>

@@ -10,6 +10,7 @@ use app\models\domain\GoodsCategoryRecord;
 use app\models\domain\UnitOfGoodsRecord;
 
 use app\models\goods_item\DetailedGoodsItemModel;
+use app\models\home\DiscountedItemCardModel;
 use app\models\home\PopularItemCardModel;
 use app\models\search\SearchItemCardModel;
 
@@ -28,6 +29,9 @@ $autoMapperConfig->registerMapping(UnitOfGoodsRecord::class, CategorizedItemCard
     ->forMember('name', ReadProperty('name'))
     ->forMember('slug', ReadProperty('slug'))
     ->forMember('price', ReadProperty('price'))
+    ->forMember('priceOffer', Operation::mapFrom(function ($record) {
+        return $record->priceOffer?->new_price;
+    }))
     ->forMember('atomicItemQuantity', ReadProperty('atomic_item_quantity'))
     ->forMember('atomicItemMeasure', ReadProperty('atomic_item_measure'))
 ;
@@ -51,6 +55,14 @@ $autoMapperConfig->registerMapping(UnitOfGoodsRecord::class, DetailedGoodsItemMo
 
 $autoMapperConfig->registerMapping(UnitOfGoodsRecord::class, PopularItemCardModel::class)
     ->copyFrom(UnitOfGoodsRecord::class, SearchItemCardModel::class)
+;
+
+// i'm not sure whether it's okey to create SearchItemCardModel clones, but on the other hand what if they could contain some other data to display, e.g. offer description *70% DISCOUNT IF IT'S YOUR BIRTHDAY*, adding extra `offer_description` attribute to DiscountedItemCardModel
+$autoMapperConfig->registerMapping(UnitOfGoodsRecord::class, DiscountedItemCardModel::class)
+    ->copyFrom(UnitOfGoodsRecord::class, SearchItemCardModel::class)
+    // ->forMember('offerPriorityRank', Operation::mapFrom(function($record) {
+    //     return $record->priceOffer?->priority_rank;
+    // }))
 ;
 
 $autoMapperConfig->registerMapping(GoodsCategoryRecord::class, CategoryModel::class)

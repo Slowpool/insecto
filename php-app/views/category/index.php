@@ -13,17 +13,6 @@ $categorizedPageModel->categorySlug = Html::encode($categorizedPageModel->catego
 $filter = $categorizedPageModel->filter;
 $cardsWithGoods = $categorizedPageModel->cardsWithGoods;
 
-// TODO create helper which encodes all properties of object.
-if ($cardsWithGoods) {
-    $itemPropertyNames = array_keys(get_object_vars($cardsWithGoods[0]));
-    foreach ($cardsWithGoods as $itemCard) {
-        foreach ($itemPropertyNames as $propertyName) {
-            // properties encoding to make code below clearer
-            $itemCard->$propertyName = Html::encode($itemCard->$propertyName);
-        }
-    }
-}
-
 $this->title = $categorizedPageModel->categoryName;
 $this->params['breadcrumbs'][] = $this->title;
 $this->registerJsFile('@web/js/category-page.js');
@@ -54,20 +43,7 @@ $this->registerJsFile('@web/js/category-page.js');
         <?php if ($cardsWithGoods): ?>
             <ul id="results-list">
                 <?php foreach ($cardsWithGoods as $itemCard): ?>
-                    <li class="item-card">
-                        <!-- TODO bind pictures -->
-                        <img class="item-card-picture" src="/ladybug.jpg" alt="the picture of <?= $itemCard->name ?>">
-                        <div>
-                            <strong>
-                                <?= Html::a($itemCard->name, "/$categorizedPageModel->categorySlug/$itemCard->slug/$itemCard->id") ?>
-                            </strong>
-                            <br>
-                            <!-- TODO create helper for this casting -->
-                            <?= "$itemCard->atomicItemQuantity  $itemCard->atomicItemMeasure." ?>
-                            <br>
-                            <?= "$itemCard->price money" ?>
-                        </div>
-                    </li>
+                    <?= $this->render('@goods_item_card', ['liClass' => 'item-card categorized', 'card' => $itemCard, 'categorySlug' => $categorizedPageModel->categorySlug]) ?>
                 <?php endforeach; ?>
             </ul>
 

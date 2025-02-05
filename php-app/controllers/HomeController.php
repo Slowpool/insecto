@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\domain\GoodsClickStatisticsRecord;
 use app\models\domain\UnitOfGoodsRecord;
+use app\models\home\DiscountedItemCardModel;
 use app\models\home\HomePageModel;
 use app\models\home\PopularItemCardModel;
 use app\models\search\SearchItemCardModel;
@@ -51,9 +52,14 @@ class HomeController extends BaseControllerWithCategories
         GoodsClickStatisticsRecord::clear();
         // TODO now 5 is a max number (for demonstration purpose), but it can be edited.
         $unitOfGoodsRecords = UnitOfGoodsRecord::findTheMostPopular(5);
-        $cardsWithGoods = Yii::$app->automapper->mapMultiple($unitOfGoodsRecords, PopularItemCardModel::class);
+        $popularGoodsCards = Yii::$app->automapper->mapMultiple($unitOfGoodsRecords, PopularItemCardModel::class);
         
-        $homePageModel = new HomePageModel($cardsWithGoods);
+        unset($unitOfGoodsRecord);
+
+        $unitOfGoodsRecords = UnitOfGoodsRecord::findDiscounted(5);
+        $discountedGoodsCards = Yii::$app->automapper->mapMultiple($unitOfGoodsRecords, DiscountedItemCardModel::class);
+
+        $homePageModel = new HomePageModel($popularGoodsCards, $discountedGoodsCards);
 
         return $this->render('index', compact('homePageModel'));
     }

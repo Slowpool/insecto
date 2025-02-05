@@ -95,3 +95,7 @@ search,
 .item-card.popular {
     border-color: red;
 }
+
+.old-price {
+    text-decoration: line-through;
+}

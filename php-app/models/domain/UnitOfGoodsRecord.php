@@ -15,7 +15,7 @@ use yii\db\Expression;
  * @property int $id
  * @property string $name is not unique. Explanation: e.g. different providers can sell goods with the same name (several goods items with name Firefly seem not just pretty possible, but quite possible), or even one provider. In other words, the subject area doesn't imply unique goods names.
  * @property string $slug is not unique, according to $name.   
- * @property string|null $description
+ * @property ?string $description
  * @property string $atomic_item_measure g - gramm, u - unit
  * @property int $atomic_item_quantity e.g. 200. when atomic_item_measure is 'g' this would mean that one goods unit weighs 200gramm. 200-gramms-of-mosquitoes box = atomic goods item for sale
  * @property int $number_of_remaining e.g. 3. it would mean that 3 boxes of 200g mosquito are remaining
@@ -24,6 +24,7 @@ use yii\db\Expression;
  *
  * @property int $category_id
  * @property GoodsCategoryRecord $category
+ * @property ?GoodsCategoryRecord $priceOffer
  */
 class UnitOfGoodsRecord extends \yii\db\ActiveRecord
 {
@@ -88,6 +89,11 @@ class UnitOfGoodsRecord extends \yii\db\ActiveRecord
         return $this->hasOne(GoodsCategoryRecord::class, ['id' => 'category_id']);
     }
 
+    public function getPriceOffer()
+    {
+        return $this->hasOne(PriceOfferRecord::class, ['unit_of_goods_id' => 'id']);
+    }
+
     /**
      * @param \app\models\category\CommonCategorizedFilter $filter
      * @param bool $asArray
@@ -95,7 +101,8 @@ class UnitOfGoodsRecord extends \yii\db\ActiveRecord
      */
     public static function searchWithFilter(string $categoryName, CommonCategorizedFilter $filter, bool $asArray = true)
     {
-        $query = self::find();
+        $query = self::find()
+            ->with('priceOffer');
 
         $categoryId = GoodsCategoryRecord::find()->where(['name' => $categoryName])->select(['id']);
         $query = $query->where(['category_id' => $categoryId]);
@@ -126,7 +133,7 @@ class UnitOfGoodsRecord extends \yii\db\ActiveRecord
     {
         $query = self::find()
             // the simplest way to attach category. the second one is via join, which would allow to avoid overheaded category's id selecting, having decreased the size of data transported from db to app, but, you know. JOIN takes time. it's not worth it in this case
-            ->with('category')
+            ->with(['category', 'priceOffer'])
             ->where(['like', 'name', $searchModel->q]);
         // docs quote: `Using the Hash Format, Yii internally applies parameter binding for values, so in contrast to the string format, here you do not have to add parameters manually.`
         // [':searchText' => $searchModel->searchText]
@@ -150,7 +157,7 @@ class UnitOfGoodsRecord extends \yii\db\ActiveRecord
     {
         $goodsItem = self::find()
             ->where(['id' => $goodsItemId])
-            ->with('category')
+            ->with(['category', 'priceOffer'])
             ->one();
         return $goodsItem->category->slug == $categorySlug && $goodsItem->slug == $goodsSlug
             ? $goodsItem
@@ -180,7 +187,7 @@ class UnitOfGoodsRecord extends \yii\db\ActiveRecord
             "$uogr.category_id",
         ];
         return self::find()
-            ->with('category')
+            ->with(['category', 'priceOffer'])
             ->alias($uogr)
             ->select($unitOfGoodsColumns)
             ->leftJoin("goods_click_statistics $gcs", "$gcs.unit_of_goods_id = $uogr.id")
@@ -192,5 +199,22 @@ class UnitOfGoodsRecord extends \yii\db\ActiveRecord
             ->limit($maxRecords)
             ->all()
         ;
+    }
+
+    /**
+     * 
+     * @param int $maxRecords The maximum number of records to return.
+     * @return UnitOfGoodsRecord[] Ordered according to offer priority rank
+     */
+    public static function findDiscounted(int $maxRecords)
+    {
+        return self::find()
+            ->with('category')
+            // the first time in my life i'm using RIGHT JOIN
+            ->joinWith('priceOffer', true, 'RIGHT JOIN')
+            ->orderBy('price_offer.priority_rank ASC')
+            ->limit($maxRecords)
+            ->all();
+
     }
 }

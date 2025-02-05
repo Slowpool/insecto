@@ -2,7 +2,22 @@
 
 namespace app\models\goods_item;
 
-class DetailedGoodsItemModel extends \app\models\search\SearchItemCardModel {
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $slug
+ * @property int $price
+ * @property ?int $priceOffer
+ * @property int $atomicItemQuantity
+ * @property string $atomicItemMeasure
+ * @property string $category
+ * @property string $categorySlug
+ * @property ?string $description
+ * @property bool $isAlive
+ * @property bool $numberOfRemaining
+ */
+class DetailedGoodsItemModel extends \app\models\search\SearchItemCardModel
+{
     public ?string $description = null;
     public bool $isAlive;
     public bool $numberOfRemaining;

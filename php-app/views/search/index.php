@@ -17,17 +17,6 @@ $this->registerLinkTag(['rel' => 'canonical', 'href' => Url::to('/search', true)
 $searchModel = $searchPageModel->searchModel;
 $cardsWithGoods = $searchPageModel->cardsWithGoods;
 
-if ($cardsWithGoods) {
-    $itemPropertyNames = array_keys(get_object_vars($cardsWithGoods[0]));
-    foreach ($cardsWithGoods as $itemCard) {
-        // TODO create helper which encodes all properties of object
-        // properties encoding to make code below clearer
-        foreach ($itemPropertyNames as $propertyName) {
-            $itemCard->$propertyName = Html::encode($itemCard->$propertyName);
-        }
-    }
-}
-
 ?>
 
 <div id="search-page">
@@ -50,20 +39,7 @@ if ($cardsWithGoods) {
                 <h3>Results of search (<?= count($cardsWithGoods) ?>)</h3>
                 <ul id="results-list">
                     <?php foreach ($cardsWithGoods as $itemCard): ?>
-                        <li class="item-card">
-                            <!-- TODO bind pictures -->
-                            <img class="item-card-picture" src="/ladybug.jpg" alt="the picture of <?= $itemCard->name ?>">
-                            <div>
-                                <strong>
-                                    <?= Html::a($itemCard->name, "/$itemCard->categorySlug/$itemCard->slug/$itemCard->id") ?>
-                                </strong>
-                                <br>
-                                <!-- TODO create helper for this casting -->
-                                <?= "$itemCard->atomicItemQuantity  $itemCard->atomicItemMeasure." ?>
-                                <br>
-                                <?= Html::a($itemCard->category, "/$itemCard->categorySlug") ?>
-                            </div>
-                        </li>
+                        <?= $this->render('@goods_item_card', ['liClass' => 'item-card', 'card' => $itemCard]) ?>
                     <?php endforeach; ?>
                 </ul>
 
