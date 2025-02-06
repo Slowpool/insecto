@@ -23,7 +23,7 @@ class HomeController extends BaseControllerWithCategories
             'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [
-                    // TODO fill
+                    'index' => ['get'],
 
                 ],
             ],
@@ -50,11 +50,11 @@ class HomeController extends BaseControllerWithCategories
     public function actionIndex()
     {
         GoodsClickStatisticsRecord::clear();
-        // TODO now 5 is a max number (for demonstration purpose), but it can be edited.
+        // now 5 is a max number (for demonstration purpose), but it can be edited.
         $unitOfGoodsRecords = UnitOfGoodsRecord::findTheMostPopular(5);
         $popularGoodsCards = Yii::$app->automapper->mapMultiple($unitOfGoodsRecords, PopularItemCardModel::class);
         
-        unset($unitOfGoodsRecord);
+        unset($unitOfGoodsRecord); // not necessary
 
         $unitOfGoodsRecords = UnitOfGoodsRecord::findDiscounted(5);
         $discountedGoodsCards = Yii::$app->automapper->mapMultiple($unitOfGoodsRecords, DiscountedItemCardModel::class);

@@ -24,7 +24,7 @@ class m250127_192625_add_price_column_to_unit_of_goods_table extends Migration
      */
     public function safeDown()
     {
-        // TODO is check constraint deleted too?
         $this->dropColumn('{{%unit_of_goods}}', 'price');
-    }
+    } 
+
 }

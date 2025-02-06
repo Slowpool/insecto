@@ -159,7 +159,7 @@ class UnitOfGoodsRecord extends \yii\db\ActiveRecord
             ->where(['id' => $goodsItemId])
             ->with(['category', 'priceOffer'])
             ->one();
-        return $goodsItem->category->slug == $categorySlug && $goodsItem->slug == $goodsSlug
+        return $goodsItem && $goodsItem->category->slug == $categorySlug && $goodsItem->slug == $goodsSlug
             ? $goodsItem
             : null;
     }

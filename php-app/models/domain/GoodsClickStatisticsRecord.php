@@ -7,7 +7,7 @@ use Yii;
 /**
  * This is the model class for table "goods_click_statistics".
  *
- * @property int $id
+ * @property string $id GUID. it could have been BIGINT, whose size would be sufficient for an Amazon-like website for the next 1.5kk years (there's a limit!), whereas guid (with regular cleaning) implies an endless period of use (because it doesn't has AUTO_INCREMENT).
  * @property int $unit_of_goods_id
  * @property string $created_at
  *

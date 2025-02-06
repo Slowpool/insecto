@@ -25,7 +25,6 @@ class CategoryController extends BaseControllerWithCategories
                 'class' => VerbFilter::class,
                 'actions' => [
                     'index' => ['get'],
-                    'send-contact-us-form' => ['post'],
                 ],
             ],
         ];
@@ -45,7 +44,7 @@ class CategoryController extends BaseControllerWithCategories
     {
         $category = GoodsCategoryRecord::findBySlug($categorySlug);
         if ($category == null) {
-            throw new NotFoundHttpException;
+            throw new NotFoundHttpException('Such a category does not exist');
         }
 
         $categorizedFilter = new CommonCategorizedFilter;

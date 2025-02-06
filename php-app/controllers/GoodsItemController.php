@@ -22,7 +22,6 @@ class GoodsItemController extends BaseControllerWithCategories
                 'class' => VerbFilter::class,
                 'actions' => [
                     'index' => ['get'],
-                    'send-contact-us-form' => ['post'],
                 ],
             ],
         ];
@@ -42,7 +41,7 @@ class GoodsItemController extends BaseControllerWithCategories
     {
         $goodsItemRecord = UnitOfGoodsRecord::searchOne($categorySlug, $goodsSlug, $goodsItemId);
         if ($goodsItemRecord === null) {
-            throw new NotFoundHttpException();
+            throw new NotFoundHttpException('Such a goods item was not found');
         }
         GoodsClickStatisticsRecord::registerClick($goodsItemRecord->id, false);
         $goodsItemModel = Yii::$app->automapper->map($goodsItemRecord, DetailedGoodsItemModel::class);
