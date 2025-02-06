@@ -36,7 +36,7 @@ foreach ($card as $property => $value) {
 
     <br>
     <!-- TODO create helper for this casting -->
-    <?= "$card->atomicItemQuantity  $card->atomicItemMeasure." ?>
+    <?= "$card->atomicItemQuantity $card->atomicItemMeasure." ?>
 
     <br>
     <span class="price">

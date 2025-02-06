@@ -15,7 +15,7 @@ foreach ($goodsItemModel as $property => $value) {
 }
 
 $this->title = $goodsItemModel->name;
-// TODO breadcrumbs
+$this->params['breadcrumbs'][] = ['label' => $goodsItemModel->category, 'url' => "/$goodsItemModel->categorySlug"];
 
 ?>
 

@@ -9,13 +9,6 @@ return [
     '/contacts' => 'contacts/index',
     '/send-contact-us-form' => 'contacts/send-contact-us-form',
 
-    // TODO delete
-    [
-        'pattern' => '/insects/<categories:.*>',
-        'route' => 'search/index',
-        'encodeParams' => false,
-    ],
-
     /**
      * e.g. `/arachnida/goliath-birdeater/3`
      * at the end id is here because `goliath-birdeater` slug is not unique. see description of $name inside UnitOfgoodsRecord

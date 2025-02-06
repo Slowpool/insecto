@@ -98,4 +98,9 @@ search,
 
 .old-price {
     text-decoration: line-through;
+    color: grey;
+}
+
+.item-card.discounted {
+    border-color: green;
 }

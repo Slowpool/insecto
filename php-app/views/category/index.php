@@ -19,7 +19,6 @@ $this->registerJsFile('@web/js/category-page.js');
 
 ?>
 <div id="category-page">
-    <!-- TODO breadcrumbs -->
     <h3>
         <?= $this->title ?>
     </h3>

@@ -211,10 +211,11 @@ class UnitOfGoodsRecord extends \yii\db\ActiveRecord
         return self::find()
             ->with('category')
             // the first time in my life i'm using RIGHT JOIN
+            // upd: actually both INNER and RIGHT joins are possible here due to uniqueness of `price_offer` regarding the `unit_of_goods`
             ->joinWith('priceOffer', true, 'RIGHT JOIN')
+            ->where(['NOT', ['price_offer.priority_rank' => null]])
             ->orderBy('price_offer.priority_rank ASC')
             ->limit($maxRecords)
             ->all();
-
     }
 }
