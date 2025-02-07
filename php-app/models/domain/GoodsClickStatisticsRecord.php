@@ -3,6 +3,7 @@
 namespace app\models\domain;
 
 use Yii;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "goods_click_statistics".
@@ -76,7 +77,7 @@ class GoodsClickStatisticsRecord extends \yii\db\ActiveRecord
     /** This method removes outdated clicks. */
     public static function clear()
     {
-        Yii::$app->db->createCommand('CALL CLEAR_OUTDATED_CLICKS()')
-            ->queryScalar();
+        $click_expiration_measure = CLICK_EXPIRATION_MEASURE;
+        self::deleteAll(['>=', new Expression("TIMESTAMPDIFF($click_expiration_measure, [[created_at]], CURRENT_TIMESTAMP)"), CLICK_EXPIRATION]);
     }
 }

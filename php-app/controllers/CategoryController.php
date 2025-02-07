@@ -11,6 +11,7 @@ use app\models\domain\GoodsCategoryRecord;
 use app\models\category\CategorizedPageModel;
 use app\models\domain\UnitOfGoodsRecord;
 use app\models\search\SearchItemCardModel;
+use yii\rest\Controller;
 use yii\web\NotFoundHttpException;
 
 class CategoryController extends BaseControllerWithCategories
