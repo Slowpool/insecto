@@ -4,7 +4,7 @@ return [
     [
         'class' => 'yii\rest\UrlRule',
         'controller' => 'category-api',
-        // TODO how to make it
+        // TODO it can be done via $patterns
         // 'route' => 'api/category',
         'pluralize' => false,
     ],

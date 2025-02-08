@@ -24,7 +24,7 @@ function ReadProperty($propertyName)
 }
 
 $autoMapperConfig->registerMapping(UnitOfGoodsRecord::class, CategorizedItemCardModel::class)
-    // the following source properties technically aren't public properties - they are read via __get()
+    // the following source properties technically aren't public properties - they are read via __get(). that's why `ReadProperty()` is used
     ->forMember('id', ReadProperty('id'))
     ->forMember('name', ReadProperty('name'))
     ->forMember('slug', ReadProperty('slug'))
@@ -60,9 +60,7 @@ $autoMapperConfig->registerMapping(UnitOfGoodsRecord::class, PopularItemCardMode
 // i'm not sure whether it's okey to create SearchItemCardModel clones, but on the other hand what if they could contain some other data to display, e.g. offer description *70% DISCOUNT IF IT'S YOUR BIRTHDAY*, adding extra `offer_description` attribute to DiscountedItemCardModel
 $autoMapperConfig->registerMapping(UnitOfGoodsRecord::class, DiscountedItemCardModel::class)
     ->copyFrom(UnitOfGoodsRecord::class, SearchItemCardModel::class)
-    // ->forMember('offerPriorityRank', Operation::mapFrom(function($record) {
-    //     return $record->priceOffer?->priority_rank;
-    // }))
+    // TODO add discount_percentage mapping and display it in view
 ;
 
 $autoMapperConfig->registerMapping(GoodsCategoryRecord::class, CategoryModel::class)

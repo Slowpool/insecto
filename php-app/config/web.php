@@ -51,8 +51,9 @@ $config = [
             'enableStrictParsing' => true,
             'showScriptName' => false,
             'rules' => [
+                // order matters here
+                ...require 'api_urls.php',
                 ...require 'web_urls.php',
-                ...require 'api_urls.php'
             ],
         ],
         'automapper' => [

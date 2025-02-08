@@ -22,8 +22,7 @@ foreach ($card as $property => $value) {
 ?>
 
 <?= Html::beginTag('li', ['class' => $liClass]) ?>
-<!-- TODO bind pictures -->
-<img class="item-card-picture" src="/ladybug.jpg" alt="the picture of <?= $card->name ?>">
+<img class="item-card-picture" src="/goods-images/<?= $card->id ?>/main.jpg" alt="the picture of <?= $card->name ?>">
 <div>
     <strong>
         <?= Html::a($card->name, "/$categorySlug/$card->slug/$card->id") ?>

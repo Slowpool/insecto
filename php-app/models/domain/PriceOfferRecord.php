@@ -10,6 +10,7 @@ use Yii;
  * @property int $id
  * @property int $unit_of_goods_id
  * @property int $new_price
+ * @property int $discount_percentage
  * @property ?int $priority_rank to promote goods items as desired by seller
  *
  * @property UnitOfGoodsRecord $unitOfGoodsRecord
@@ -31,7 +32,7 @@ class PriceOfferRecord extends \yii\db\ActiveRecord
     {
         return [
             [['unit_of_goods_id', 'new_price'], 'required'],
-            [['unit_of_goods_id', 'new_price', 'priority_rank'], 'integer'],
+            [['unit_of_goods_id', 'new_price', 'priority_rank', 'discount_percentage'], 'integer'],
             [['unit_of_goods_id', 'priority_rank'], 'unique'],
             [['unit_of_goods_id'], 'exist', 'skipOnError' => true, 'targetClass' => UnitOfGoodsRecord::class, 'targetAttribute' => ['unit_of_goods_id' => 'id']],
         ];
@@ -58,4 +59,5 @@ class PriceOfferRecord extends \yii\db\ActiveRecord
     {
         return $this->hasOne(UnitOfGoodsRecord::class, ['id' => 'unit_of_goods_id']);
     }
+
 }

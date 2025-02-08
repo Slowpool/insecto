@@ -24,7 +24,8 @@ $this->params['breadcrumbs'][] = ['label' => $goodsItemModel->category, 'url' =>
     <h5>
         <?= Html::a($goodsItemModel->category, "/$goodsItemModel->categorySlug") ?>
     </h5>
-    <img class="goods-item-picture" src="/ladybug.jpg" alt="Picture of <?= $goodsItemModel->name ?>">
+    <img class="item-card-picture" src="/goods-images/<?= $goodsItemModel->id ?>/main.jpg"
+        alt="the picture of <?= $goodsItemModel->name ?>">
     <br>
     <?= $goodsItemModel->description ?>
     <br>
