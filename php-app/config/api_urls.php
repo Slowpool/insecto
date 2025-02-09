@@ -13,6 +13,9 @@ return [
         'controller' => 'goods-item-api',
         // 'route' => 'api/goods-item',
         'pluralize' => false,
+        'extraPatterns' => [
+            'POST goods-reception' => 'goods-reception',
+        ],
     ],
     [
         'class' => 'yii\rest\UrlRule',

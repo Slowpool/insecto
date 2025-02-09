@@ -14,11 +14,11 @@ namespace app\models\goods_item;
  * @property string $categorySlug
  * @property ?string $description
  * @property bool $isAlive
- * @property bool $numberOfRemaining
+ * @property int $numberOfRemaining
  */
 class DetailedGoodsItemModel extends \app\models\search\SearchItemCardModel
 {
     public ?string $description = null;
     public bool $isAlive;
-    public bool $numberOfRemaining;
+    public int $numberOfRemaining;
 }

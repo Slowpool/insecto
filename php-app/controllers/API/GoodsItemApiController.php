@@ -3,6 +3,10 @@
 namespace app\controllers;
 
 use app\models\domain\UnitOfGoodsRecord;
+use app\models\goods_item\GoodsReceptionModel;
+use Yii;
+use yii\web\BadRequestHttpException;
+use yii\web\ServerErrorHttpException;
 
 class GoodsItemApiController extends \yii\rest\ActiveController
 {
@@ -14,12 +18,21 @@ class GoodsItemApiController extends \yii\rest\ActiveController
      * @param mixed $numberOfReceived
      * @return void
      */
-    public function goodsReception($unitOfGoodsId, $numberOfReceived)
+    // The only one method i have implemented.
+    public function actionGoodsReception()
     {
-        if ($numberOfReceived <= 0) {
-            throw new \Exception('You should receive natural number of goods items, not 0');
+        $model = new GoodsReceptionModel;
+        // TODO serious issues with model validation.
+        if (!$model->load(Yii::$app->request->bodyParams, '') || !$model->validate()) {
+            throw new BadRequestHttpException(implode(' ', $model->getErrorSummary(true)));
         }
-        incrementNumberOfRemaining($unitOfGoodsId, $numberOfReceived);
+
+        try {
+            UnitOfGoodsRecord::incrementNumberOfRemaining($model->unitOfGoodsId, $model->numberOfReceived);
+        } catch (\Exception $e) {
+            Yii::error($e->getMessage(), 'db');
+            throw new ServerErrorHttpException('Failed to save updated goods item');
+        }
     }
 
     /**
@@ -53,19 +66,20 @@ class GoodsItemApiController extends \yii\rest\ActiveController
         }
     }
 
-    public function createSeveral(array $unitsOfGoods) {
+    public function createSeveral(array $unitsOfGoods)
+    {
         beginTransaction();
         try {
-            foreach($unitsOfGoods as $goodsItem) {
+            foreach ($unitsOfGoods as $goodsItem) {
                 create($goodsItem);
             }
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             // rollback
         }
     }
 
-    public function stuffWithPictures() {
+    public function stuffWithPictures()
+    {
         // TODO requires picture binded to db entity 
     }
 

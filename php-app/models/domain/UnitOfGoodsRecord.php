@@ -218,4 +218,12 @@ class UnitOfGoodsRecord extends \yii\db\ActiveRecord
             ->limit($maxRecords)
             ->all();
     }
+
+    public static function incrementNumberOfRemaining($unitOfGoodsId, $numberOfReceived) {
+        $record = self::findOne(['id' => $unitOfGoodsId]);
+        $record->number_of_remaining += $numberOfReceived;
+        if (!$record->update(false)) {
+            throw new \Exception('Failed to update: database error');
+        }
+    }
 }
