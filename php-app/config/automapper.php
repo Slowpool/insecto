@@ -34,6 +34,7 @@ $autoMapperConfig->registerMapping(UnitOfGoodsRecord::class, CategorizedItemCard
     }))
     ->forMember('atomicItemQuantity', ReadProperty('atomic_item_quantity'))
     ->forMember('atomicItemMeasure', ReadProperty('atomic_item_measure'))
+    ->forMember('mainPicture', ReadProperty('main_picture'))
 ;
 
 $autoMapperConfig->registerMapping(UnitOfGoodsRecord::class, SearchItemCardModel::class)

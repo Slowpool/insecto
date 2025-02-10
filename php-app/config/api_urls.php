@@ -14,7 +14,8 @@ return [
         // 'route' => 'api/goods-item',
         'pluralize' => false,
         'extraPatterns' => [
-            'POST goods-reception' => 'goods-reception',
+            'PATCH goods-reception' => 'goods-reception',
+            'POST register-as-died' => 'register-as-died',
         ],
     ],
     [

@@ -19,4 +19,5 @@ class CategorizedItemCardModel {
     public ?int $priceOffer = null;
     public int $atomicItemQuantity;
     public string $atomicItemMeasure;
+    public ?string $mainPicture;
 }

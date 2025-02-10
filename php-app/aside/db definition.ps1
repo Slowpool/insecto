@@ -16,3 +16,5 @@ php yii migrate/create create_price_offer_table --fields="unit_of_goods_id:integ
 }
 
 php yii migrate/create add_discount_percentage_column_to_price_offer_table --fields="discount_percentage:integer:notNull:check('discount_percentage > 0 AND discount_percentage < 100')"
+
+php yii migrate/create add_main_picture_column_to_unit_of_goods_table --fields="main_picture:string(255)"

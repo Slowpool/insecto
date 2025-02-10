@@ -12,7 +12,7 @@ class PriceOfferApiController extends \yii\rest\ActiveController
      */
     public function updateViaNewPrice($priceOfferId, $newPrice)
     {
-
+        
     }
 
     /**

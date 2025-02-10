@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\domain\UnitOfGoodsRecord;
 use app\models\goods_item\GoodsReceptionModel;
+use app\models\goods_item\GoodsDiedModel;
 use Yii;
 use yii\web\BadRequestHttpException;
 use yii\web\ServerErrorHttpException;
@@ -14,24 +15,25 @@ class GoodsItemApiController extends \yii\rest\ActiveController
 
     /**
      * E.g. you had a 3 remaining mosquitoes. After receiving 5 more, you would have 8 mosquitoes.
+     * json: {"numberOfReceived": 5, "unitOfGoodsId": 1}
      * @param mixed $unitOfGoodsId
      * @param mixed $numberOfReceived
      * @return void
      */
-    // The only one method i have implemented.
     public function actionGoodsReception()
     {
         $model = new GoodsReceptionModel;
-        // TODO serious issues with model validation.
         if (!$model->load(Yii::$app->request->bodyParams, '') || !$model->validate()) {
             throw new BadRequestHttpException(implode(' ', $model->getErrorSummary(true)));
         }
 
         try {
             UnitOfGoodsRecord::incrementNumberOfRemaining($model->unitOfGoodsId, $model->numberOfReceived);
-        } catch (\Exception $e) {
+        } catch (\yii\db\Exception $e) {
             Yii::error($e->getMessage(), 'db');
             throw new ServerErrorHttpException('Failed to save updated goods item');
+        } catch (\Exception $e) {
+            throw new BadRequestHttpException($e->getMessage());
         }
     }
 
@@ -42,27 +44,20 @@ class GoodsItemApiController extends \yii\rest\ActiveController
      * @param mixed $numberOfDied
      * @return void
      */
-    public function registerAsDied($unitOfGoodsId, $numberOfDied)
+    public function actionRegisterAsDied()
     {
-        $record = findById($unitOfGoodsId);
-        // all died
-        if ($record->numberOfRemaining == $numberOfDied) {
-
-            $record->alive = false;
-            // -90% when it dies.
-            // notice: it is not a discount.
-            $record->price = $record->price * 0.1;
-            $record->update();
+        $model = new GoodsDiedModel;
+        if (!$model->load(Yii::$app->request->bodyParams, '') || !$model->validate()) {
+            throw new BadRequestHttpException(implode(' ', $model->getErrorSummary(true)));
         }
-        // some part died
-        else {
-            $record->numberOfRemaining -= $numberOfDied;
 
-            $diedInsectRecord = new UnitOfGoodsRecord;
-            $diedInsectRecord = copyValues($record); // except id ofc
-            $diedInsectRecord->numberOfRemaining = $numberOfDied;
-            $diedInsectRecord->price = $diedInsectRecord->price * 0.1;
-            $diedInsectRecord->save();
+        try {
+            UnitOfGoodsRecord::died($model->unitOfGoodsId, $model->numberOfDied, $model->sellDied);
+        } catch (\yii\db\Exception $e) {
+            Yii::error($e->getMessage(), 'db');
+            throw new ServerErrorHttpException('Failed to save changes');
+        } catch (\Exception $e) {
+            throw new BadRequestHttpException($e->getMessage());
         }
     }
 
