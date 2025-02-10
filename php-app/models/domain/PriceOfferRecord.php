@@ -30,11 +30,21 @@ class PriceOfferRecord extends \yii\db\ActiveRecord
      */
     public function rules()
     {
+        // TODO add scenarios
         return [
             [['unit_of_goods_id', 'new_price'], 'required'],
             [['unit_of_goods_id', 'new_price', 'priority_rank', 'discount_percentage'], 'integer'],
             [['unit_of_goods_id', 'priority_rank'], 'unique'],
             [['unit_of_goods_id'], 'exist', 'skipOnError' => true, 'targetClass' => UnitOfGoodsRecord::class, 'targetAttribute' => ['unit_of_goods_id' => 'id']],
+        ];
+    }
+
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => 'app\components\PriceConversion'
+            ]
         ];
     }
 
@@ -58,6 +68,30 @@ class PriceOfferRecord extends \yii\db\ActiveRecord
     public function getUnitOfGoodsRecord()
     {
         return $this->hasOne(UnitOfGoodsRecord::class, ['id' => 'unit_of_goods_id']);
+    }
+
+    public static function createViaPrice(int $goodsItemId, int $newPrice)
+    {
+        self::create([
+            'unit_of_goods_id' => $goodsItemId,
+            'new_price' => $newPrice
+        ], 'Failed to save new price offer via price');
+    }
+
+    public static function createViaDiscountPercentage(int $goodsItemId, int $discountPercentage)
+    {
+        self::create([
+            'unit_of_goods_id' => $goodsItemId,
+            'discount_percentage' => $discountPercentage
+        ], 'Failed to save new price offer via price');
+    }
+
+    public static function create(array $config, string $errorMessage)
+    {
+        $record = new self($config);
+        if (!$record->save()) {
+            throw new \yii\db\Exception($errorMessage);
+        }
     }
 
 }

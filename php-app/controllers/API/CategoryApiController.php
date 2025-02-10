@@ -2,7 +2,7 @@
 
 namespace app\controllers;
 
-class CategoryApiController extends \yii\rest\ActiveController
+class CategoryApiController extends BaseApiController
 {
     public $modelClass = 'app\models\domain\GoodsCategoryRecord';
     

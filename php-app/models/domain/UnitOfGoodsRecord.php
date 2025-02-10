@@ -225,7 +225,7 @@ class UnitOfGoodsRecord extends \yii\db\ActiveRecord
     {
         $record = self::findOne(['id' => $unitOfGoodsId]);
         if ($record === null) {
-            throw new \Exception("The record with id $unitOfGoodsId is not found");
+            throw new \Exception("The record with id $unitOfGoodsId not found");
         }
         $record->number_of_remaining += $numberOfReceived;
         if (!$record->update(false)) {
@@ -247,7 +247,7 @@ class UnitOfGoodsRecord extends \yii\db\ActiveRecord
             // all died
             case 0:
                 $record->is_alive = false;
-                $record->price = self::reducePrice($record->price, 90);
+                $record->price = self::reducePrice($record->price, DISCOUNT_ON_DEAD);
                 break;
             // some part died
             case 1:
@@ -262,7 +262,7 @@ class UnitOfGoodsRecord extends \yii\db\ActiveRecord
                         $diedGoodsRecord->id = null;
                         $diedGoodsRecord->is_alive = false;
                         $diedGoodsRecord->number_of_remaining = $numberOfDied;
-                        $diedGoodsRecord->price = self::reducePrice($diedGoodsRecord->price, 90);
+                        $diedGoodsRecord->price = self::reducePrice($diedGoodsRecord->price, DISCOUNT_ON_DEAD);
                     }
 
                     if (!$diedGoodsRecord->save()) {

@@ -2,47 +2,46 @@
 
 namespace app\controllers;
 
-class PriceOfferApiController extends \yii\rest\ActiveController
+use app\models\domain\PriceOfferRecord;
+use app\models\domain\UnitOfGoodsRecord;
+use app\models\price_offer\PriceOfferViaDiscountModel;
+use app\models\price_offer\PriceOfferViaPriceModel;
+use Yii;
+use yii\web\BadRequestHttpException;
+use yii\web\ServerErrorHttpException;
+
+class PriceOfferApiController extends BaseApiController
 {
     public $modelClass = 'app\models\domain\PriceOfferRecord';
 
     /**
-     * Here you specify `newPrice`, and program calculates `discountPercentage` according to that `newPrice`
+     * Here you specify `newPrice`, and the app calculates `discountPercentage` according to that `newPrice`
      * @return void
      */
-    public function updateViaNewPrice($priceOfferId, $newPrice)
+    public function actionCreateViaPrice()
     {
-        
+        $this->handleComplicatedRequest(
+            PriceOfferViaPriceModel::class,
+            function ($validatedModel) {
+                PriceOfferRecord::createViaPrice($validatedModel->goodsItemId, $validatedModel->newPrice);
+            },
+            'Failed to create price offer'
+        );
     }
 
     /**
-     * Here you specify `discountPercentage`, and the program calculates `newPrice` according to that `discountPercentage`
+     * Here you specify `discountPercentage`, and the app calculates `newPrice` according to that `discountPercentage`
      * @return void
      */
-    public function updateViaDiscountPercentage()
+    public function actionCreateViaDiscountPercentage()
     {
-
-    }
-
-    /**
-     * Alternative to `updateViaNewPrice()` and `updateViaDiscountPercentage()`.
-     * @return void
-     */
-    // TODO Should it be implemented or should it be divided into `updateViaNewPrice()` and `updateViaDiscountPercentage()`?
-    public function update($priceOfferId, $newPrice, $discountPercentage, $priorityRank)
-    {
-        if ($newPrice !== null && $discountPercentage !== null) {
-            // to prevent inconsistency like `price` = 100, `discountPercentage` = 50, newPrice = 99
-            throw new \Exception('Pick either `newPrice` or `discountPercentage`, not both');
-        }
-
-        if ($newPrice) {
-            $discountPercentage = calculateDiscountPercentage($price, $newPrice);
-        } elseif ($discountPercentage) {
-            $newPrice = calculateNewPrice($price, $discountPercentage);
-        }
-
-        // update
+        $this->handleComplicatedRequest(
+            PriceOfferViaDiscountModel::class,
+            function ($validatedModel) {
+                PriceOfferRecord::createViaPrice($validatedModel->goodsItemId, $validatedModel->newPrice);
+            },
+            'Failed to create price offer'
+        );
     }
 
     /**
@@ -64,17 +63,18 @@ class PriceOfferApiController extends \yii\rest\ActiveController
                 // e.g.: existing priority ranks: 1, 2, 3. Received $priorityRank value: 1. This method shifts existings priority ranks to 2,3,4 and sets $goodsItemId price offer priority rank = $priorityRank (which is 1)
                 shiftPriorityRankBelow($priorityRank);
             }
-        }
-        else {
+        } else {
             // without shift. throws exception when rank is being already taken
         }
     }
-    
-    public function delete($whichOneToDelete) {
+
+    public function delete($whichOneToDelete)
+    {
         // the same thing with shift as in `create()` but in the other direction. when 1 rank is deleted having 1,2,3, then 2,3 become 1,2  
     }
 
-    public function deleteForCategory($categoryName) {
+    public function deleteForCategory($categoryName)
+    {
         // antonym of `createForCategory()`
     }
 

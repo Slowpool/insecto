@@ -41,7 +41,7 @@ class GoodsItemController extends BaseControllerWithCategories
     {
         $goodsItemRecord = UnitOfGoodsRecord::searchOne($categorySlug, $goodsSlug, $goodsItemId);
         if ($goodsItemRecord === null) {
-            throw new NotFoundHttpException('Such a goods item was not found');
+            throw new NotFoundHttpException('Such a goods item not found');
         }
         GoodsClickStatisticsRecord::registerClick($goodsItemRecord->id, false);
         $goodsItemModel = Yii::$app->automapper->map($goodsItemRecord, DetailedGoodsItemModel::class);
