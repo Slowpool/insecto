@@ -74,7 +74,7 @@
     },
     "autoload": {
         "files": [
-            "components\\behaviors\\PriceConversionBehavior.php",
+            "components\\behaviors\\PercentageConversionBehavior.php",
 
             "controllers\\API\\BaseApiController.php",
             "controllers\\API\\CategoryApiController.php",

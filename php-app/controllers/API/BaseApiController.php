@@ -8,7 +8,7 @@ use yii\web\ServerErrorHttpException;
 
 abstract class BaseApiController extends \yii\rest\ActiveController
 {
-    public function handleComplicatedRequest($modelClass, $businessLogicCallback, $errorMessageForUser)
+    public function handleComplicatedRequest(mixed $modelClass, callable $businessLogicCallback, string $errorMessageForUser)
     {
         $model = new $modelClass;
         if (!$model->load(Yii::$app->request->bodyParams, '') || !$model->validate()) {

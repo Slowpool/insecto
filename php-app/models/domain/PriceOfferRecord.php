@@ -12,11 +12,18 @@ use Yii;
  * @property int $new_price
  * @property int $discount_percentage
  * @property ?int $priority_rank to promote goods items as desired by seller
+ * @property int $originalPrice note: it is not stored in database. Also it is a workaround to use PercentageConversionBehavior.
  *
  * @property UnitOfGoodsRecord $unitOfGoodsRecord
  */
 class PriceOfferRecord extends \yii\db\ActiveRecord
 {
+    /**
+     * You should assign it before insert, but hold in mind that this value won't be inserted in db.
+     * @var int
+     */
+    public int $originalPrice;
+    
     /**
      * {@inheritdoc}
      */
@@ -43,7 +50,13 @@ class PriceOfferRecord extends \yii\db\ActiveRecord
     {
         return [
             [
-                'class' => 'app\components\PriceConversion'
+                /**
+                 * Ensures that before insert only one of `discount_percentage` and `new_price` is specified and converts one to another. This prevents inconsistency between `discount_percentage` and `new_price` by calculating another (empty value) automatically. In other words (visually), this behavior prevents cases when the goods item price is 100, user inserts `new_price` = 80 and he also inserts `discount_percentage` = 99, although it actually should be 20 in this case.
+                 */
+                'class' => \app\components\behaviors\PercentageConversionBehavior::class,
+                'attribute' => 'originalPrice',
+                'partOfAttribute' => 'new_price',
+                'percentage' => 'discount_percentage',
             ]
         ];
     }
