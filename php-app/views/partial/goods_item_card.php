@@ -7,7 +7,7 @@ use app\models\search\SearchItemCardModel;
 use yii\bootstrap5\Html;
 
 /** @var CategorizedItemCardModel|SearchItemCardModel|PopularItemCardModel $card */
-/** @var string|null $categorySlug required ever (for detailed goods item page, in url). But when its value is a null, then $card->categorySlug is being assigned instead. */
+/** @var string|null $categorySlug is required always (for detailed goods item page, in url). But when its value is a null, then $card->categorySlug is being assigned instead. */
 
 $categorySlug ??= $card->categorySlug;
 
@@ -42,6 +42,7 @@ foreach ($card as $property => $value) {
         <?php if ($card->priceOffer): ?>
             <span class="old-price"><?= $card->price ?> money</span>
             <span class="new-price"><?= $card->priceOffer ?> money</span>
+            <span class="discount-percentage">-<?= $card->discountPercentage ?>%</span>
 
         <?php else: ?>
             <span class="ordinary-price"><?= $card->price ?> money</span>

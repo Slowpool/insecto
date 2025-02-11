@@ -31,20 +31,21 @@ class PercentageConversionBehavior extends AttributeBehavior
 
     public function calculateAbsoluteOrPercentage($event)
     {
-        $attributeValue = $this->owner->{$this->attribute};
-        $part = $this->owner->{$this->partOfAttribute};
-        $percentage = $this->owner->{$this->percentage};
+        $owner = $this->owner;
+        $attributeValue = $owner->{$this->attribute};
+        $part = $owner->{$this->partOfAttribute};
+        $percentage = $owner->{$this->percentage};
         if ($part) {
-            $this->owner->{$this->percentage} = self::calculatePercentage($part, $attributeValue);
+            $owner->{$this->percentage} = 100 - self::calculatePercentage($part, $attributeValue);
         } elseif ($percentage) {
-            $this->owner->{$this->partOfAttribute} = self::calculatePart($percentage, $attributeValue);
+            $owner->{$this->partOfAttribute} = $attributeValue - self::calculatePart($percentage, $attributeValue);
         }
     }
 
     // TODO it should be in helper!
     private function calculatePercentage(int $part, int $entire): int
     {
-        return (int) (100 - $part / $entire * 100);
+        return (int) ($part / $entire * 100);
     }
 
     private function calculatePart(int $percentage, int $entire)

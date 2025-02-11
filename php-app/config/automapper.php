@@ -32,6 +32,9 @@ $autoMapperConfig->registerMapping(UnitOfGoodsRecord::class, CategorizedItemCard
     ->forMember('priceOffer', Operation::mapFrom(function ($record) {
         return $record->priceOffer?->new_price;
     }))
+    ->forMember('discountPercentage', Operation::mapFrom(function ($record) {
+        return $record->priceOffer?->discount_percentage;
+    }))
     ->forMember('atomicItemQuantity', ReadProperty('atomic_item_quantity'))
     ->forMember('atomicItemMeasure', ReadProperty('atomic_item_measure'))
     ->forMember('mainPicture', ReadProperty('main_picture'))

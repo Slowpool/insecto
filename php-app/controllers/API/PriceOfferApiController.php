@@ -15,7 +15,8 @@ class PriceOfferApiController extends BaseApiController
     public $modelClass = 'app\models\domain\PriceOfferRecord';
 
     /**
-     * Here you specify `newPrice`, and the app calculates `discountPercentage` according to that `newPrice`
+     * Here you specify `newPrice`, and the app calculates `discountPercentage` according to that `newPrice`.
+     * json example: {"unitOfGoodsId": 1, "newPrice": 35} (here 1 is danaida monarch)
      * @return void
      */
     public function actionCreateViaPrice()
@@ -30,7 +31,8 @@ class PriceOfferApiController extends BaseApiController
     }
 
     /**
-     * Here you specify `discountPercentage`, and the app calculates `newPrice` according to that `discountPercentage`
+     * Here you specify `discountPercentage`, and the app calculates `newPrice` according to that `discountPercentage`.
+     * json example: {"unitOfGoodsId": 1, "discountPercentage": 5} (here 1 is danaida monarch)
      * @return void
      */
     public function actionCreateViaDiscountPercentage()
@@ -40,7 +42,7 @@ class PriceOfferApiController extends BaseApiController
             function ($validatedModel) {
                 PriceOfferRecord::createViaDiscountPercentage($validatedModel->unitOfGoodsId, $validatedModel->discountPercentage);
             },
-            'Failed to create price offer'
+            'Failed to create price offer. Probably it is impossible to create a price offer with such a small/big discount percentage'
         );
     }
 

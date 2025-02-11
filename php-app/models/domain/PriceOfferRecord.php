@@ -102,7 +102,8 @@ class PriceOfferRecord extends \yii\db\ActiveRecord
     /**
      * When price offer is already exist for specified `unitOfGoodsId`, this method removes it and creates a new one.
      * @param array $config
-     * @param string $errorMessage
+     * @param string $errorMessage the message to display to user in case of database error (details of this error are hidden from user, but user gets this `errorMessage`)
+     * @var yii\db\ActiveRecord $unitOfGoodsRecord 
      * @throws \Exception
      * @throws \yii\db\Exception
      * @return void

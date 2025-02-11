@@ -35,6 +35,7 @@ $this->params['breadcrumbs'][] = ['label' => $goodsItemModel->category, 'url' =>
     <?php if ($goodsItemModel->priceOffer): ?>
         <span class="old-price"><?= $goodsItemModel->price ?> money</span>
         <span class="new-price"><?= $goodsItemModel->priceOffer ?> money</span>
+        <span class="discount-percentage">-<?= $goodsItemModel->discountPercentage ?>%</span>
 
     <?php else: ?>
         <span class="ordinary-price"><?= $goodsItemModel->price ?> money</span>
