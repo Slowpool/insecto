@@ -32,8 +32,8 @@ $this->registerJsFile('@web/js/category-page.js');
         <?= $filterForm->field($filter, 'isAlive')->checkbox()->label('Is alive') ?>
         <?= $filterForm->field($filter, 'isAvailable')->checkbox()->label('Is available') ?>
         <section class="filter-price-limits">
-            <?= $filterForm->field($filter, 'minPrice')->textInput(['type' => 'number', 'min' => '1', 'max' => strval(PHP_INT_MAX)])->label('Minimum price') ?>
-            <?= $filterForm->field($filter, 'maxPrice')->textInput(['type' => 'number', 'min' => '1', 'max' => strval(PHP_INT_MAX)])->label('Maximum price') ?>
+            <?= $filterForm->field($filter, 'minPrice')->textInput(['type' => 'number', 'min' => '1', 'max' => strval(DB_INT_MAX)])->label('Minimum price') ?>
+            <?= $filterForm->field($filter, 'maxPrice')->textInput(['type' => 'number', 'min' => '1', 'max' => strval(DB_INT_MAX)])->label('Maximum price') ?>
         </section>
         <?= Html::submitButton("Apply filter") ?>
         <?php ActiveForm::end() ?>

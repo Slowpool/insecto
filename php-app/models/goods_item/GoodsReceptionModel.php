@@ -13,7 +13,7 @@ class GoodsReceptionModel extends \yii\base\Model
     {
         return [
             // TODO still a problem with php max int and mysql max int (the first one constists of 64 bytes, the second one - of 32)
-            [['numberOfReceived', 'unitOfGoodsId'], 'integer', 'min' => 1, 'max' => PHP_INT_MAX],
+            [['numberOfReceived', 'unitOfGoodsId'], 'integer', 'min' => 1, 'max' => DB_INT_MAX],
         ];
     }
 }

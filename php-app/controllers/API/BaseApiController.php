@@ -3,15 +3,32 @@
 namespace app\controllers;
 
 use Yii;
+use yii\helpers\Json;
 use yii\web\BadRequestHttpException;
 use yii\web\ServerErrorHttpException;
 
 abstract class BaseApiController extends \yii\rest\ActiveController
 {
-    public function handleComplicatedRequest(mixed $modelClass, callable $businessLogicCallback, string $errorMessageForUser)
+    /**
+     * 
+     * @param mixed $modelClass
+     * @param bool $complicatedJsonInput if true, than input nested models are converted to models, otherwise to array
+     * @param callable $businessLogicCallback
+     * @param string $errorMessageForUser
+     * @throws \yii\web\BadRequestHttpException
+     * @throws \yii\web\ServerErrorHttpException
+     * @return void
+     */
+    public function handleComplicatedRequest(mixed $modelClass, bool $complicatedJsonInput, callable $businessLogicCallback, string $errorMessageForUser)
     {
-        $model = new $modelClass;
-        if (!$model->load(Yii::$app->request->bodyParams, '') || !$model->validate()) {
+        if ($complicatedJsonInput) {
+            $model = new $modelClass(['json' => Json::decode(Yii::$app->request->rawBody)]);
+        }
+        else {
+            $model = new $modelClass;
+            $model->load(Yii::$app->request->bodyParams, '');
+        }
+        if (!$model->validate()) {
             throw new BadRequestHttpException(implode(' ', $model->getErrorSummary(true)));
         }
 

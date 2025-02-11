@@ -2,17 +2,16 @@
 
 namespace app\models\price_offer;
 
-class PriceOfferViaPriceModel extends \yii\base\Model
+class PriceOfferViaPriceModel extends PriceOfferViaSomethingModel
 {
-    /** @var int */
-    public $unitOfGoodsId;
     /** @var int */
     public $newPrice;
     public function rules(): array
     {
         return [
-            [['unitOfGoodsId', 'newPrice'], 'integer', 'min' => 1, 'max' => PHP_INT_MAX],
-            [['unitOfGoodsId', 'newPrice'], 'required'],
+            ...parent::rules(),
+            [['newPrice'], 'integer', 'min' => 1, 'max' => DB_INT_MAX],
+            [['newPrice'], 'required'],
         ];
     }
 }

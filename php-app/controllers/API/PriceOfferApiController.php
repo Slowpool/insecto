@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\domain\PriceOfferRecord;
 use app\models\domain\UnitOfGoodsRecord;
+use app\models\price_offer\PriceOfferOnCategoryModel;
 use app\models\price_offer\PriceOfferViaDiscountModel;
 use app\models\price_offer\PriceOfferViaPriceModel;
 use Yii;
@@ -23,8 +24,14 @@ class PriceOfferApiController extends BaseApiController
     {
         $this->handleComplicatedRequest(
             PriceOfferViaPriceModel::class,
+            true,
             function ($validatedModel) {
-                PriceOfferRecord::createViaPrice($validatedModel->unitOfGoodsId, $validatedModel->newPrice);
+                if ($validatedModel->priorityRank) {
+                    PriceOfferRecord::createViaPrice($validatedModel->unitOfGoodsId, $validatedModel->newPrice, $validatedModel->priorityRank->rank, $validatedModel->priorityRank->shift);
+                }
+                else {
+                    PriceOfferRecord::createViaPrice($validatedModel->unitOfGoodsId, $validatedModel->newPrice);
+                }
             },
             'Failed to create price offer'
         );
@@ -39,6 +46,7 @@ class PriceOfferApiController extends BaseApiController
     {
         $this->handleComplicatedRequest(
             PriceOfferViaDiscountModel::class,
+            true,
             function ($validatedModel) {
                 PriceOfferRecord::createViaDiscountPercentage($validatedModel->unitOfGoodsId, $validatedModel->discountPercentage);
             },
@@ -47,18 +55,23 @@ class PriceOfferApiController extends BaseApiController
     }
 
     /**
-     * Creates price offers for each goods item, which has a `categoryName` category. E.g. "ORTHOPTERA SALE! 15% DISCOUNT ON ORTHOPTERA ". Important notice: you can specify only `discountPercentage` insomuch as `newPrice` can be not fitted for all goods items. 
+     * Creates price offers for each goods item, which has a `categoryName` category. E.g. "ORTHOPTERA SALE! 15% DISCOUNT ON ORTHOPTERA ". Important notice: you can specify only `discountPercentage` insomuch as `newPrice` can be not fitted for all goods items.
+     * json example: {"categoryId": 1, "discountPercentage": 45}
      * @return void
      */
-    public function createForCategory($categoryName, $discountPercentage)
+    public function actionCreateForCategory()
     {
-        $unitOfGoodsRecords = getWithCategory($categoryName);
-        foreach ($unitOfGoodsRecords as $record) {
-            createPriceOffer($record->id, $discountPercentage);
-        }
+        $this->handleComplicatedRequest(
+            PriceOfferOnCategoryModel::class,
+            false,
+            function ($validatedModel) {
+                PriceOfferRecord::createForCategory($validatedModel->categoryId, $validatedModel->discountPercentage);
+            },
+            'Failed to create price offers. Probably it is impossible to create price offers with such a small/big discount percentage'
+        );
     }
 
-    public function create($goodsItemId, $priorityRank, bool $withShift, $otherOptions)
+    public function create($goodsItemId, $otherOptions)
     {
         if ($withShift) {
             if (isAlreadyTaken($priorityRank)) {

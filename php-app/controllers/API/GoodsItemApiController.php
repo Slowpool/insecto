@@ -22,6 +22,7 @@ class GoodsItemApiController extends BaseApiController
     {
         $this->handleComplicatedRequest(
             GoodsReceptionModel::class,
+            false,
             function ($validatedModel) {
                 UnitOfGoodsRecord::incrementNumberOfRemaining($validatedModel->unitOfGoodsId, $validatedModel->numberOfReceived);
             },
@@ -39,6 +40,7 @@ class GoodsItemApiController extends BaseApiController
     {
         $this->handleComplicatedRequest(
             GoodsDiedModel::class,
+            false,
             function ($validatedModel) {
                 UnitOfGoodsRecord::died($validatedModel->unitOfGoodsId, $validatedModel->numberOfDied, $validatedModel->sellDied);
             },

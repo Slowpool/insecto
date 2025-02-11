@@ -14,7 +14,7 @@ class GoodsDiedModel extends \yii\base\Model
     public function rules()
     {
         return [
-            [['unitOfGoodsId', 'numberOfDied'], 'integer', 'min' => 1, 'max' => PHP_INT_MAX],
+            [['unitOfGoodsId', 'numberOfDied'], 'integer', 'min' => 1, 'max' => DB_INT_MAX],
             [['sellDied'], 'boolean'],
         ];
     }

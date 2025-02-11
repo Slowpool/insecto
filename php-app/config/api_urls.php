@@ -32,6 +32,7 @@ return [
         'extraPatterns' => [
             'POST create-via-price' => 'create-via-price',
             'POST create-via-discount-percentage' => 'create-via-discount-percentage',
+            'POST create-for-category' => 'create-for-category',
         ],
     ],
 

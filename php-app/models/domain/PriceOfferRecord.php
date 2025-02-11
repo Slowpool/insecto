@@ -83,7 +83,7 @@ class PriceOfferRecord extends \yii\db\ActiveRecord
         return $this->hasOne(UnitOfGoodsRecord::class, ['id' => 'unit_of_goods_id']);
     }
 
-    public static function createViaPrice(int $unitOfGoodsId, int $newPrice)
+    public static function createViaPrice(int $unitOfGoodsId, int $newPrice, ?int $priorityRank = null, bool $shiftPriority = false)
     {
         self::create([
             'unit_of_goods_id' => $unitOfGoodsId,
@@ -134,6 +134,29 @@ class PriceOfferRecord extends \yii\db\ActiveRecord
         } catch (\Exception $e) {
             $transaction->rollBack();
             throw $e;
+        }
+    }
+
+    // TODO priceOffer should have something like `is_sale` attribute to easily stop the sale the same way that it was made. it should have name `startSale`.
+    public static function createForCategory(int $categoryId, int $discountPercentage)
+    {
+        $categoryRecord = GoodsCategoryRecord::findOne(['id' => $categoryId]);
+        if ($categoryRecord == null) {
+            throw new \Exception('Such a category not found');
+        }
+        $unitOfGoodsRecords = UnitOfGoodsRecord::find()
+            ->where(['category_id' => $categoryRecord->id])
+            ->with('priceOffer')
+            ->all();
+        if(count($unitOfGoodsRecords) == 0) {
+            throw new \Exception('There are no goods with such a category');
+        }
+        foreach ($unitOfGoodsRecords as $goodsItemRecord) {
+            $priceOffer = $goodsItemRecord->priceOffer;
+            // creating of price offer only when it reduces the price
+            if ($priceOffer == null || $priceOffer->discount_percentage < $discountPercentage) {
+                self::createViaDiscountPercentage($goodsItemRecord->id, $discountPercentage);
+            }
         }
     }
 
