@@ -17,7 +17,7 @@ class PriceOfferApiController extends BaseApiController
 
     /**
      * Here you specify `newPrice`, and the app calculates `discountPercentage` according to that `newPrice`.
-     * json example: {"unitOfGoodsId": 1, "newPrice": 35} (here 1 is danaida monarch)
+     * json example: {"unitOfGoodsId": 1, "newPrice": 5, "priorityRank": {"shift": true, "rank": 1}} (here `unitOfGoodsId`: 1 is danaida monarch)
      * @return void
      */
     public function actionCreateViaPrice()
@@ -73,14 +73,13 @@ class PriceOfferApiController extends BaseApiController
 
     public function create($goodsItemId, $otherOptions)
     {
-        if ($withShift) {
-            if (isAlreadyTaken($priorityRank)) {
-                // e.g.: existing priority ranks: 1, 2, 3. Received $priorityRank value: 1. This method shifts existings priority ranks to 2,3,4 and sets $goodsItemId price offer priority rank = $priorityRank (which is 1)
-                shiftPriorityRankBelow($priorityRank);
-            }
-        } else {
-            // without shift. throws exception when rank is being already taken
-        }
+        // if ($withShift) {
+        //     if (isAlreadyTaken($priorityRank)) {
+        //         shiftPriorityRankBelow($priorityRank);
+        //     }
+        // } else {
+        //     // without shift. throws exception when rank is being already taken
+        // }
     }
 
     public function delete($whichOneToDelete)

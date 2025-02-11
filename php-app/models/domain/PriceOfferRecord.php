@@ -3,6 +3,7 @@
 namespace app\models\domain;
 
 use Yii;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "price_offer".
@@ -83,20 +84,30 @@ class PriceOfferRecord extends \yii\db\ActiveRecord
         return $this->hasOne(UnitOfGoodsRecord::class, ['id' => 'unit_of_goods_id']);
     }
 
+    /**
+     * Ensures that only `newPrice` is provided, without `discountPercentage`. Also allows to not specify priority options (`priorityRank` and `shiftPriority`), setting them by default.
+     * @param int $unitOfGoodsId
+     * @param int $newPrice
+     * @param ?int $priorityRank
+     * @param bool $shiftPriority
+     * @return void
+     */
     public static function createViaPrice(int $unitOfGoodsId, int $newPrice, ?int $priorityRank = null, bool $shiftPriority = false)
     {
-        self::create([
-            'unit_of_goods_id' => $unitOfGoodsId,
-            'new_price' => $newPrice
-        ], 'Failed to save new price offer via price');
+        self::create($unitOfGoodsId, $newPrice, null, $priorityRank, $shiftPriority, 'Failed to save new price offer via price');
     }
 
-    public static function createViaDiscountPercentage(int $unitOfGoodsId, int $discountPercentage)
+    /**
+     * Ensures that only `discountPercentage` is provided, without `newPrice`. Also allows to not specify priority options (`priorityRank` and `shiftPriority`), setting them by default.
+     * @param int $unitOfGoodsId
+     * @param int $discountPercentage
+     * @param ?int $priorityRank
+     * @param bool $shiftPriority
+     * @return void
+     */
+    public static function createViaDiscountPercentage(int $unitOfGoodsId, int $discountPercentage, ?int $priorityRank = null, bool $shiftPriority = false)
     {
-        self::create([
-            'unit_of_goods_id' => $unitOfGoodsId,
-            'discount_percentage' => $discountPercentage
-        ], 'Failed to save new price offer via price');
+        self::create($unitOfGoodsId, null, $discountPercentage, $priorityRank, $shiftPriority, 'Failed to save new price offer via discount percentage');
     }
 
     /**
@@ -108,11 +119,20 @@ class PriceOfferRecord extends \yii\db\ActiveRecord
      * @throws \yii\db\Exception
      * @return void
      */
-    public static function create(array $config, string $errorMessage)
+    private static function create(int $unitOfGoodsId, ?int $newPrice, ?int $discountPercentage, ?int $priorityRank, bool $shiftPriority, string $errorMessage)
     {
         $transaction = Yii::$app->db->beginTransaction();
         try {
-            $record = new self($config);
+            if($priorityRank && $shiftPriority && self::find()->where(['priority_rank' => $priorityRank])->exists()) {
+                self::shiftPriorityDown($priorityRank);
+            }
+            
+            $record = new self([
+                'unit_of_goods_id' => $unitOfGoodsId,
+                'discount_percentage' => $discountPercentage,
+                'new_price' => $newPrice,
+                'priority_rank' => $priorityRank,
+            ]);
             $unitOfGoodsRecord = UnitOfGoodsRecord::find()
                 ->select(['price'])
                 ->where(['id' => $record->unit_of_goods_id])
@@ -148,7 +168,7 @@ class PriceOfferRecord extends \yii\db\ActiveRecord
             ->where(['category_id' => $categoryRecord->id])
             ->with('priceOffer')
             ->all();
-        if(count($unitOfGoodsRecords) == 0) {
+        if (count($unitOfGoodsRecords) == 0) {
             throw new \Exception('There are no goods with such a category');
         }
         foreach ($unitOfGoodsRecords as $goodsItemRecord) {
@@ -158,6 +178,15 @@ class PriceOfferRecord extends \yii\db\ActiveRecord
                 self::createViaDiscountPercentage($goodsItemRecord->id, $discountPercentage);
             }
         }
+    }
+
+    /**
+     * Moves all priority ranks, which are below (technically higher) than `priorityRank`. E.g.: existing priority ranks: 1, 2, 3. Say, `priorityRank` = 1. This method shifts existings priority ranks to 2,3,4 to allow another price offer take the `priorityRank` place (1 in this case).
+     * @param mixed $priorityRank
+     * @return void
+     */
+    public static function shiftPriorityDown($priorityRank) {
+        self::updateAllCounters(['priority_rank' => 1], ['>=', 'priority_rank', $priorityRank]);
     }
 
 }
