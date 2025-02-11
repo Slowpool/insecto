@@ -31,7 +31,15 @@ $this->params['breadcrumbs'][] = ['label' => $goodsItemModel->category, 'url' =>
     <br>
     <b>Status:</b> <?= $goodsItemModel->isAlive ? "alive" : "dead" ?>
     <br>
-    <b>Price:</b> <?= $goodsItemModel->price ?> money
+    <b>Price:</b>
+    <?php if ($goodsItemModel->priceOffer): ?>
+        <span class="old-price"><?= $goodsItemModel->price ?> money</span>
+        <span class="new-price"><?= $goodsItemModel->priceOffer ?> money</span>
+
+    <?php else: ?>
+        <span class="ordinary-price"><?= $goodsItemModel->price ?> money</span>
+
+    <?php endif; ?>
     <br>
     <b>Remaining:</b> <?= $goodsItemModel->numberOfRemaining ?> item
     <br>

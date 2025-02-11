@@ -23,7 +23,7 @@ class PriceOfferRecord extends \yii\db\ActiveRecord
      * @var int
      */
     public int $originalPrice;
-    
+
     /**
      * {@inheritdoc}
      */
@@ -83,27 +83,56 @@ class PriceOfferRecord extends \yii\db\ActiveRecord
         return $this->hasOne(UnitOfGoodsRecord::class, ['id' => 'unit_of_goods_id']);
     }
 
-    public static function createViaPrice(int $goodsItemId, int $newPrice)
+    public static function createViaPrice(int $unitOfGoodsId, int $newPrice)
     {
         self::create([
-            'unit_of_goods_id' => $goodsItemId,
+            'unit_of_goods_id' => $unitOfGoodsId,
             'new_price' => $newPrice
         ], 'Failed to save new price offer via price');
     }
 
-    public static function createViaDiscountPercentage(int $goodsItemId, int $discountPercentage)
+    public static function createViaDiscountPercentage(int $unitOfGoodsId, int $discountPercentage)
     {
         self::create([
-            'unit_of_goods_id' => $goodsItemId,
+            'unit_of_goods_id' => $unitOfGoodsId,
             'discount_percentage' => $discountPercentage
         ], 'Failed to save new price offer via price');
     }
 
+    /**
+     * When price offer is already exist for specified `unitOfGoodsId`, this method removes it and creates a new one.
+     * @param array $config
+     * @param string $errorMessage
+     * @throws \Exception
+     * @throws \yii\db\Exception
+     * @return void
+     */
     public static function create(array $config, string $errorMessage)
     {
-        $record = new self($config);
-        if (!$record->save()) {
-            throw new \yii\db\Exception($errorMessage);
+        $transaction = Yii::$app->db->beginTransaction();
+        try {
+            $record = new self($config);
+            $unitOfGoodsRecord = UnitOfGoodsRecord::find()
+                ->select(['price'])
+                ->where(['id' => $record->unit_of_goods_id])
+                ->one();
+
+            if ($unitOfGoodsRecord == null) {
+                throw new \Exception('Unit of goods with such an id not found');
+            }
+            // deleting of existing price offer for such a unit of goods
+            if ($anotherPriceOffer = self::findOne(['unit_of_goods_id' => $record->unit_of_goods_id])) {
+                $anotherPriceOffer->delete();
+            }
+
+            $record->originalPrice = $unitOfGoodsRecord->price;
+            if (!$record->save()) {
+                throw new \yii\db\Exception($errorMessage);
+            }
+            $transaction->commit();
+        } catch (\Exception $e) {
+            $transaction->rollBack();
+            throw $e;
         }
     }
 

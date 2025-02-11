@@ -4,7 +4,8 @@ namespace app\components\behaviors;
 
 use yii\behaviors\AttributeBehavior;
 
-class PercentageConversionBehavior extends AttributeBehavior {
+class PercentageConversionBehavior extends AttributeBehavior
+{
     /**
      * The attribute, the value of which is taken as 100% value.
      * @var 
@@ -21,29 +22,33 @@ class PercentageConversionBehavior extends AttributeBehavior {
      */
     public $percentage; // E.g. 25%. 50 is 25% of 200.
 
-    public function events() {
+    public function events()
+    {
         return [
             \yii\base\Model::EVENT_BEFORE_VALIDATE => 'calculateAbsoluteOrPercentage'
         ];
     }
 
-    public function calculateAbsoluteOrPercentage($event) {
+    public function calculateAbsoluteOrPercentage($event)
+    {
         $attributeValue = $this->owner->{$this->attribute};
         $part = $this->owner->{$this->partOfAttribute};
         $percentage = $this->owner->{$this->percentage};
         if ($part) {
-            $this->owner->{$this->percentage} = self::calculatePercentage($attributeValue, $part);
-        }
-        elseif($percentage) {
-            $this->owner->{$this->partOfAttribute} = self::calculatePart($attributeValue, $percentage);
-        }
-        else {
-            throw new \\Exception('failed');
+            $this->owner->{$this->percentage} = self::calculatePercentage($part, $attributeValue);
+        } elseif ($percentage) {
+            $this->owner->{$this->partOfAttribute} = self::calculatePart($percentage, $attributeValue);
         }
     }
 
     // TODO it should be in helper!
-    private function calculatePercentage(int $numerator, int $denominator) {
+    private function calculatePercentage(int $part, int $entire): int
+    {
+        return (int) (100 - $part / $entire * 100);
+    }
 
+    private function calculatePart(int $percentage, int $entire)
+    {
+        return (int) ($entire * $percentage / 100);
     }
 }

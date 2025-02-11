@@ -15,7 +15,7 @@ class GoodsItemApiController extends BaseApiController
 
     /**
      * E.g. you had a 3 remaining mosquitoes. After receiving 5 more, you would have 8 mosquitoes.
-     * json: {"numberOfReceived": 5, "unitOfGoodsId": 1}
+     * json example: {"numberOfReceived": 5, "unitOfGoodsId": 1}
      * @return void
      */
     public function actionGoodsReception()
@@ -32,6 +32,7 @@ class GoodsItemApiController extends BaseApiController
     /**
      * E.g. you have 10 alive spiders as a unitOfGoodsRecord. You specify $numberOfDied = 3 and method does this: the original unitOfGoodsRecord with these spiders becomes as 7 alive spiders, and new record with 3 the same died spiders is created with -90% price.
      * When all insects in record died, then this record just gets assigned isAlive = false and gets -90% price.
+     * json example: {"unitOfGoodsId": 1, "numberOfDied": 1, "sellDied": true}
      * @return void
      */
     public function actionRegisterAsDied()

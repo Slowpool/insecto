@@ -5,14 +5,14 @@ namespace app\models\price_offer;
 class PriceOfferViaPriceModel extends \yii\base\Model
 {
     /** @var int */
-    public $goodsItemId;
+    public $unitOfGoodsId;
     /** @var int */
     public $newPrice;
     public function rules(): array
     {
         return [
-            [['goodsItemId', 'newPrice'], 'integer', 'min' => 1, 'max' => PHP_INT_MAX],
-            [['goodsItemId', 'newPrice'], 'required'],
+            [['unitOfGoodsId', 'newPrice'], 'integer', 'min' => 1, 'max' => PHP_INT_MAX],
+            [['unitOfGoodsId', 'newPrice'], 'required'],
         ];
     }
 }

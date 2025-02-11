@@ -23,7 +23,7 @@ class PriceOfferApiController extends BaseApiController
         $this->handleComplicatedRequest(
             PriceOfferViaPriceModel::class,
             function ($validatedModel) {
-                PriceOfferRecord::createViaPrice($validatedModel->goodsItemId, $validatedModel->newPrice);
+                PriceOfferRecord::createViaPrice($validatedModel->unitOfGoodsId, $validatedModel->newPrice);
             },
             'Failed to create price offer'
         );
@@ -38,7 +38,7 @@ class PriceOfferApiController extends BaseApiController
         $this->handleComplicatedRequest(
             PriceOfferViaDiscountModel::class,
             function ($validatedModel) {
-                PriceOfferRecord::createViaPrice($validatedModel->goodsItemId, $validatedModel->newPrice);
+                PriceOfferRecord::createViaDiscountPercentage($validatedModel->unitOfGoodsId, $validatedModel->discountPercentage);
             },
             'Failed to create price offer'
         );
