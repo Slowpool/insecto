@@ -123,10 +123,10 @@ class PriceOfferRecord extends \yii\db\ActiveRecord
     {
         $transaction = Yii::$app->db->beginTransaction();
         try {
-            if($priorityRank && $shiftPriority && self::find()->where(['priority_rank' => $priorityRank])->exists()) {
+            if ($priorityRank && $shiftPriority && self::find()->where(['priority_rank' => $priorityRank])->exists()) {
                 self::shiftPriorityDown($priorityRank);
             }
-            
+
             $record = new self([
                 'unit_of_goods_id' => $unitOfGoodsId,
                 'discount_percentage' => $discountPercentage,
@@ -185,8 +185,43 @@ class PriceOfferRecord extends \yii\db\ActiveRecord
      * @param mixed $priorityRank
      * @return void
      */
-    public static function shiftPriorityDown($priorityRank) {
-        self::updateAllCounters(['priority_rank' => 1], ['>=', 'priority_rank', $priorityRank]);
+    public static function shiftPriorityDown(int $topLimit)
+    {
+        $bottomLimit = self::getShiftBottomLimit($topLimit);
+        // TODO do it manually due to order by
+        self::updateAllCounters(
+            ['priority_rank' => 1],
+            ['[[priority_rank]] >= :topLimit AND [[priority_rank]] <= :bottomLimit
+            ORDER BY [[priority_rank]] DESC'],
+            [':topLimit' => $topLimit, ':bottomLimit' => $bottomLimit]
+        );
+    }
+
+    private static function getShiftBottomLimit(int $topLimit)
+    {
+        $allRanks = array_column(
+            self::find()
+                ->select(['priority_rank'])
+                ->where(['not', ['priority_rank' => null]])
+                ->andWhere(['>=', 'priority_rank', $topLimit])
+                ->orderBy(['priority_rank' => SORT_ASC])
+                ->asArray()
+                ->all(),
+            'priority_rank'
+        );
+
+        if (count($allRanks) == 1) {
+            return $allRanks[0];
+        }
+
+        // e.g. $allRanks = [2, 3, 4, 6, 7] this code checks whether two neighbours have difference greater than 1. (In which case other ranks can stay still, because resulted ranks [2, 3, 4, 5, 6, 7] keep the order) The first check is between 2 and 3, which returns false. The second one is between 3 and 4, also false. The next one is between 4 and 6, which gives true. That means we can stop shifting on 4.
+        for ($i = 0; $i < count($allRanks) - 1; $i++) {
+            if ($allRanks[$i] + 1 != $allRanks[$i + 1]) {
+                return $allRanks[$i];
+            }
+        }
+        // the case when $allRanks looks like [x, x+1, x+2] and doesn't have any window between ranks, returning the last rank as a bottom limit
+        return $allRanks[$i];
     }
 
 }
