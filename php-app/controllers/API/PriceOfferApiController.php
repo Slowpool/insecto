@@ -28,8 +28,7 @@ class PriceOfferApiController extends BaseApiController
             function ($validatedModel) {
                 if ($validatedModel->priorityRank) {
                     PriceOfferRecord::createViaPrice($validatedModel->unitOfGoodsId, $validatedModel->newPrice, $validatedModel->priorityRank->rank, $validatedModel->priorityRank->shift);
-                }
-                else {
+                } else {
                     PriceOfferRecord::createViaPrice($validatedModel->unitOfGoodsId, $validatedModel->newPrice);
                 }
             },
@@ -48,7 +47,11 @@ class PriceOfferApiController extends BaseApiController
             PriceOfferViaDiscountModel::class,
             true,
             function ($validatedModel) {
-                PriceOfferRecord::createViaDiscountPercentage($validatedModel->unitOfGoodsId, $validatedModel->discountPercentage);
+                if ($validatedModel->priorityRank) {
+                    PriceOfferRecord::createViaDiscountPercentage($validatedModel->unitOfGoodsId, $validatedModel->discountPercentage, $validatedModel->priorityRank->rank, $validatedModel->priorityRank->shift);
+                } else {
+                    PriceOfferRecord::createViaDiscountPercentage($validatedModel->unitOfGoodsId, $validatedModel->discountPercentage);
+                }
             },
             'Failed to create price offer. Probably it is impossible to create a price offer with such a small/big discount percentage'
         );

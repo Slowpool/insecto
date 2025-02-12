@@ -123,8 +123,16 @@ class PriceOfferRecord extends \yii\db\ActiveRecord
     {
         $transaction = Yii::$app->db->beginTransaction();
         try {
-            if ($priorityRank && $shiftPriority && self::find()->where(['priority_rank' => $priorityRank])->exists()) {
-                self::shiftPriorityDown($priorityRank);
+            if ($priorityRank) {
+                $rankTaken = self::find()->where(['priority_rank' => $priorityRank])->exists();
+                if ($rankTaken) {
+                    if ($shiftPriority) {
+                        self::shiftPriorityDown($priorityRank);
+                    } else {
+                        // TODO how to handle it correctly in controller? as http 409 CONFLICT 
+                        throw new \yii\db\Exception("Rank '$priorityRank' is already taken and you specified 'shiftPriority' property as 'false'. Set it to 'true' to shift priority when the rank is already taken.");
+                    }
+                }
             }
 
             $record = new self([
@@ -188,13 +196,33 @@ class PriceOfferRecord extends \yii\db\ActiveRecord
     public static function shiftPriorityDown(int $topLimit)
     {
         $bottomLimit = self::getShiftBottomLimit($topLimit);
-        // TODO do it manually due to order by
-        self::updateAllCounters(
-            ['priority_rank' => 1],
-            ['[[priority_rank]] >= :topLimit AND [[priority_rank]] <= :bottomLimit
-            ORDER BY [[priority_rank]] DESC'],
-            [':topLimit' => $topLimit, ':bottomLimit' => $bottomLimit]
-        );
+        // Yii::$app->db->createCommand()
+        //     ->update(self::tableName(), ['priority_rank' => new Expression('[[priority_rank]] + 1')], ['AND', '[[priority_rank]] >= :topLimit', '[[priority_rank]] <= :bottomLimit'], [':topLimit' => $topLimit, ':bottomLimit' => $bottomLimit])
+        // // error: unknown method
+        //     ->orderBy(['priority_rank' => SORT_DESC])
+        //     ->execute();
+
+        // there's configurable of orderBy update method
+        // self::update(['priority_rank' => 1])
+        // ->where(['AND', '[[priority_rank]] >= :topLimit', '[[priority_rank]] <= :bottomLimit ORDER BY [[priority_rank]] DESC'])
+        // ->orderBy()
+        // ->all()
+        // ;
+        // self::updateAllCounters(
+        //     ['priority_rank' => 1],
+        //     ['AND', '[[priority_rank]] >= :topLimit', '[[priority_rank]] <= :bottomLimit'],
+        // );
+
+        // TODO now it is a mysql-scoped solution
+        Yii::$app->db->createCommand('UPDATE [[price_offer]]
+            SET [[priority_rank]]=[[priority_rank]]+1
+            WHERE ([[priority_rank]] >= :topLimit) AND ([[priority_rank]] <= :bottomLimit)
+            ORDER BY [[priority_rank]] DESC',
+            [
+                ':topLimit' => $topLimit,
+                ':bottomLimit' => $bottomLimit
+            ]
+        )->execute();
     }
 
     private static function getShiftBottomLimit(int $topLimit)

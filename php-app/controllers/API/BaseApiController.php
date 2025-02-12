@@ -6,6 +6,7 @@ use Yii;
 use yii\helpers\Json;
 use yii\web\BadRequestHttpException;
 use yii\web\ServerErrorHttpException;
+use yii\web\UnprocessableEntityHttpException;
 
 abstract class BaseApiController extends \yii\rest\ActiveController
 {
@@ -29,7 +30,7 @@ abstract class BaseApiController extends \yii\rest\ActiveController
             $model->load(Yii::$app->request->bodyParams, '');
         }
         if (!$model->validate()) {
-            throw new BadRequestHttpException(implode(' ', $model->getErrorSummary(true)));
+            throw new UnprocessableEntityHttpException(implode(' ', $model->getErrorSummary(true)));
         }
 
         try {
