@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use yii\helpers\Json;
 use yii\web\BadRequestHttpException;
+use yii\web\ConflictHttpException;
 use yii\web\ServerErrorHttpException;
 use yii\web\UnprocessableEntityHttpException;
 
@@ -12,20 +13,24 @@ abstract class BaseApiController extends \yii\rest\ActiveController
 {
     /**
      * 
-     * @param mixed $modelClass
+     * @param string $modelClass
      * @param bool $complicatedJsonInput if true, than input nested models are converted to models, otherwise to array
      * @param callable $businessLogicCallback
      * @param string $errorMessageForUser
      * @throws \yii\web\BadRequestHttpException
      * @throws \yii\web\ServerErrorHttpException
+     * @throws \yii\web\UnprocessableEntityHttpException
      * @return void
      */
-    public function handleComplicatedRequest(mixed $modelClass, bool $complicatedJsonInput, callable $businessLogicCallback, string $errorMessageForUser)
+    public function handleComplicatedRequest(string $modelClass, bool $complicatedJsonInput, callable $businessLogicCallback, string $errorMessageForUser)
     {
         if ($complicatedJsonInput) {
-            $model = new $modelClass(['json' => Json::decode(Yii::$app->request->rawBody)]);
-        }
-        else {
+            try {
+                $model = new $modelClass(['json' => Json::decode(Yii::$app->request->rawBody)]);
+            } catch (\yii\base\InvalidArgumentException $e) {
+                throw new BadRequestHttpException("Failed to parse an entity from body");
+            }
+        } else {
             $model = new $modelClass;
             $model->load(Yii::$app->request->bodyParams, '');
         }
@@ -39,7 +44,13 @@ abstract class BaseApiController extends \yii\rest\ActiveController
             Yii::error($e->getMessage(), 'db');
             throw new ServerErrorHttpException($errorMessageForUser);
         } catch (\Exception $e) {
-            throw new BadRequestHttpException($e->getMessage());
+            switch ($e->getCode()) {
+                case 409:
+                    throw new ConflictHttpException($e->getMessage());
+                case 422:
+                default:
+                    throw new UnprocessableEntityHttpException($e->getMessage());
+            }
         }
     }
 }

@@ -53,7 +53,7 @@ class PriceOfferApiController extends BaseApiController
                     PriceOfferRecord::createViaDiscountPercentage($validatedModel->unitOfGoodsId, $validatedModel->discountPercentage);
                 }
             },
-            'Failed to create price offer. Probably it is impossible to create a price offer with such a small/big discount percentage'
+            'Failed to create price offer. Probably discount percentage is too small or too big'
         );
     }
 
@@ -70,7 +70,7 @@ class PriceOfferApiController extends BaseApiController
             function ($validatedModel) {
                 PriceOfferRecord::createForCategory($validatedModel->categoryId, $validatedModel->discountPercentage);
             },
-            'Failed to create price offers. Probably it is impossible to create price offers with such a small/big discount percentage'
+            'Failed to create price offers. Probably discount percentage is too small or too big'
         );
     }
 

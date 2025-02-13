@@ -130,7 +130,7 @@ class PriceOfferRecord extends \yii\db\ActiveRecord
                         self::shiftPriorityDown($priorityRank);
                     } else {
                         // TODO how to handle it correctly in controller? as http 409 CONFLICT 
-                        throw new \yii\db\Exception("Rank '$priorityRank' is already taken and you specified 'shiftPriority' property as 'false'. Set it to 'true' to shift priority when the rank is already taken.");
+                        throw new \Exception("Rank '$priorityRank' is already taken and you specified 'shiftPriority' property as 'false'. Set it to 'true' to shift priority when the rank is already taken.", 409 );
                     }
                 }
             }
@@ -147,7 +147,7 @@ class PriceOfferRecord extends \yii\db\ActiveRecord
                 ->one();
 
             if ($unitOfGoodsRecord == null) {
-                throw new \Exception('Unit of goods with such an id not found');
+                throw new \Exception('Unit of goods with such an id not found', 404);
             }
             // deleting of existing price offer for such a unit of goods
             if ($anotherPriceOffer = self::findOne(['unit_of_goods_id' => $record->unit_of_goods_id])) {
@@ -170,14 +170,14 @@ class PriceOfferRecord extends \yii\db\ActiveRecord
     {
         $categoryRecord = GoodsCategoryRecord::findOne(['id' => $categoryId]);
         if ($categoryRecord == null) {
-            throw new \Exception('Such a category not found');
+            throw new \Exception('Such a category not found', 404);
         }
         $unitOfGoodsRecords = UnitOfGoodsRecord::find()
             ->where(['category_id' => $categoryRecord->id])
             ->with('priceOffer')
             ->all();
         if (count($unitOfGoodsRecords) == 0) {
-            throw new \Exception('There are no goods with such a category');
+            throw new \Exception('There are no goods with such a category', 404);
         }
         foreach ($unitOfGoodsRecords as $goodsItemRecord) {
             $priceOffer = $goodsItemRecord->priceOffer;
