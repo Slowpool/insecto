@@ -9,6 +9,10 @@ use Yii;
 use yii\web\BadRequestHttpException;
 use yii\web\ServerErrorHttpException;
 
+use OpenApi\Annotations as OA;
+/**
+ * @OA\PathItem(path="/api")
+ */
 class GoodsItemApiController extends BaseApiController
 {
     public $modelClass = 'app\models\domain\UnitOfGoodsRecord';
@@ -48,23 +52,23 @@ class GoodsItemApiController extends BaseApiController
         );
     }
 
-    public function createSeveral(array $unitsOfGoods)
-    {
-        // TODO implement
-        beginTransaction();
-        try {
-            foreach ($unitsOfGoods as $goodsItem) {
-                create($goodsItem);
-            }
-        } catch (\Exception $e) {
-            // rollback
-        }
-    }
+    // public function createSeveral(array $unitsOfGoods)
+    // {
+    //     // TODO implement
+    //     beginTransaction();
+    //     try {
+    //         foreach ($unitsOfGoods as $goodsItem) {
+    //             create($goodsItem);
+    //         }
+    //     } catch (\Exception $e) {
+    //         // rollback
+    //     }
+    // }
 
-    public function stuffWithPictures()
-    {
-        // TODO implement
-        // TODO requires picture binded to db entity 
-    }
+    // public function stuffWithPictures()
+    // {
+    //     // TODO implement
+    //     // TODO requires picture binded to db entity 
+    // }
 
 }

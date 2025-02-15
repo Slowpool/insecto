@@ -9,17 +9,20 @@ use yii\web\ConflictHttpException;
 use yii\web\ServerErrorHttpException;
 use yii\web\UnprocessableEntityHttpException;
 
+use OpenApi\Annotations as OA;
+/**
+ * @OA\PathItem(path="/api")
+ */
 abstract class BaseApiController extends \yii\rest\ActiveController
 {
     /**
-     * 
      * @param string $modelClass
      * @param bool $complicatedJsonInput if true, than input nested models are converted to models, otherwise to array
      * @param callable $businessLogicCallback
      * @param string $errorMessageForUser
-     * @throws \yii\web\BadRequestHttpException
-     * @throws \yii\web\ServerErrorHttpException
-     * @throws \yii\web\UnprocessableEntityHttpException
+     * @throws BadRequestHttpException
+     * @throws ServerErrorHttpException
+     * @throws UnprocessableEntityHttpException
      * @return void
      */
     public function handleComplicatedRequest(string $modelClass, bool $complicatedJsonInput, callable $businessLogicCallback, string $errorMessageForUser)

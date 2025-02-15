@@ -11,12 +11,20 @@ use Yii;
 use yii\web\BadRequestHttpException;
 use yii\web\ServerErrorHttpException;
 
+use OpenApi\Annotations as OA;
+/**
+ * @OA\PathItem(path="/api")
+ */
 class PriceOfferApiController extends BaseApiController
 {
     public $modelClass = 'app\models\domain\PriceOfferRecord';
 
     /**
-     * Here you specify `newPrice`, and the app calculates `discountPercentage` according to that `newPrice`.
+     * @OA\Get(
+     *     path="/api/endpoint",
+     *     @OA\Response(response="200", description="Get default action")
+     * )
+     * Here you specify `newPrice`, and then `discountPercentage` is calculated automatically according to that `newPrice`.
      * json example: {"unitOfGoodsId": 1, "newPrice": 5, "priorityRank": {"shift": true, "rank": 1}} (here `unitOfGoodsId`: 1 is danaida monarch)
      * @return void
      */
@@ -37,6 +45,17 @@ class PriceOfferApiController extends BaseApiController
     }
 
     /**
+     * @OA\Get(
+     *      path="/profiles",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *      ),
+     *     @OA\PathItem (
+     *     ),
+     * )
+     */
+    /*
      * Here you specify `discountPercentage`, and the app calculates `newPrice` according to that `discountPercentage`.
      * json example: {"unitOfGoodsId": 1, "discountPercentage": 5} (here 1 is danaida monarch)
      * @return void
@@ -74,26 +93,26 @@ class PriceOfferApiController extends BaseApiController
         );
     }
 
-    public function create($goodsItemId, $otherOptions)
-    {
-        // if ($withShift) {
-        //     if (isAlreadyTaken($priorityRank)) {
-        //         shiftPriorityRankBelow($priorityRank);
-        //     }
-        // } else {
-        //     // without shift. throws exception when rank is being already taken
-        // }
-    }
+    // public function create($goodsItemId, $otherOptions)
+    // {
+    //     // if ($withShift) {
+    //     //     if (isAlreadyTaken($priorityRank)) {
+    //     //         shiftPriorityRankBelow($priorityRank);
+    //     //     }
+    //     // } else {
+    //     //     // without shift. throws exception when rank is being already taken
+    //     // }
+    // }
 
-    public function delete($whichOneToDelete)
-    {
-        // the same thing with shift as in `create()` but in the other direction. when 1 rank is deleted having 1,2,3, then 2,3 become 1,2  
-    }
+    // public function delete($whichOneToDelete)
+    // {
+    //     // the same thing with shift as in `create()` but in the other direction. when 1 rank is deleted having 1,2,3, then 2,3 become 1,2  
+    // }
 
-    public function deleteForCategory($categoryName)
-    {
-        // antonym of `createForCategory()`
-    }
+    // public function deleteForCategory($categoryName)
+    // {
+    //     // antonym of `createForCategory()`
+    // }
 
 
 
