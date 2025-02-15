@@ -9,10 +9,7 @@ use yii\web\ConflictHttpException;
 use yii\web\ServerErrorHttpException;
 use yii\web\UnprocessableEntityHttpException;
 
-use OpenApi\Annotations as OA;
-/**
- * @OA\PathItem(path="/api")
- */
+
 abstract class BaseApiController extends \yii\rest\ActiveController
 {
     /**

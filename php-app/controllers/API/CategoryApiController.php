@@ -2,7 +2,7 @@
 
 namespace app\controllers;
 
-use OpenApi\Annotations as OA;
+
 /**
  * @OA\PathItem(path="/api")
  */

@@ -111,7 +111,6 @@ class PriceOfferRecord extends \yii\db\ActiveRecord
     }
 
     /**
-     * When price offer is already exist for specified `unitOfGoodsId`, this method removes it and creates a new one.
      * @param array $config
      * @param string $errorMessage the message to display to user in case of database error (details of this error are hidden from user, but user gets this `errorMessage`)
      * @var yii\db\ActiveRecord $unitOfGoodsRecord 
@@ -129,7 +128,6 @@ class PriceOfferRecord extends \yii\db\ActiveRecord
                     if ($shiftPriority) {
                         self::shiftPriorityDown($priorityRank);
                     } else {
-                        // TODO how to handle it correctly in controller? as http 409 CONFLICT 
                         throw new \Exception("Rank '$priorityRank' is already taken and you specified 'shiftPriority' property as 'false'. Set it to 'true' to shift priority when the rank is already taken.", 409 );
                     }
                 }

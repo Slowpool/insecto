@@ -71,7 +71,8 @@
         "codeception/module-yii2": "^1.1",
         "codeception/module-filesystem": "^3.0 || ^2.0 || ^1.1",
         "codeception/verify": "^3.0 || ^2.2",
-        "yiisoft/yii-swagger": "dev-master"
+        "yiisoft/yii-swagger": "dev-master",
+        "doctrine/annotations": "2.0.x-dev"
     },
     "autoload": {
         "files": [
@@ -81,7 +82,7 @@
             "controllers\\API\\BaseApiController.php",
             "controllers\\API\\CategoryApiController.php",
             "controllers\\API\\GoodsItemApiController.php",
-            "controllers\\API\\PriceOfferApiController.php"
+            "controllers\\test\\PriceOfferApiController.php"
         ]
     }
 }

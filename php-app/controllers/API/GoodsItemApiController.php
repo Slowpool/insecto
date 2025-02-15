@@ -9,7 +9,7 @@ use Yii;
 use yii\web\BadRequestHttpException;
 use yii\web\ServerErrorHttpException;
 
-use OpenApi\Annotations as OA;
+
 /**
  * @OA\PathItem(path="/api")
  */

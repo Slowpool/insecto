@@ -6,7 +6,7 @@ use Yii;
 
 // use function \OpenApi\Generator\scan;
 
-use OpenApi\Annotations as OA;
+
 /**
  * @OA\PathItem(path="/api")
  */
