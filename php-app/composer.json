@@ -78,11 +78,10 @@
         "files": [
             "components\\behaviors\\PercentageConversionBehavior.php",
 
-            "controllers\\API\\SwaggerController.php",
             "controllers\\API\\BaseApiController.php",
             "controllers\\API\\CategoryApiController.php",
             "controllers\\API\\GoodsItemApiController.php",
-            "controllers\\test\\PriceOfferApiController.php"
+            "controllers\\API\\PriceOfferApiController.php"
         ]
     }
 }

@@ -62,6 +62,20 @@ $config = [
         ],
     ],
     'params' => $params,
+    'modules' => [
+        'swagger' => [
+            'class' => \Yiisoft\Swagger\Action\SwaggerUi::class,
+            // 'apiInfo' => [
+            //     'title' => 'My API',
+            //     'version' => '1.0.0',
+            // ],
+            // 'excludes' => [],
+            // 'scanner' => [
+            //     'paths' => [__DIR__ . '/../../src'], // Adjust the path to your controllers
+            //     'commentProcessors' => [],
+            // ],
+        ],
+    ],
 ];
 
 if (YII_ENV_DEV) {
@@ -77,6 +91,21 @@ if (YII_ENV_DEV) {
         'class' => 'yii\gii\Module',
         'allowedIPs' => ['172.19.0.1'],
     ];
+    
+    // $config['bootstrap'][] = 'swagger';
+    // $config['modules']['swagger'] = [
+    //     'class' => \Yiisoft\Swagger\Service\SwaggerService::class,
+    //     // 'allowedIPs' => ['172.19.0.1'],
+    //     // 'apiInfo' => [
+    //     //     // 'title' => 'My API',
+    //     //     // 'version' => '1.0.0',
+    //     // ],
+    //     // 'excludes' => [],
+    //     // 'scanner' => [
+    //     //     'paths' => [Yii::getAlias('@app/controllers/API')],
+    //     //     // 'commentProcessors' => [],
+    //     // ],
+    // ];
 }
 
 return $config;
