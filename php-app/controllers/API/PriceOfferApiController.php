@@ -41,25 +41,31 @@ class PriceOfferApiController extends BaseApiController
      *             example="{""unitOfGoodsId"": 1, ""newPrice"": 10, ""priorityRank"": {""shift"": true, ""rank"": 1}}"
      *         )
      *     ),
+     *     @OA\Parameter(
+     *         in="header",
+     *         name="Content-Length",
+     *         description="The length of the request body (optional, auto-calculated)",
+     *         @OA\Schema(type="string")
+     *     ),
      *     @OA\Response(
      *         response="201",
      *         description="New price offer is created successfully."
      *     ),
      *     @OA\Response(
      *         response="400",
-     *         description="Json parser can't read the request body. Ensure you attached json as raw text in body and its' syntax is correct."
+     *         description="JSON parser can't read the request body. Ensure you attached JSON entity as a request body and it's syntax is correct."
      *     ),
      *     @OA\Response(
      *         response="404",
-     *         description="Goods item, for which the price offer is being created, does not exist. Ensure that unit of goods with `unitOfGoodsId` id indeed exists."
+     *         description="Goods item, for which the price offer is being created, does not exist. Ensure that unit of goods with `unitOfGoodsId` id does exist."
      *     ),
      *     @OA\Response(
      *         response="409",
-     *         description="Specified rank is already taken and specified `shiftPriority` property is 'false'. It was made to keep user aware about already existing price offer with specified priority rank. Otherwise, when you don't care that other price offer might be moved down, set it to 'true' to shift priority when the rank is already taken."
+     *         description="Specified rank `priorityRank` is already taken and specified `shiftPriority` property is 'false'. It was made to keep user aware about already existing price offer with specified priority rank. Otherwise, when you don't care that other price offer might be moved down, set it to 'true' to shift priority when the rank is already taken."
      *     ),
      *     @OA\Response(
      *         response="422",
-     *         description="Some model validation errors do not allow to create new price offer. Ensure json body model is correct from the point of view of the subject area."
+     *         description="Some model validation errors do not allow to create new price offer. Ensure JSON body model is correct from the point of view of the subject area."
      *     ),
      * )
      */

@@ -17,6 +17,16 @@
                 "summary": "Create price offer via price",
                 "description": "New price offer will be created with correspondent `discountPercentage`, which is calculated automatically using received `newPrice`. You can specify `rankPriority` for that price offer (this attribute allows to display specific goods items in specified order, on main page in the 'sale' block). If you specified `shift` as 'false' for this `rankPriority`, then this endpoint will give a error in case some another price offer with the same priority rank already exists. Alternatively, you can specify it as 'true', which changes the behavior of endpoint in the previously described case: all ranks, which are less than or equal to the specified `rank` (except those, which can remain unchanged) will be moved down.\r\n     * When price offer already exists for specified `unitOfGoodsId`, this endpoint removes it and creates a new one.\r\n     * If you want to create a price offer specifying discount percentage, use '/create-via-discount-percentage'",
                 "operationId": "592682ebdbba97ba4dcc44fe0a48938b",
+                "parameters": [
+                    {
+                        "name": "Content-Length",
+                        "in": "header",
+                        "description": "The length of the request body (optional, auto-calculated)",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -33,16 +43,16 @@
                         "description": "New price offer is created successfully."
                     },
                     "400": {
-                        "description": "Json parser can't read the request body. Ensure you attached json as raw text in body and its' syntax is correct."
+                        "description": "JSON parser can't read the request body. Ensure you attached JSON entity as a request body and it's syntax is correct."
                     },
                     "404": {
-                        "description": "Goods item, for which the price offer is being created, does not exist. Ensure that unit of goods with `unitOfGoodsId` id indeed exists."
+                        "description": "Goods item, for which the price offer is being created, does not exist. Ensure that unit of goods with `unitOfGoodsId` id does exist."
                     },
                     "409": {
-                        "description": "Specified rank is already taken and specified `shiftPriority` property is 'false'. It was made to keep user aware about already existing price offer with specified priority rank. Otherwise, when you don't care that other price offer might be moved down, set it to 'true' to shift priority when the rank is already taken."
+                        "description": "Specified rank `priorityRank` is already taken and specified `shiftPriority` property is 'false'. It was made to keep user aware about already existing price offer with specified priority rank. Otherwise, when you don't care that other price offer might be moved down, set it to 'true' to shift priority when the rank is already taken."
                     },
                     "422": {
-                        "description": "Some model validation errors do not allow to create new price offer. Ensure json body model is correct from the point of view of the subject area."
+                        "description": "Some model validation errors do not allow to create new price offer. Ensure JSON body model is correct from the point of view of the subject area."
                     }
                 }
             }
@@ -56,7 +66,7 @@
                         "type": "integer"
                     },
                     "priorityRank": {
-                        "type": "PriorityRankModel"
+                        "$ref": "#/components/schemas/PriorityRankModel"
                     },
                     "newPrice": {
                         "type": "integer"

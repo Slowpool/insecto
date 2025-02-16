@@ -11,7 +11,7 @@ abstract class PriceOfferViaSomethingModel extends \dicr\json\JsonEntity
     public $unitOfGoodsId;
     /**
      * @var ?PriorityRankModel
-     * @OA\Property(type="PriorityRankModel")
+     * @OA\Property(ref="#/components/schemas/PriorityRankModel")
      */
     public $priorityRank = null;
     public function rules(): array

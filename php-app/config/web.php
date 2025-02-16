@@ -1,6 +1,7 @@
 <?php
 
 use AutoMapperPlus\AutoMapper;
+use yii\helpers\Json;
 
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
@@ -14,12 +15,13 @@ $config = [
     'aliases' => require 'aliases.php',
     'components' => [
         'request' => [
-            // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'qYFNDaiaxDLPp1yQBti8eUrkrr8JGX45',
-            'parsers' => [
-                // TODO do app need it?
-                // 'application/json' => 'yii\web\JsonParser',
-            ],
+            // 'parsers' => [
+            //     // TODO do app need it?
+            //     'application/json' => function($rawBody) {
+            //         return Json::decode($rawBody);
+            //     },
+            // ],
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
