@@ -19,4 +19,4 @@ php yii migrate/create add_discount_percentage_column_to_price_offer_table --fie
 
 php yii migrate/create add_main_picture_column_to_unit_of_goods_table --fields="main_picture:string(255)"
 
-./vendor/bin/openapi controllers/API -o openapi.yaml
+./vendor/bin/openapi controllers/API models/API -o "./api docs/swagger.json" -b ./config/consts.php

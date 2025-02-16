@@ -2,16 +2,20 @@
 
 namespace app\controllers;
 
+use Yii;
+
 use app\models\domain\PriceOfferRecord;
 use app\models\domain\UnitOfGoodsRecord;
-use app\models\price_offer\PriceOfferOnCategoryModel;
-use app\models\price_offer\PriceOfferViaDiscountModel;
-use app\models\price_offer\PriceOfferViaPriceModel;
-use Yii;
+
+use app\models\API\price_offer\PriceOfferOnCategoryModel;
+use app\models\API\price_offer\PriceOfferViaDiscountModel;
+use app\models\API\price_offer\PriceOfferViaPriceModel;
+
 use yii\web\BadRequestHttpException;
 use yii\web\ServerErrorHttpException;
 
-use OpenApi\Annotations\Post;
+use OpenApi\Annotations\Server;
+
 /**
  * @OA\Info(
  *    version="1.0",
@@ -27,9 +31,16 @@ class PriceOfferApiController extends BaseApiController
      * @OA\Post(
      *     path="/price-offer-api/create-via-price",
      *     summary="Create price offer via price",
-     *     description="New price offer is being created with correspondent `discountPercentage`, which is calculated automatically using received `newPrice`. You can specify `rankPriority` for that price offer (this attribute allows to display specific goods items in specified order, on main page in the 'sale' block). If you specified `shift` as 'false' for this `rankPriority`, then this endpoint will give a error in case some another price offer with the same priority rank already exists. Alternatively, you can specify it as 'true', which changes the behavior of endpoint in the previously described case: all ranks, which are less than or equal to the specified `rank` (except those, which can remain unchanged) will be moved down.
+     *     description="New price offer will be created with correspondent `discountPercentage`, which is calculated automatically using received `newPrice`. You can specify `rankPriority` for that price offer (this attribute allows to display specific goods items in specified order, on main page in the 'sale' block). If you specified `shift` as 'false' for this `rankPriority`, then this endpoint will give a error in case some another price offer with the same priority rank already exists. Alternatively, you can specify it as 'true', which changes the behavior of endpoint in the previously described case: all ranks, which are less than or equal to the specified `rank` (except those, which can remain unchanged) will be moved down.
      * When price offer already exists for specified `unitOfGoodsId`, this endpoint removes it and creates a new one.
      * If you want to create a price offer specifying discount percentage, use '/create-via-discount-percentage'",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             ref="#/components/schemas/PriceOfferViaPriceModel",
+     *             example="{""unitOfGoodsId"": 1, ""newPrice"": 10, ""priorityRank"": {""shift"": true, ""rank"": 1}}"
+     *         )
+     *     ),
      *     @OA\Response(
      *         response="201",
      *         description="New price offer is created successfully."

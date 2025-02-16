@@ -2,13 +2,15 @@
 
 namespace app\controllers;
 
-use app\models\domain\UnitOfGoodsRecord;
-use app\models\goods_item\GoodsReceptionModel;
-use app\models\goods_item\GoodsDiedModel;
 use Yii;
+
+use app\models\domain\UnitOfGoodsRecord;
+
+use app\models\API\goods_item\GoodsReceptionModel;
+use app\models\API\goods_item\GoodsDiedModel;
+
 use yii\web\BadRequestHttpException;
 use yii\web\ServerErrorHttpException;
-
 
 /**
  * @OA\PathItem(path="/api")

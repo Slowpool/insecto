@@ -16,3 +16,5 @@ const DISCOUNTED_TO_DISPLAY = 5;
 const DISCOUNT_ON_DEAD = 90;
 const MAX_DISCOUNT_PERCENTAGE = 99;
 const MIN_DISCOUNT_PERCENTAGE = 1;
+
+const API_URL = 'http://localhost:8000'; // here 8000 is APP_PORT from .env

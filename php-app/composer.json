@@ -81,7 +81,11 @@
             "controllers\\API\\BaseApiController.php",
             "controllers\\API\\CategoryApiController.php",
             "controllers\\API\\GoodsItemApiController.php",
-            "controllers\\API\\PriceOfferApiController.php"
+            "controllers\\API\\PriceOfferApiController.php",
+
+            "models\\API\\price_offer\\PriceOfferViaSomethingModel.php",
+            "models\\API\\price_offer\\PriceOfferViaPriceModel.php",
+            "models\\API\\price_offer\\PriorityRankModel.php"
         ]
     }
 }

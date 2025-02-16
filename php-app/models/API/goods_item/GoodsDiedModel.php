@@ -1,6 +1,6 @@
 <?php
 
-namespace app\models\goods_item;
+namespace app\models\API\goods_item;
 
 class GoodsDiedModel extends \yii\base\Model
 {

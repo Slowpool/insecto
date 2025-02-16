@@ -1,6 +1,6 @@
 <?php
 
-namespace app\models\price_offer;
+namespace app\models\API\price_offer;
 
 class PriceOfferOnCategoryModel extends \yii\base\Model
 {

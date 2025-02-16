@@ -1,10 +1,16 @@
 <?php
 
-namespace app\models\price_offer;
+namespace app\models\API\price_offer;
 
+/**
+ * @OA\Schema()
+ */
 class PriceOfferViaPriceModel extends PriceOfferViaSomethingModel
 {
-    /** @var int */
+    /**
+     * @var int
+     * @OA\Property()
+     */
     public $newPrice;
     public function rules(): array
     {

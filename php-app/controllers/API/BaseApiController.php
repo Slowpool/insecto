@@ -9,6 +9,10 @@ use yii\web\ConflictHttpException;
 use yii\web\ServerErrorHttpException;
 use yii\web\UnprocessableEntityHttpException;
 
+/**
+ * @OA\Server(url=API_URL)
+ */
+class SwaggerDummy {}
 
 abstract class BaseApiController extends \yii\rest\ActiveController
 {

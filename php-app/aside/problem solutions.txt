@@ -25,3 +25,8 @@ adds hidden input to form as a direct child like here:
     </form>
 solution:
 https://www.yiiframework.com/wiki/668/form-with-get-method-causes-repeated-stacking-of-url-parameters
+
+problem:
+swagger ui image does not work
+solution:
+change inner port to 8080

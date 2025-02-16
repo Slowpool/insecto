@@ -1,11 +1,20 @@
 <?php
 
-namespace app\models\price_offer;
+namespace app\models\API\price_offer;
 
+/**
+ * @OA\Schema()
+ */
 class PriorityRankModel extends \yii\base\Model {
-    /** @var bool */
+    /**
+     * @var bool
+     * @OA\Property()
+     */
     public $shift;
-    /** @var int */
+    /**
+     * @var int
+     * @OA\Property()
+     */
     public $rank;
     public function rules() {
         return [
