@@ -12,7 +12,9 @@ use yii\web\UnprocessableEntityHttpException;
 /**
  * @OA\Server(url=API_URL)
  */
-class SwaggerDummy {}
+class SwaggerDummy
+{
+}
 
 abstract class BaseApiController extends \yii\rest\ActiveController
 {
@@ -26,7 +28,7 @@ abstract class BaseApiController extends \yii\rest\ActiveController
      * @throws UnprocessableEntityHttpException
      * @return void
      */
-    public function handleComplicatedRequest(string $modelClass, bool $complicatedJsonInput, callable $businessLogicCallback, string $errorMessageForUser)
+    public function handleComplicatedRequest(string $modelClass, bool $complicatedJsonInput, callable $businessLogicCallback, string $errorMessageForUser, $validationCallback = null)
     {
         if ($complicatedJsonInput) {
             try {

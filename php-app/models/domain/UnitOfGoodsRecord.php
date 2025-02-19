@@ -8,6 +8,7 @@ use Yii;
 use yii\behaviors\SluggableBehavior;
 use yii\db\ActiveQuery;
 use yii\db\Expression;
+use yii\web\UploadedFile;
 
 /**
  * This is the model class for table "unit_of_goods".
@@ -293,5 +294,27 @@ class UnitOfGoodsRecord extends \yii\db\ActiveRecord
             'atomic_item_quantity' => $record->atomic_item_quantity,
             'atomic_item_measure' => $record->atomic_item_measure,
         ]);
+    }
+
+    public static function updateMainPicture(int $unitOfGoodsId, UploadedFile $picture): void
+    {
+        $record = self::findOne(['id' => $unitOfGoodsId]);
+        if ($record === null) {
+            throw new \Exception('Unit of goods with such an id not found', 404);
+        }
+
+        // TODO handle too long file name
+        // TODO handle the case when a file with the same name  
+        $relativePath = "goods-item/$unitOfGoodsId/$picture->baseName.$picture->extension";
+        $picture->saveAs("@app/web/$relativePath");
+        $record->main_picture = "/$relativePath";
+        try {
+            $record->update(false);
+        }
+        catch (\Exception $e) {
+            // TODO remove file
+            Yii::error($e->getMessage(), 'db');
+            throw new \Exception();
+        }
     }
 }

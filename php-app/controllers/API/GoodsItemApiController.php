@@ -8,9 +8,10 @@ use app\models\domain\UnitOfGoodsRecord;
 
 use app\models\API\goods_item\GoodsReceptionModel;
 use app\models\API\goods_item\GoodsDiedModel;
-
+use app\models\goods_item\GoodsNewPictureModel;
 use yii\web\BadRequestHttpException;
 use yii\web\ServerErrorHttpException;
+use yii\web\UploadedFile;
 
 /**
  * @OA\PathItem(path="/api")
@@ -51,6 +52,17 @@ class GoodsItemApiController extends BaseApiController
                 UnitOfGoodsRecord::died($validatedModel->unitOfGoodsId, $validatedModel->numberOfDied, $validatedModel->sellDied);
             },
             'Failed to save changes'
+        );
+    }
+
+    public function actionSetMainPicture() {
+        $this->handleComplicatedRequest(
+            GoodsNewPictureModel::class,
+            false,
+            function ($validatedModel) {
+                UnitOfGoodsRecord::updateMainPicture($validatedModel->unitOfGoodsId, $validatedModel->newPicture);
+            },
+            'Failed to attach picture'
         );
     }
 

@@ -16,6 +16,7 @@ return [
         'extraPatterns' => [
             'PATCH goods-reception' => 'goods-reception',
             'POST register-as-died' => 'register-as-died',
+            'POST set-main-picture' => 'set-main-picture',
         ],
     ],
     [
