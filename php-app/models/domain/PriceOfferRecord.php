@@ -164,9 +164,9 @@ class PriceOfferRecord extends \yii\db\ActiveRecord
     }
 
     // TODO priceOffer should have something like `is_sale` attribute to easily stop the sale the same way that it was made. it should have name `startSale`.
-    public static function createForCategory(int $categoryId, int $discountPercentage)
+    public static function createForCategory(string $categoryName, int $discountPercentage)
     {
-        $categoryRecord = GoodsCategoryRecord::findOne(['id' => $categoryId]);
+        $categoryRecord = GoodsCategoryRecord::findOne(['name' => $categoryName]);
         if ($categoryRecord == null) {
             throw new \Exception('Such a category not found', 404);
         }
@@ -180,7 +180,7 @@ class PriceOfferRecord extends \yii\db\ActiveRecord
         foreach ($unitOfGoodsRecords as $goodsItemRecord) {
             $priceOffer = $goodsItemRecord->priceOffer;
             // creating of price offer only when it reduces the price
-            if ($priceOffer == null || $priceOffer->discount_percentage < $discountPercentage) {
+            if (!$priceOffer || $priceOffer->discount_percentage < $discountPercentage) {
                 self::createViaDiscountPercentage($goodsItemRecord->id, $discountPercentage);
             }
         }

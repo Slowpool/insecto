@@ -10,7 +10,6 @@ use app\models\domain\UnitOfGoodsRecord;
 use app\models\API\price_offer\PriceOfferOnCategoryModel;
 use app\models\API\price_offer\PriceOfferViaDiscountModel;
 use app\models\API\price_offer\PriceOfferViaPriceModel;
-
 use yii\web\BadRequestHttpException;
 use yii\web\ServerErrorHttpException;
 
@@ -26,6 +25,25 @@ use OpenApi\Annotations\Server;
 class PriceOfferApiController extends BaseApiController
 {
     public $modelClass = 'app\models\domain\PriceOfferRecord';
+
+    public function beforeAction($action)
+    {
+        if (parent::beforeAction($action)) {
+            $this->checkAccess($action->uniqueId);
+            return true;
+        }
+        return false;
+    }
+
+    public function verbs()
+    {
+        return [
+            'create-via-price' => ['POST'],
+            'create-via-discount-percentage' => ['POST'],
+            'create-for-category' => ['POST'],
+        ];
+    }
+
 
     /**
      * @OA\Post(
@@ -85,65 +103,65 @@ class PriceOfferApiController extends BaseApiController
         );
     }
 
-    // /*
-    //  * Here you specify `discountPercentage`, and the app calculates `newPrice` according to that `discountPercentage`.
-    //  * json example: {"unitOfGoodsId": 1, "discountPercentage": 5} (here 1 is danaida monarch)
-    //  * @return void
-    //  */
-    // /**
-    //  * @OA\Get(
-    //  *      path="/profiles",
-    //  *      @OA\Response(
-    //  *          response=200,
-    //  *          description="Successful operation",
-    //  *      ),
-    //  *     @OA\PathItem(path="/api1")
-    //  * )
-    //  * /**
-    //  */
-    // public function actionCreateViaDiscountPercentage()
-    // {
-    //     $this->handleComplicatedRequest(
-    //         PriceOfferViaDiscountModel::class,
-    //         true,
-    //         function ($validatedModel) {
-    //             if ($validatedModel->priorityRank) {
-    //                 PriceOfferRecord::createViaDiscountPercentage($validatedModel->unitOfGoodsId, $validatedModel->discountPercentage, $validatedModel->priorityRank->rank, $validatedModel->priorityRank->shift);
-    //             } else {
-    //                 PriceOfferRecord::createViaDiscountPercentage($validatedModel->unitOfGoodsId, $validatedModel->discountPercentage);
-    //             }
-    //         },
-    //         'Failed to create price offer. Probably discount percentage is too small or too big'
-    //     );
-    // }
+    /*
+     * Here you specify `discountPercentage`, and the app calculates `newPrice` according to that `discountPercentage`.
+     * json example: {"unitOfGoodsId": 1, "discountPercentage": 5} (here 1 is danaida monarch)
+     * @return void
+     */
+    /**
+     * @OA\Get(
+     *      path="/profiles",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *      ),
+     *     @OA\PathItem(path="/api1")
+     * )
+     * /**
+     */
+    public function actionCreateViaDiscountPercentage()
+    {
+        $this->handleComplicatedRequest(
+            PriceOfferViaDiscountModel::class,
+            true,
+            function ($validatedModel) {
+                if ($validatedModel->priorityRank) {
+                    PriceOfferRecord::createViaDiscountPercentage($validatedModel->unitOfGoodsId, $validatedModel->discountPercentage, $validatedModel->priorityRank->rank,$validatedModel->priorityRank->shift);
+                } else {
+                    PriceOfferRecord::createViaDiscountPercentage($validatedModel->unitOfGoodsId, $validatedModel->discountPercentage);
+                }
+            },
+            'Failed to create price offer. Probably discount percentage is too small or too big'
+        );
+    }
 
-    // /*
-    //  * Creates price offers for each goods item, which has a `categoryName` category. E.g. "ORTHOPTERA SALE! 15% DISCOUNT ON ORTHOPTERA ". Important notice: you can specify only `discountPercentage` insomuch as `newPrice` can be not fitted for all goods items.
-    //  * json example: {"categoryId": 1, "discountPercentage": 45}
-    //  * @return void
-    //  */
-    // /**
-    //  * @OA\Get(
-    //  *      path="/profiles",
-    //  *      @OA\Response(
-    //  *          response=200,
-    //  *          description="Successful operation",
-    //  *      ),
-    //  *     @OA\PathItem(path="/api1")
-    //  * )
-    //  * /**
-    //  */
-    // public function actionCreateForCategory()
-    // {
-    //     $this->handleComplicatedRequest(
-    //         PriceOfferOnCategoryModel::class,
-    //         false,
-    //         function ($validatedModel) {
-    //             PriceOfferRecord::createForCategory($validatedModel->categoryId, $validatedModel->discountPercentage);
-    //         },
-    //         'Failed to create price offers. Probably discount percentage is too small or too big'
-    //     );
-    // }
+    /*
+     * Creates price offers for each goods item, which has a `categoryName` category. E.g. "ORTHOPTERA SALE! 15% DISCOUNT ON ORTHOPTERA ". Important notice: you can specify only `discountPercentage` insomuch as `newPrice` can be not fitted for all goods items.
+     * json example: {"categoryId": 1, "discountPercentage": 45}
+     * @return void
+     */
+    /**
+     * @OA\Get(
+     *      path="/profiles",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *      ),
+     *     @OA\PathItem(path="/api1")
+     * )
+     *
+     */
+    public function actionCreateForCategory()
+    {
+        $this->handleComplicatedRequest(
+            PriceOfferOnCategoryModel::class,
+            false,
+            function ($validatedModel) {
+                PriceOfferRecord::createForCategory($validatedModel->categoryId, $validatedModel->discountPercentage);
+            },
+            'Failed to create price offers. Probably discount percentage is too small or too big',
+        );
+    }
 
     // public function create($goodsItemId, $otherOptions)
     // {

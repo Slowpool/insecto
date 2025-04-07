@@ -6,6 +6,7 @@ use Yii;
 use yii\helpers\Json;
 use yii\web\BadRequestHttpException;
 use yii\web\ConflictHttpException;
+use yii\web\ForbiddenHttpException;
 use yii\web\ServerErrorHttpException;
 use yii\web\UnprocessableEntityHttpException;
 
@@ -14,6 +15,7 @@ use yii\web\UnprocessableEntityHttpException;
  */
 class SwaggerDummy
 {
+
 }
 
 abstract class BaseApiController extends \yii\rest\ActiveController
@@ -32,6 +34,7 @@ abstract class BaseApiController extends \yii\rest\ActiveController
     {
         if ($complicatedJsonInput) {
             try {
+                // TODO set this even for simpleJsonInput (in other words remove the $complicatedJsonInput variable and use the next line for each request.)
                 $model = new $modelClass(['json' => Json::decode(Yii::$app->request->rawBody)]);
             } catch (\yii\base\InvalidArgumentException $e) {
                 throw new BadRequestHttpException("Failed to parse an entity from body");
@@ -59,4 +62,11 @@ abstract class BaseApiController extends \yii\rest\ActiveController
             }
         }
     }
+
+    public function checkAccess($action, $model = null, $params = []): void {
+        if (Yii::$app->request->get('api-key') != '123') {
+            throw new ForbiddenHttpException;
+        }
+    }
+
 }
